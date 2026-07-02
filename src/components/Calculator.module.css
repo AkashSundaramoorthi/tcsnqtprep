@@ -1,0 +1,102 @@
+.calcWidget {
+  position: fixed;
+  width: 280px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+.calcHeader {
+  background: var(--surface-2);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+.calcHeader:active {
+  cursor: grabbing;
+}
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  color: var(--text);
+}
+.calcBody {
+  padding: 16px;
+}
+.display {
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 12px;
+  text-align: right;
+  margin-bottom: 16px;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+}
+.expr {
+  color: var(--text-muted);
+  font-size: 1rem;
+  min-height: 1.5em;
+  word-wrap: break-word;
+}
+.res {
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 600;
+  min-height: 1.5em;
+}
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.keypad button {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.keypad button:hover {
+  background: var(--surface-3);
+}
+.keypad button:active {
+  transform: scale(0.95);
+}
+.keyZero {
+  grid-column: span 2;
+}
+.keyOp {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+}
+.keyEq {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+}
+.keyClear {
+  color: #ef4444 !important;
+  font-weight: bold;
+}

@@ -1,0 +1,93 @@
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 28px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: start;
+}
+
+.brand { max-width: 340px; }
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.logoMark {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+.logoSlash {
+  font-size: 0.9rem;
+  color: var(--text-3);
+  font-weight: 300;
+}
+
+.logoWord {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.tagline {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  line-height: 1.7;
+}
+
+.links {
+  display: flex;
+  gap: 48px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.col h4 {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.col a {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  transition: color 0.15s;
+}
+
+.col a:hover { color: var(--accent); }
+
+.bottom {
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bottom p {
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr; gap: 28px; }
+  .links { gap: 32px; }
+}

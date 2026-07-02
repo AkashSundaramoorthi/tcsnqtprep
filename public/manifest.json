@@ -1,0 +1,16 @@
+{
+  "name": "TCS NQT Prep Tracker",
+  "short_name": "NQT Prep",
+  "description": "Comprehensive TCS NQT Preparation Guide and Mock Exams",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f2937",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

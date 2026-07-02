@@ -1,0 +1,278 @@
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.pageSub { color: var(--text-2); font-size: 0.925rem; }
+
+.warningBadge {
+  font-size: 0.78rem;
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border: 1px solid rgba(139,92,246,0.25);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* Sections */
+.sections { display: flex; flex-direction: column; gap: 40px; }
+
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+  flex-wrap: wrap;
+}
+
+.sectionIcon { font-size: 2rem; flex-shrink: 0; }
+
+.sectionTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.sectionDesc {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+.sectionCount {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 4px 12px;
+  flex-shrink: 0;
+}
+
+/* Question list */
+.qList {
+  padding: 12px 0;
+}
+
+.qItem {
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+
+.qItem:last-child { border-bottom: none; }
+.qItem:hover { background: rgba(255,255,255,0.015); }
+
+.qHeader {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.qNum {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 5px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 1px;
+}
+
+.qText {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.ansBtn {
+  font-size: 0.78rem !important;
+  padding: 5px 12px !important;
+}
+
+.answer {
+  margin-top: 12px;
+  background: rgba(139,92,246,0.05);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  animation: fadeUp 0.2s ease;
+}
+
+.ansLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.ansPre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  line-height: 1.65;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .sectionHeader { padding: 16px; }
+  .qItem { padding: 14px 16px; }
+}
+
+/* ── Difficulty badge inside card ─────────────────────────────────────────── */
+.diffBadge {
+  flex-shrink: 0;
+  font-size: 0.7rem !important;
+  padding: 2px 8px !important;
+  align-self: flex-start;
+}
+
+/* ── MCQ option grid ──────────────────────────────────────────────────────── */
+.optGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+
+@media (max-width: 600px) {
+  .optGrid { grid-template-columns: 1fr; }
+}
+
+.optBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.optBtn:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.35);
+  color: var(--text);
+}
+
+.optBtn:disabled { cursor: default; }
+
+.optLabel {
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+/* Revealed states */
+.optCorrect {
+  background: rgba(34, 197, 94, 0.12) !important;
+  border-color: rgba(34, 197, 94, 0.5) !important;
+  color: var(--green) !important;
+}
+
+.optWrong {
+  background: var(--surface-2);
+  opacity: 0.45;
+}
+
+/* ── Coding-type card ─────────────────────────────────────────────────────── */
+.qPre {
+  font-family: inherit !important;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.badgeGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.nqtTag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 99px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.approachText {
+  font-size: 0.875rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin: 4px 0 0;
+}
+
+.solutionPre {
+  margin-top: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+.solutionPre code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--green);
+  white-space: pre;
+  line-height: 1.65;
+}
+
+
+/* Added for missing states */
+.optSelected {
+  border-color: #3b82f6 !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.active {
+  background: var(--accent) !important;
+  color: #0c0b0a !important;
+  border-color: transparent !important;
+}

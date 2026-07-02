@@ -1,0 +1,1372 @@
+[
+  {
+    "section": "Numerical Ability",
+    "desc": "Profit/Loss, HCF/LCM, Time-Speed-Distance, Work, SI/CI, Percentages, Averages, Permutations, Age Problems, Mixtures",
+    "questions": [
+      {
+        "q": "A vendor purchases lemons at the rate of 15 for ₹20 and sells them at the rate of 12 for ₹24. What is his overall profit percentage?",
+        "opts": [
+          "25%",
+          "40%",
+          "50%",
+          "60%"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Cost Price (CP) per lemon = 20 / 15 = ₹4/3. Selling Price (SP) per lemon = 24 / 12 = ₹2. Profit per lemon = 2 − 4/3 = ₹2/3. Profit percentage = (2/3) / (4/3) × 100% = 50%."
+      },
+      {
+        "q": "The greatest common divisor of two integers is 14, and their least common multiple is 6930. If one of the integers is 630, what is the other integer?",
+        "opts": [
+          "126",
+          "154",
+          "210",
+          "308"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "The product of two numbers equals the product of their GCD and LCM. Let the unknown number be x. 630 × x = 14 × 6930, so x = (14 × 6930) / 630 = 154."
+      },
+      {
+        "q": "A 300-meter long bullet train passes a stationary signal post in 10 seconds. How long will it take for this same train to completely traverse a 1.2-kilometer long tunnel?",
+        "opts": [
+          "30 s",
+          "40 s",
+          "50 s",
+          "60 s"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "The train's speed is 300 m / 10 s = 30 m/s. The total distance to pass the 1200 m tunnel is 1200 + 300 = 1500 meters. The time required is 1500 / 30 = 50 seconds."
+      },
+      {
+        "q": "Determine the last digit of the numeric value of 3¹²³.",
+        "opts": [
+          "1",
+          "3",
+          "7",
+          "9"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "The powers of 3 end in a repeating cycle of 4 digits: 3, 9, 7, 1. Dividing the exponent 123 by 4 gives a remainder of 3. The 3rd value in the cycle is 7."
+      },
+      {
+        "q": "Alice and Bob can complete a software module in 8 days. Bob and Charlie can do it in 12 days, while Alice and Charlie need 24 days. How many days would it take if all three worked together?",
+        "opts": [
+          "6",
+          "8",
+          "10",
+          "12"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Adding their combined work rates gives 2 × (Alice + Bob + Charlie) = 1/8 + 1/12 + 1/24 = 6/24 = 1/4 per day. Dividing by 2, their true combined rate is 1/8 per day, meaning it will take them 8 days to finish the module."
+      },
+      {
+        "q": "Find the average of all prime numbers between 30 and 50.",
+        "opts": [
+          "38.8",
+          "39.8",
+          "40.8",
+          "41.2"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Primes between 30 and 50: 31, 37, 41, 43, 47\nSum = 199, Count = 5\nAverage = 199/5 = 39.8"
+      },
+      {
+        "q": "A retailer finds that the revenue from selling 40 smartphones equals the cost of purchasing 50 smartphones. What is his profit margin percentage?",
+        "opts": [
+          "10%",
+          "15%",
+          "20%",
+          "25%"
+        ],
+        "answer": 3,
+        "difficulty": "Easy",
+        "explanation": "Let CP of 1 phone be C, SP be S. We are given 40 × S = 50 × C. Thus, S/C = 50/40 = 1.25. The profit margin is 25%."
+      },
+      {
+        "q": "An investor's portfolio grows to $6,050 over 2 years at a compound annual growth rate of 10%. What was the initial investment?",
+        "opts": [
+          "$4,800",
+          "$5,000",
+          "$5,200",
+          "$5,500"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Using the compound interest formula A = P(1 + r)², we plug in $6,050 = P(1.10)². $6,050 = P × 1.21. P = $6,050 / 1.21 = $5,000."
+      },
+      {
+        "q": "The current ratio of Emma's age to Noah's age is 4:5. Eight years from now, their age ratio will be 5:6. How old is Emma currently?",
+        "opts": [
+          "24",
+          "32",
+          "40",
+          "48"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Let their ages be 4x and 5x. After 8 years, (4x + 8) / (5x + 8) = 5 / 6. Cross-multiplying: 24x + 48 = 25x + 40, which yields x = 8. Emma's current age is 4 × 8 = 32 years."
+      },
+      {
+        "q": "Boat goes 30 km downstream in 2 h, 30 km upstream in 6 h. Speed of stream?",
+        "opts": [
+          "3 km/h",
+          "4 km/h",
+          "5 km/h",
+          "6 km/h"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Downstream speed = 30/2 = 15 km/h\nUpstream speed = 30/6 = 5 km/h\nStream = (15 − 5)/2 = 5 km/h"
+      },
+      {
+        "q": "How many ways can 'LEADER' be arranged?",
+        "opts": [
+          "720",
+          "360",
+          "480",
+          "240"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "LEADER has 6 letters with E repeated twice.\nArrangements = 6!/2! = 720/2 = 360"
+      },
+      {
+        "q": "A number when divided by 296 leaves remainder 75. When divided by 37, remainder is?",
+        "opts": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "answer": 1,
+        "difficulty": "Hard",
+        "explanation": "296 = 37 × 8 → 296 is exactly divisible by 37\nSo remainder = 75 mod 37 = 75 − 37×2 = 1"
+      },
+      {
+        "q": "The ratio of two positive integers is 5:8, and their least common multiple (LCM) is 120. What is the sum of these two integers?",
+        "opts": [
+          "33",
+          "39",
+          "45",
+          "52"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Let the numbers be 5k and 8k. Their LCM is 40k. Given 40k = 120, we find k = 3. The numbers are 15 and 24, and their sum is 15 + 24 = 39."
+      },
+      {
+        "q": "A shopkeeper marks goods 40% above CP and gives 10% discount. Find profit%.",
+        "opts": [
+          "24%",
+          "26%",
+          "28%",
+          "30%"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Profit% = x − y − (xy/100) = 40 − 10 − (40×10/100)\n= 30 − 4 = 26%"
+      },
+      {
+        "q": "A construction crew of 12 workers can build a wall in 14 days. If the project must be completed in 8 days, how many workers are needed in total?",
+        "opts": [
+          "18",
+          "21",
+          "24",
+          "28"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Using the Worker-Days constant: 12 × 14 = W × 8. 168 = 8W, so W = 21 workers."
+      },
+      {
+        "q": "Simple interest on ₹5000 at 8% per annum for 3 years?",
+        "opts": [
+          "₹1000",
+          "₹1200",
+          "₹1500",
+          "₹1600"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "SI = (P × R × T) / 100 = (5000 × 8 × 3) / 100 = ₹1200"
+      },
+      {
+        "q": "A number is increased by 20% and then decreased by 20%. Net change?",
+        "opts": [
+          "No change",
+          "4% increase",
+          "4% decrease",
+          "2% decrease"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Net% = a + b + ab/100 = 20 + (−20) + (20×−20)/100\n= 0 − 4 = −4% → 4% decrease"
+      },
+      {
+        "q": "A team consisting of 5 developers and 4 designers needs to sit in a row for a photograph. In how many ways can they be arranged so that no two designers sit next to each other?",
+        "opts": [
+          "2880",
+          "14400",
+          "43200",
+          "86400"
+        ],
+        "answer": 2,
+        "difficulty": "Hard",
+        "explanation": "First, arrange the 5 developers in 5! = 120 ways. This creates 6 possible spaces (including the ends) where designers can sit. We choose 4 of these 6 spaces and arrange the 4 designers in them, which is P(6,4) = 360 ways. Total arrangements = 120 × 360 = 43,200."
+      },
+      {
+        "q": "A motorboat travels 45 km downstream in the same amount of time it takes to travel 27 km upstream. If the speed of the river current is 2 km/h, what is the speed of the motorboat in still water?",
+        "opts": [
+          "6 km/h",
+          "8 km/h",
+          "10 km/h",
+          "12 km/h"
+        ],
+        "answer": 1,
+        "difficulty": "Hard",
+        "explanation": "Let the boat's speed in still water be b. Time downstream = Time upstream, so 45 / (b + 2) = 27 / (b − 2). Cross-multiplying gives 45b − 90 = 27b + 54. Solving this yields 18b = 144, so b = 8 km/h."
+      },
+      {
+        "q": "A 60-liter container holds a mixture of juice and water in a 7:3 ratio. How many liters of water must be added so that the new ratio of juice to water becomes 1:1?",
+        "opts": [
+          "18 L",
+          "24 L",
+          "30 L",
+          "42 L"
+        ],
+        "answer": 1,
+        "difficulty": "Hard",
+        "explanation": "The initial 60 liters is divided in a 7:3 ratio, meaning there are (7/10) × 60 = 42 liters of juice and 18 liters of water. To achieve a 1:1 ratio, the volume of water must equal the volume of juice (42 liters). Therefore, 42 − 18 = 24 liters of water must be added."
+      },
+      {
+        "q": "An express train moving at 90 km/h completely passes a freight train traveling in the opposite direction at 54 km/h in exactly 15 seconds. If the freight train is 250 meters long, what is the length of the express train?",
+        "opts": [
+          "300 m",
+          "320 m",
+          "350 m",
+          "400 m"
+        ],
+        "answer": 2,
+        "difficulty": "Hard",
+        "explanation": "Relative speed = 90 + 54 = 144 km/h, which is 40 m/s. Total distance covered during the crossing is 40 m/s × 15 s = 600 m. The express train's length = 600 m − 250 m = 350 m."
+      },
+      {
+        "q": "What is the probability that a leap year selected at random will have 53 Sundays?",
+        "opts": [
+          "1/7",
+          "2/7",
+          "3/7",
+          "1/14"
+        ],
+        "answer": 1,
+        "difficulty": "Hard",
+        "explanation": "Leap year = 366 days = 52 complete weeks + 2 extra days\nPossible extra day pairs: (Mon,Tue),(Tue,Wed),(Wed,Thu),(Thu,Fri),(Fri,Sat),(Sat,Sun),(Sun,Mon)\n53 Sundays if extra days include Sunday: (Sat,Sun) or (Sun,Mon) → 2 cases\nP = 2/7"
+      },
+      {
+        "q": "A pipe fills a tank in 20 h, another empties it in 30 h. If both open together, when will tank be full?",
+        "opts": [
+          "50 h",
+          "60 h",
+          "45 h",
+          "40 h"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Net fill rate = 1/20 − 1/30 = 3/60 − 2/60 = 1/60\nTank fills in 60 hours"
+      },
+      {
+        "q": "Find compound interest on ₹8000 at 10% for 2 years, compounded annually.",
+        "opts": [
+          "₹1600",
+          "₹1680",
+          "₹1700",
+          "₹1760"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "A = 8000 × (1.10)² = 8000 × 1.21 = ₹9680\nCI = 9680 − 8000 = ₹1680"
+      },
+      {
+        "q": "In an exam, 40% students failed in Maths, 30% in English, 10% in both. Students who passed both?",
+        "opts": [
+          "30%",
+          "35%",
+          "40%",
+          "45%"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Failed in at least one = 40 + 30 − 10 = 60%\nPassed both = 100 − 60 = 40%"
+      }
+    ]
+  },
+  {
+    "section": "Verbal Ability",
+    "desc": "Synonyms, Antonyms, Grammar, Prepositions, Sentence Correction, Para Jumbles, Reading Comprehension, Cloze Test",
+    "questions": [
+      {
+        "q": "Choose the synonym of 'Abundant'.",
+        "opts": [
+          "Scarce",
+          "Plentiful",
+          "Rare",
+          "Empty"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "'Abundant' means existing in large quantities. Synonym = 'Plentiful'."
+      },
+      {
+        "q": "Choose the antonym of 'Benevolent'.",
+        "opts": [
+          "Kind",
+          "Generous",
+          "Cruel",
+          "Gentle"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "'Benevolent' means well-meaning and kindly. Its antonym is 'Cruel'."
+      },
+      {
+        "q": "Fill in the blank: 'She has been working here ____ 2015.'",
+        "opts": [
+          "since",
+          "for",
+          "from",
+          "by"
+        ],
+        "answer": 0,
+        "difficulty": "Easy",
+        "explanation": "'Since' is used with a specific point in time (2015).\n'For' is used with duration (e.g. 'for 9 years')."
+      },
+      {
+        "q": "Identify the error: 'One of the boys / have not / completed / his homework.'",
+        "opts": [
+          "One of the boys",
+          "have not",
+          "completed",
+          "No error"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'One' is the subject — it is singular.\n'have not' should be 'has not'."
+      },
+      {
+        "q": "Choose the correctly spelt word.",
+        "opts": [
+          "Occassion",
+          "Ocasion",
+          "Occasion",
+          "Occassion"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Correct spelling is 'Occasion' — one 'c', double 's' is wrong."
+      },
+      {
+        "q": "Select the correct passive voice: 'The teacher punished the student.'",
+        "opts": [
+          "The student has been punished by the teacher.",
+          "The student was punished by the teacher.",
+          "The student is punished by the teacher.",
+          "The student had been punished by the teacher."
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Active voice is in simple past tense.\nPassive = Subject + was/were + V3 + by + object\n= 'The student was punished by the teacher.'"
+      },
+      {
+        "q": "Fill in: 'He is good ____ mathematics.'",
+        "opts": [
+          "in",
+          "at",
+          "on",
+          "with"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "'Good at' is the correct collocation for a skill or subject."
+      },
+      {
+        "q": "Choose the word: 'The manager's decision was ____; nobody could change it.'",
+        "opts": [
+          "flexible",
+          "tentative",
+          "final",
+          "optional"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "'Final' means conclusive and unalterable — matches the context of nobody being able to change it."
+      },
+      {
+        "q": "Spot the error: 'Neither of the two boys / were present / in the class / yesterday.'",
+        "opts": [
+          "Neither of the two boys",
+          "were present",
+          "in the class",
+          "No error"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'Neither' is singular. 'were' should be 'was'."
+      },
+      {
+        "q": "Choose the correct preposition: 'She is married ____ a doctor.'",
+        "opts": [
+          "with",
+          "to",
+          "by",
+          "for"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Correct collocation is 'married to'."
+      },
+      {
+        "q": "Choose synonym of 'Ephemeral'.",
+        "opts": [
+          "Eternal",
+          "Transient",
+          "Permanent",
+          "Constant"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'Ephemeral' means lasting for a very short time. Synonym = 'Transient'."
+      },
+      {
+        "q": "Fill in: 'The weather was bad; ____, the match was cancelled.'",
+        "opts": [
+          "therefore",
+          "however",
+          "meanwhile",
+          "otherwise"
+        ],
+        "answer": 0,
+        "difficulty": "Easy",
+        "explanation": "'Therefore' shows cause → effect. Bad weather caused cancellation."
+      },
+      {
+        "q": "Rearrange: P) quickly became popular. Q) The company launched a new phone. R) Sales doubled within a month.",
+        "opts": [
+          "QPR",
+          "QRP",
+          "PQR",
+          "RPQ"
+        ],
+        "answer": 0,
+        "difficulty": "Medium",
+        "explanation": "Q introduces the topic (new phone). P follows — 'It' refers to the phone. R is the result.\nOrder: Q → P → R"
+      },
+      {
+        "q": "Choose the antonym of 'Magnanimous'.",
+        "opts": [
+          "Generous",
+          "Noble",
+          "Petty",
+          "Brave"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "'Magnanimous' means generous or forgiving. Antonym = 'Petty' (small-minded)."
+      },
+      {
+        "q": "Fill in: 'He worked hard ____ he could pass the exam.'",
+        "opts": [
+          "because",
+          "so that",
+          "although",
+          "unless"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "'So that' expresses purpose — he worked hard in order to pass."
+      },
+      {
+        "q": "Choose the correct form: 'Each of the students ____ submitted their assignment.'",
+        "opts": [
+          "have",
+          "has",
+          "had been",
+          "are"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'Each' is always singular → 'has submitted' is correct."
+      },
+      {
+        "q": "Choose the word closest in meaning to 'Loquacious'.",
+        "opts": [
+          "Silent",
+          "Talkative",
+          "Aggressive",
+          "Lazy"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'Loquacious' means tending to talk a great deal — synonym is 'Talkative'."
+      },
+      {
+        "q": "Fill in: '___ the rain, the match continued.'",
+        "opts": [
+          "Despite",
+          "Although",
+          "Because of",
+          "Since"
+        ],
+        "answer": 0,
+        "difficulty": "Medium",
+        "explanation": "'Despite' is a preposition and takes a noun phrase ('the rain').\n'Although' needs a full clause with subject and verb."
+      },
+      {
+        "q": "Identify correct sentence:",
+        "opts": [
+          "She don't know the answer.",
+          "She doesn't knows the answer.",
+          "She doesn't know the answer.",
+          "She not know the answer."
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "With third-person singular (she), use 'doesn't' + base verb 'know'."
+      },
+      {
+        "q": "Which CANNOT be an opening sentence of a paragraph?\n(a) In 1947, India gained independence.\n(b) This led to chaos.\n(c) The rivers of India are major water sources.",
+        "opts": [
+          "Only (a)",
+          "Only (b)",
+          "Only (c)",
+          "(b) and (c)"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'This' in (b) refers back to something — so it cannot open a paragraph. (a) and (c) introduce independently."
+      },
+      {
+        "q": "Choose the correct indirect speech: He said, 'I am going to the market.'",
+        "opts": [
+          "He said he is going to the market.",
+          "He said he was going to the market.",
+          "He said he went to the market.",
+          "He told he was going to the market."
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Indirect speech in past: 'am going' → 'was going'. Use 'said that', not 'told'."
+      },
+      {
+        "q": "Choose the one-word substitute for 'A person who knows many languages'.",
+        "opts": [
+          "Bilingual",
+          "Polyglot",
+          "Linguist",
+          "Orator"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "'Polyglot' = a person who knows or uses several languages."
+      },
+      {
+        "q": "Fill in: 'The committee ____ divided in their opinion.'",
+        "opts": [
+          "is",
+          "are",
+          "was",
+          "were"
+        ],
+        "answer": 1,
+        "difficulty": "Hard",
+        "explanation": "When a collective noun refers to members acting individually/separately, use plural verb.\n'Divided in opinion' implies individual views → 'are' is correct."
+      },
+      {
+        "q": "Choose the correct form: 'If I ____ you, I would apologize.'",
+        "opts": [
+          "am",
+          "was",
+          "were",
+          "be"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "In hypothetical/conditional (unreal present), use 'were' for all persons.\n'If I were you' is the standard form."
+      },
+      {
+        "q": "Choose synonym of 'Obstinate'.",
+        "opts": [
+          "Flexible",
+          "Stubborn",
+          "Obedient",
+          "Timid"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "'Obstinate' means stubbornly refusing to change. Synonym = 'Stubborn'."
+      }
+    ]
+  },
+  {
+    "section": "Reasoning Ability",
+    "desc": "Coding-Decoding, Blood Relations, Direction Sense, Series, Syllogism, Seating Arrangement, Clocks, Calendars, Data Arrangement",
+    "questions": [
+      {
+        "q": "If in a certain code, RED is written as 27 and BLUE is written as 40, how is GREEN written?",
+        "opts": [
+          "47",
+          "49",
+          "51",
+          "53"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Each word is encoded as the sum of its letters' alphabetical positions (A=1, B=2, etc.). For GREEN: G(7) + R(18) + E(5) + E(5) + N(14) = 49."
+      },
+      {
+        "q": "Identify the next term in the sequence: 0, 4, 18, 48, 100, ?",
+        "opts": [
+          "150",
+          "180",
+          "210",
+          "240"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "The pattern is n³ - n² for n = 1, 2, 3... For n=6, 6³ - 6² = 216 - 36 = 180."
+      },
+      {
+        "q": "Introducing a guest at a party, a woman remarks, \"His wife is the only daughter of my mother's husband.\" How is the guest related to the woman?",
+        "opts": [
+          "Brother",
+          "Uncle",
+          "Husband",
+          "Brother-in-law"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "The woman's \"mother's husband\" is her father. The \"only daughter\" of her father is the woman herself. Therefore, the guest's wife is the woman speaking, meaning the guest is her husband."
+      },
+      {
+        "q": "All roses are flowers. Some flowers fade quickly. Conclusion I: Some roses fade. II: All flowers are roses.",
+        "opts": [
+          "Only I follows",
+          "Only II follows",
+          "Neither follows",
+          "Both follow"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "I: 'Some flowers fade' doesn't necessarily include roses — NOT valid.\nII: Converse of first premise — NOT valid.\nNeither conclusion follows."
+      },
+      {
+        "q": "A is to the south of B. C is to the east of B. In which direction is C w.r.t. A?",
+        "opts": [
+          "North-East",
+          "North-West",
+          "South-East",
+          "South-West"
+        ],
+        "answer": 0,
+        "difficulty": "Medium",
+        "explanation": "A is south of B → B is north of A.\nC is east of B → C is north-east of A."
+      },
+      {
+        "q": "Complete the series: AZ, BY, CX, ?",
+        "opts": [
+          "DV",
+          "DW",
+          "EW",
+          "CW"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "First letter: A, B, C, D (+1 each)\nSecond letter: Z, Y, X, W (−1 each)\nAnswer: DW"
+      },
+      {
+        "q": "If 5×4 = 15, 7×3 = 18, then 6×5 = ?",
+        "opts": [
+          "20",
+          "25",
+          "30",
+          "24"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Pattern: a×b − a = result\n5×4−5 = 15 ✓, 7×3−3 = 18 ✓\n6×5−5 = 25"
+      },
+      {
+        "q": "A drone flies 8 km East, turns right and flies 6 km, then turns right again and flies 8 km. How far is the drone from its starting point?",
+        "opts": [
+          "6 km",
+          "8 km",
+          "10 km",
+          "14 km"
+        ],
+        "answer": 0,
+        "difficulty": "Easy",
+        "explanation": "The drone goes East (8 km), South (6 km), and West (8 km). The East and West movements cancel out, leaving the drone 6 km directly South of the start."
+      },
+      {
+        "q": "Odd one out: 8, 27, 64, 100, 125",
+        "opts": [
+          "8",
+          "27",
+          "100",
+          "125"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "8=2³, 27=3³, 64=4³, 125=5³ — all perfect cubes.\n100 is NOT a perfect cube → odd one out."
+      },
+      {
+        "q": "Six people around a circular table. Distinct seating arrangements?",
+        "opts": [
+          "720",
+          "120",
+          "360",
+          "60"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Circular arrangements = (n−1)! = (6−1)! = 5! = 120"
+      },
+      {
+        "q": "What is the angle between clock hands at 3:40?",
+        "opts": [
+          "120°",
+          "125°",
+          "130°",
+          "135°"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Formula: |30H − 5.5M| = |30×3 − 5.5×40| = |90 − 220| = 130°"
+      },
+      {
+        "q": "Looking at a portrait, a man states, \"The father of this person is the only son of my father.\" If the man has no brothers, who is in the portrait?",
+        "opts": [
+          "His nephew",
+          "His cousin",
+          "His father",
+          "His child"
+        ],
+        "answer": 3,
+        "difficulty": "Medium",
+        "explanation": "Since the man has no brothers, the \"only son of my father\" is the man himself. The statement simplifies to \"The father of this person is me\", which means the person in the portrait is his child."
+      },
+      {
+        "q": "P is 7th from left, Q is 9th from right in a row of 20. How many people between P and Q?",
+        "opts": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "P = 7th from left. Q = 9th from right = 20−9+1 = 12th from left.\nBetween P(7) and Q(12): 12−7−1 = 4 people"
+      },
+      {
+        "q": "Facing East, turn left twice. Which direction are you facing?",
+        "opts": [
+          "North",
+          "South",
+          "East",
+          "West"
+        ],
+        "answer": 3,
+        "difficulty": "Easy",
+        "explanation": "East → turn left → North → turn left → West"
+      },
+      {
+        "q": "In a code language, MANGO is written as NBNHP. How is APPLE written?",
+        "opts": [
+          "BQQMF",
+          "BQPMF",
+          "BQQNF",
+          "BPQMF"
+        ],
+        "answer": 0,
+        "difficulty": "Medium",
+        "explanation": "Each letter is shifted +1: M→N, A→B, N→O, G→H, O→P\nAPPLE: A→B, P→Q, P→Q, L→M, E→F → BQQMF"
+      },
+      {
+        "q": "If a project launches on a Tuesday, and the first major update is scheduled exactly 150 days later, on what day of the week will the update occur?",
+        "opts": [
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Dividing 150 by 7 gives a quotient of 21 and a remainder of 3. Three days after Tuesday is Friday."
+      },
+      {
+        "q": "A is mother of B. C is father of B. D is brother of C. How is D related to B?",
+        "opts": [
+          "Uncle",
+          "Father",
+          "Brother",
+          "Cousin"
+        ],
+        "answer": 0,
+        "difficulty": "Easy",
+        "explanation": "C is B's father. D is C's brother → D is B's paternal uncle."
+      },
+      {
+        "q": "Statement: All cats are animals. All dogs are animals. Conclusion: All cats are dogs.",
+        "opts": [
+          "True",
+          "False",
+          "Uncertain",
+          "Partially true"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Both cats and dogs are animals, but that doesn't mean cats are dogs.\nConclusion does NOT follow → False."
+      },
+      {
+        "q": "Clock shows 3:15. What is angle between hour and minute hands?",
+        "opts": [
+          "0°",
+          "7.5°",
+          "15°",
+          "22.5°"
+        ],
+        "answer": 1,
+        "difficulty": "Hard",
+        "explanation": "At 3:15: Minute hand at 90°. Hour hand at 90° + (15/60)×30 = 90 + 7.5 = 97.5°\nAngle = 97.5 − 90 = 7.5°"
+      },
+      {
+        "q": "Series: 1, 1, 2, 3, 5, 8, 13, ?",
+        "opts": [
+          "18",
+          "20",
+          "21",
+          "24"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Fibonacci series: each term = sum of two preceding terms.\n8 + 13 = 21"
+      },
+      {
+        "q": "In a row of 40 students, Ravi is 11th from left. What is his position from right?",
+        "opts": [
+          "28th",
+          "29th",
+          "30th",
+          "31st"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Position from right = 40 − 11 + 1 = 30th"
+      },
+      {
+        "q": "Statement: Some books are pens. All pens are pencils. Conclusion: Some books are pencils.",
+        "opts": [
+          "True",
+          "False",
+          "Cannot determine",
+          "Partially true"
+        ],
+        "answer": 0,
+        "difficulty": "Medium",
+        "explanation": "Some books are pens (given) → those books are also pencils (since all pens are pencils).\nConclusion: Some books are pencils → TRUE"
+      },
+      {
+        "q": "A man starts from home, walks 4 km South, then 3 km East. How far is he from home?",
+        "opts": [
+          "3 km",
+          "4 km",
+          "5 km",
+          "7 km"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Using Pythagoras: √(4² + 3²) = √(16+9) = √25 = 5 km"
+      },
+      {
+        "q": "Six delegates (U, V, W, X, Y, Z) sit around a circular table facing the center. U sits exactly opposite to V. W sits immediately to the right of V. X sits exactly opposite to W. If Y sits immediately to the left of U, who sits between X and V?",
+        "opts": [
+          "Y",
+          "U",
+          "Z",
+          "W"
+        ],
+        "answer": 2,
+        "difficulty": "Hard",
+        "explanation": "Assume 6 seats numbered 1 to 6 clockwise. If V is at seat 4, U is opposite at seat 1. W sits to the immediate right of V (seat 3). X sits opposite W (seat 6). Y sits to the immediate left of U (seat 2). The remaining seat 5 must be occupied by Z, which is exactly between V (seat 4) and X (seat 6)."
+      },
+      {
+        "q": "If DELHI is coded as 73541 and CALCUTTA as 82589662, how is CALICUT coded?",
+        "opts": [
+          "8251896",
+          "8251986",
+          "8251968",
+          "8251869"
+        ],
+        "answer": 0,
+        "difficulty": "Hard",
+        "explanation": "C=8, A=2, L=5, C=8, U=9, T=6, T=6, A=2\nCALICUT: C=8, A=2, L=5, I=1, C=8, U=9, T=6 → 8251896"
+      }
+    ]
+  },
+  {
+    "section": "Programming Logic MCQs",
+    "desc": "Time Complexity, Data Structures, Pointers, Output Prediction, OOP, OS Concepts, DBMS basics",
+    "questions": [
+      {
+        "q": "What is the time complexity of binary search?",
+        "opts": [
+          "O(n)",
+          "O(log n)",
+          "O(n log n)",
+          "O(1)"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Binary search halves the search space each step → O(log n)"
+      },
+      {
+        "q": "Which data structure uses FIFO (First In First Out)?",
+        "opts": [
+          "Stack",
+          "Queue",
+          "Tree",
+          "Heap"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Queue: first element added is the first one removed — FIFO."
+      },
+      {
+        "q": "What is the output of the following C code snippet?\nint x = 10, y = 3;\nprintf(\"%d %d\", x / y, x % y);",
+        "opts": [
+          "3 1",
+          "3.33 1",
+          "3 0",
+          "3.33 0"
+        ],
+        "answer": 0,
+        "difficulty": "Hard",
+        "explanation": "In C, integer division (x / y) truncates the decimal, resulting in 3. The modulo operator (x % y) returns the remainder of the division, which is 1."
+      },
+      {
+        "q": "Which sorting has best average-case O(n log n)?",
+        "opts": [
+          "Bubble Sort",
+          "Insertion Sort",
+          "Merge Sort",
+          "Selection Sort"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Merge Sort always runs in O(n log n). Quick Sort is average O(n log n) but worst O(n²)."
+      },
+      {
+        "q": "How many times does this loop execute? for(i=0; i<10; i+=2)",
+        "opts": [
+          "4",
+          "5",
+          "6",
+          "10"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "i = 0, 2, 4, 6, 8 → 5 iterations (i<10 fails at i=10)"
+      },
+      {
+        "q": "What is a dangling pointer?",
+        "opts": [
+          "A pointer to a null value",
+          "A pointer to freed/deallocated memory",
+          "A pointer with no type",
+          "A pointer to a pointer"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "A dangling pointer references memory that has been freed/deallocated. Dereferencing it causes undefined behavior."
+      },
+      {
+        "q": "Which keyword prevents modification of a variable in C?",
+        "opts": [
+          "static",
+          "volatile",
+          "const",
+          "extern"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "'const' declares the variable as read-only — its value cannot be changed after initialization."
+      },
+      {
+        "q": "Size of an int pointer on a 64-bit system?",
+        "opts": [
+          "2 bytes",
+          "4 bytes",
+          "8 bytes",
+          "Depends on type"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "On a 64-bit system, all pointers are 8 bytes regardless of what they point to."
+      },
+      {
+        "q": "Recursion internally uses which data structure?",
+        "opts": [
+          "Queue",
+          "Array",
+          "Stack",
+          "Linked List"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Recursive calls are managed using the call stack — each call pushes a new stack frame."
+      },
+      {
+        "q": "What does '\\0' represent in C strings?",
+        "opts": [
+          "Space character",
+          "Zero digit",
+          "Null terminator",
+          "Newline"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "'\\0' is the null character (ASCII 0) that marks the end of a C string."
+      },
+      {
+        "q": "Which of the following data structures allows you to access any element by its index in O(1) time complexity?",
+        "opts": [
+          "Linked List",
+          "Array",
+          "Binary Search Tree",
+          "Queue"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Arrays allocate elements in contiguous memory blocks, allowing the address of any element to be calculated mathematically in O(1) time."
+      },
+      {
+        "q": "Which OOP concept allows the same function name with different parameters?",
+        "opts": [
+          "Overriding",
+          "Overloading",
+          "Encapsulation",
+          "Polymorphism"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Function Overloading — same name, different parameter types or counts (compile-time polymorphism)."
+      },
+      {
+        "q": "What is the worst-case time complexity of Quick Sort?",
+        "opts": [
+          "O(n)",
+          "O(n log n)",
+          "O(n²)",
+          "O(log n)"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Quick Sort worst case (already sorted, bad pivot) = O(n²). Average case = O(n log n)."
+      },
+      {
+        "q": "Which of these is NOT a feature of OOP?",
+        "opts": [
+          "Encapsulation",
+          "Compilation",
+          "Inheritance",
+          "Polymorphism"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "OOP pillars: Encapsulation, Inheritance, Polymorphism, Abstraction. 'Compilation' is not an OOP concept."
+      },
+      {
+        "q": "In a linked list, accessing the nth element has time complexity:",
+        "opts": [
+          "O(1)",
+          "O(log n)",
+          "O(n)",
+          "O(n²)"
+        ],
+        "answer": 2,
+        "difficulty": "Easy",
+        "explanation": "Linked list has no random access — must traverse from head to nth node → O(n)."
+      },
+      {
+        "q": "What is output of: int a[]={1,2,3,4,5}; printf(\"%d\", a[4]);",
+        "opts": [
+          "4",
+          "5",
+          "0",
+          "Error"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "Array is 0-indexed. a[4] = 5th element = 5."
+      },
+      {
+        "q": "Which SQL command is used to remove all rows from a table without logging individual row deletions?",
+        "opts": [
+          "DELETE",
+          "DROP",
+          "TRUNCATE",
+          "REMOVE"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "TRUNCATE removes all rows quickly without logging individual deletions. DELETE logs each row. DROP removes the table itself."
+      },
+      {
+        "q": "What is the difference between '==' and '===' in JavaScript?",
+        "opts": [
+          "No difference",
+          "'==' checks value only, '===' checks value and type",
+          "'===' checks value only",
+          "'==' checks type only"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "'==' performs type coercion before comparison. '===' strict equality — checks both value AND type."
+      },
+      {
+        "q": "Which of the following is a stable sorting algorithm?",
+        "opts": [
+          "Quick Sort",
+          "Heap Sort",
+          "Merge Sort",
+          "Selection Sort"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Merge Sort is stable — equal elements maintain their relative order. Quick Sort, Heap Sort, and Selection Sort are not stable."
+      },
+      {
+        "q": "What does DBMS stand for?",
+        "opts": [
+          "Data Backup Management System",
+          "Database Management System",
+          "Data Binary Management System",
+          "Digital Base Management System"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "DBMS = Database Management System — software for creating and managing databases."
+      },
+      {
+        "q": "Which is the correct way to declare a constant in Java?",
+        "opts": [
+          "const int x = 5;",
+          "final int x = 5;",
+          "static int x = 5;",
+          "readonly int x = 5;"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "In Java, 'final' keyword declares a constant. 'const' is used in C/C++, 'readonly' in C#."
+      },
+      {
+        "q": "Time complexity of inserting at the beginning of a doubly linked list?",
+        "opts": [
+          "O(n)",
+          "O(log n)",
+          "O(1)",
+          "O(n²)"
+        ],
+        "answer": 2,
+        "difficulty": "Medium",
+        "explanation": "Inserting at the beginning of any linked list only requires updating head pointer — O(1)."
+      },
+      {
+        "q": "What is a constructor in OOP?",
+        "opts": [
+          "A method that destroys objects",
+          "A method called automatically when an object is created",
+          "A static method",
+          "A method that returns a value"
+        ],
+        "answer": 1,
+        "difficulty": "Easy",
+        "explanation": "A constructor is a special method with the same name as the class, called automatically when an object is instantiated."
+      },
+      {
+        "q": "Which data structure is best for implementing a browser's back button?",
+        "opts": [
+          "Queue",
+          "Stack",
+          "Heap",
+          "Array"
+        ],
+        "answer": 1,
+        "difficulty": "Medium",
+        "explanation": "Back button = undo last visited page. LIFO behavior = Stack. Push when visiting, pop when pressing back."
+      },
+      {
+        "q": "What is the output? for(int i=0; i<3; i++) printf(\"%d \", i); in C",
+        "opts": [
+          "0 1 2",
+          "1 2 3",
+          "0 1 2 3",
+          "Error"
+        ],
+        "answer": 0,
+        "difficulty": "Easy",
+        "explanation": "Loop runs for i=0, 1, 2 (stops when i<3 is false). Output: 0 1 2"
+      }
+    ]
+  },
+  {
+    "section": "Coding Round (Hands-on)",
+    "desc": "Most frequently repeated TCS NQT hands-on programming problems with approach, logic, and Python solution",
+    "questions": [
+      {
+        "q": "Reverse a number / check palindrome.\nRead an integer and print 'Palindrome' or 'Not Palindrome'.",
+        "approach": "Convert to string, compare with its reverse using Python slicing s[::-1]. Works for both integers and strings.",
+        "solution": "n = input().strip()\nprint('Palindrome' if n == n[::-1] else 'Not Palindrome')",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Digital Root — Sum of digits until single digit.\nGiven N, repeatedly sum its digits until you get a single digit.",
+        "approach": "Use a while loop. Keep summing digits (using sum + int() on each character) until the number is < 10.",
+        "solution": "n = int(input())\nwhile n > 9:\n    n = sum(int(d) for d in str(n))\nprint(n)",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Fibonacci series up to N terms.\nPrint first N Fibonacci numbers space-separated.",
+        "approach": "Use two variables a=0, b=1. Print a, then update: a,b = b, a+b. Repeat N times.",
+        "solution": "n = int(input())\na, b = 0, 1\nresult = []\nfor _ in range(n):\n    result.append(a)\n    a, b = b, a + b\nprint(*result)",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Chocolate Factory — Move all zeros to end.\nGiven array, push all 0s to end while maintaining order of non-zero elements.",
+        "approach": "Two-pointer approach: collect all non-zero elements first, then append zeros. Or use list comprehension + count of zeros.",
+        "solution": "n = int(input())\narr = list(map(int, input().split()))\nnon_zero = [x for x in arr if x != 0]\nzeros = [0] * arr.count(0)\nprint(*(non_zero + zeros))",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Bit Toggle — Convert N to binary, toggle all bits, return decimal.\nExample: 10 → 1010 → toggle → 0101 = 5",
+        "approach": "Get binary without '0b' prefix. Toggle each bit: '0'→'1', '1'→'0'. Convert back to decimal.",
+        "solution": "n = int(input())\nb = bin(n)[2:]\ntoggled = ''.join('1' if bit == '0' else '0' for bit in b)\nprint(int(toggled, 2))",
+        "difficulty": "Medium",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Odd Occurring Element — Find element appearing odd number of times.\nAll elements appear even times except one. Find it in O(N).",
+        "approach": "XOR all elements. Any number XOR itself = 0, and 0 XOR x = x. So the odd-occurring element remains.",
+        "solution": "n = int(input())\narr = list(map(int, input().split()))\nresult = 0\nfor x in arr:\n    result ^= x\nprint(result)",
+        "difficulty": "Medium",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Armstrong Number check.\nA number is Armstrong if sum of its digits each raised to power of number of digits equals the number.\nExample: 153 = 1³ + 5³ + 3³",
+        "approach": "Count digits (length of string). Sum each digit^length. Compare with original.",
+        "solution": "n = int(input())\ndigits = str(n)\np = len(digits)\nprint('Armstrong' if sum(int(d)**p for d in digits) == n else 'Not Armstrong')",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Character Frequency — Print frequency of each character in sorted order.\nInput: 'apple' → Output: 'a:1 e:1 l:1 p:2'",
+        "approach": "Use collections.Counter to count, then sort alphabetically and format as 'char:count'.",
+        "solution": "from collections import Counter\ns = input()\nfor ch, cnt in sorted(Counter(s).items()):\n    print(f'{ch}:{cnt}', end=' ')",
+        "difficulty": "Easy",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Second Largest element in an array.\nFind the second largest distinct value. Input: space-separated integers.",
+        "approach": "Convert to set to get unique values, sort in descending order, take index [1].",
+        "solution": "arr = list(map(int, input().split()))\nuniq = sorted(set(arr), reverse=True)\nprint(uniq[1] if len(uniq) > 1 else 'No second largest')",
+        "difficulty": "Easy",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Reverse each word in a sentence (preserve word order).\nInput: 'Hello World TCS' → Output: 'olleH dlroW SCT'",
+        "approach": "Split into words, reverse each word using [::-1], join back with spaces.",
+        "solution": "s = input()\nwords = s.split()\nreversed_words = [w[::-1] for w in words]\nprint(' '.join(reversed_words))",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "GCD and LCM of two numbers.\nPrint GCD on first line, LCM on second.",
+        "approach": "Use Euclidean algorithm: GCD(a,b) = GCD(b, a mod b). LCM = (a×b) / GCD(a,b).",
+        "solution": "import math\na, b = map(int, input().split())\ng = math.gcd(a, b)\nprint(g)\nprint((a * b) // g)",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Leap Year check.\nPrint 'YES' if leap year, 'NO' otherwise.\nRules: divisible by 400 OR (divisible by 4 AND NOT by 100).",
+        "approach": "Two conditions: n%400==0 handles century leap years. n%4==0 and n%100!=0 handles regular ones.",
+        "solution": "n = int(input())\nif n % 400 == 0 or (n % 4 == 0 and n % 100 != 0):\n    print('YES')\nelse:\n    print('NO')",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Matrix Transpose.\nGiven N×N matrix, print its transpose (rows become columns).",
+        "approach": "For each column j, print all row values in that column. Use zip(*matrix) for elegant transpose.",
+        "solution": "n = int(input())\nmatrix = [list(map(int, input().split())) for _ in range(n)]\nfor row in zip(*matrix):\n    print(*row)",
+        "difficulty": "Medium",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Prime Number check.\nPrint 'Prime' or 'Not Prime'.",
+        "approach": "Check divisibility up to √N only. If any divisor found, not prime. Handle edge cases: N<2 not prime.",
+        "solution": "n = int(input())\nif n < 2:\n    print('Not Prime')\nelse:\n    is_prime = all(n % i != 0 for i in range(2, int(n**0.5) + 1))\n    print('Prime' if is_prime else 'Not Prime')",
+        "difficulty": "Easy",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Count Sundays in N days starting from a given weekday.\nInput: day name (e.g. Monday), then N. Count Sundays in those N days.",
+        "approach": "Map day to an index (Sunday=0, ..., Saturday=6). The days then range from start to start+N-1. The number of Sundays is exactly the number of multiples of 7 in this range, given by the closed-form formula: (B // 7) - ((A - 1) // 7) where A is start and B is start+N-1.",
+        "solution": "day = input().strip()\nn = int(input())\nday_offset = {'Sunday':0,'Monday':1,'Tuesday':2,'Wednesday':3,'Thursday':4,'Friday':5,'Saturday':6}\nstart = day_offset.get(day, 0)\nprint((start + n - 1) // 7 - (start - 1) // 7 if n > 0 else 0)",
+        "difficulty": "Medium",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Balanced Brackets check.\nGiven string of brackets, print 'Balanced' or 'Not Balanced'.",
+        "approach": "Use a stack. For each opening bracket, push. For closing bracket, check if stack top matches. Empty stack at end = balanced.",
+        "solution": "s = input()\nstack = []\npairs = {')':'(', '}':'{', ']':'['}\nfor ch in s:\n    if ch in '({[':\n        stack.append(ch)\n    elif ch in ')}]':\n        if not stack or stack[-1] != pairs[ch]:\n            print('Not Balanced')\n            exit()\n        stack.pop()\nprint('Balanced' if not stack else 'Not Balanced')",
+        "difficulty": "Medium",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Two Sum — Find indices of two numbers that add to target.\nInput: array on first line, target on second. Output: two space-separated indices (0-indexed).",
+        "approach": "Use a dictionary to store value→index. For each element, check if (target−element) exists in dict.",
+        "solution": "arr = list(map(int, input().split()))\ntarget = int(input())\nseen = {}\nfor i, val in enumerate(arr):\n    complement = target - val\n    if complement in seen:\n        print(seen[complement], i)\n        break\n    seen[val] = i",
+        "difficulty": "Hard",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Longest Unique Substring — Find length of longest substring with no repeating characters.\nInput: 'abcabcbb' → Output: 3",
+        "approach": "Sliding window with a set. Expand right pointer, if duplicate found shrink from left until duplicate removed.",
+        "solution": "s = input()\nleft = 0\nmax_len = 0\nchar_set = set()\nfor right in range(len(s)):\n    while s[right] in char_set:\n        char_set.remove(s[left])\n        left += 1\n    char_set.add(s[right])\n    max_len = max(max_len, right - left + 1)\nprint(max_len)",
+        "difficulty": "Hard",
+        "nqtTag": "Frequently Asked"
+      },
+      {
+        "q": "Number Pattern — print pattern where row i has number i repeated i times.\nInput: N=4\nOutput:\n1\n2 2\n3 3 3\n4 4 4 4",
+        "approach": "Nested loop: outer loop i from 1 to N, inner prints i repeated i times.",
+        "solution": "n = int(input())\nfor i in range(1, n+1):\n    print(*([i]*i))",
+        "difficulty": "Easy",
+        "nqtTag": "Repeated in NQT"
+      },
+      {
+        "q": "Anagram check — Check if two strings are anagrams.\nInput: two strings on one line. Print 'Anagram' or 'Not Anagram'.",
+        "approach": "Sort both strings and compare. Or use Counter to compare character frequencies.",
+        "solution": "a, b = input().split()\nprint('Anagram' if sorted(a.lower()) == sorted(b.lower()) else 'Not Anagram')",
+        "difficulty": "Easy",
+        "nqtTag": "Frequently Asked"
+      }
+    ]
+  }
+]

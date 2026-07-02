@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./page.module.css";
+import HeroPreview from "@/components/HeroPreview";
+import { Play, Download } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
@@ -21,10 +23,10 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { value: "50+", label: "Coding Problems", sub: "With in-browser compilation" },
   { value: "120+", label: "Practice Questions", sub: "Covering all TCS NQT topics" },
+  { value: "50+", label: "Coding Problems", sub: "With in-browser compilation" },
   { value: "80", label: "Mock Test Questions", sub: "Full timed simulation" },
-  { value: "1", label: "Formula Sheet", sub: "Downloadable PDF guide" },
+  { value: "1", label: "Formula Cheat Sheet", sub: "Downloadable PDF guide" },
 ];
 
 const STRUCTURED_DATA = {
@@ -51,42 +53,17 @@ export default function HomePage() {
               Master Numerical Aptitude, Logical Reasoning, Verbal Ability, Coding, Mock Tests, Interview Preparation, Formula Sheets, and Study Roadmaps — all in one place.
             </p>
             <div className={styles.heroCtas}>
-              <Link href="/coding" className="btn btn-primary">Start Practicing</Link>
-              <a href="/assets/TCS-NQT-Formula-Cheat-Sheet.pdf" download className="btn btn-ghost">Download Formula Sheet</a>
+              <Link href="/coding" className="btn btn-primary">
+                <Play size={16} /> Start Practicing
+              </Link>
+              <a href="/assets/TCS-NQT-Formula-Cheat-Sheet.pdf" download className="btn btn-ghost">
+                <Download size={16} /> Download Formula Sheet
+              </a>
             </div>
           </div>
           
           <div className={`${styles.heroRight} fade-up fade-up-2`}>
-            <div className={styles.browserWindow}>
-              <div className={styles.browserHeader}>
-                <div className={styles.windowControls}>
-                   <span/><span/><span/>
-                </div>
-                <div className={styles.browserTabs}>
-                  <div className={`${styles.browserTab} ${styles.activeTab}`}>Code IDE</div>
-                  <div className={styles.browserTab}>Mock Test</div>
-                  <div className={styles.browserTab}>Calculator</div>
-                </div>
-              </div>
-              <div className={styles.browserBody}>
-                {/* IDE Mockup */}
-                <div className={styles.ideMockup}>
-                  <div className={styles.ideSidebar}>
-                    <div className={styles.ideFile}>main.py</div>
-                    <div className={styles.ideFile}>solution.js</div>
-                  </div>
-                  <div className={styles.ideEditor}>
-                    <pre><code>
-<span className={styles.keyword}>def</span> <span className={styles.function}>solve_nqt</span>(arr):
-    <span className={styles.comment}># Find the maximum element</span>
-    <span className={styles.keyword}>return</span> <span className={styles.builtin}>max</span>(arr)
-
-<span className={styles.builtin}>print</span>(solve_nqt([<span className={styles.number}>10</span>, <span className={styles.number}>24</span>, <span className={styles.number}>8</span>]))
-                    </code></pre>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <HeroPreview />
           </div>
         </div>
       </section>
@@ -120,7 +97,9 @@ export default function HomePage() {
                 <div className={styles.bentoArt}>
                    <div className={styles.bentoRoadmapArt}>
                       <div className={styles.bLine}></div>
-                      <div className={`${styles.bNode} ${styles.bNodeActive}`}></div>
+                      <div className={`${styles.bNode} ${styles.bNodeActive}`}>
+                         <div className={styles.bNodeTooltip}>Day 12: Percentages</div>
+                      </div>
                       <div className={styles.bNode}></div>
                       <div className={styles.bNode}></div>
                    </div>
@@ -130,21 +109,38 @@ export default function HomePage() {
              <div className={styles.bentoCard}>
                 <div className={styles.bentoContent}>
                    <h3>Built-in IDE</h3>
-                   <p>Write, compile, and run code directly in the browser with real test cases.</p>
+                   <p>Write, compile, and run code directly in the browser.</p>
+                </div>
+                <div className={styles.bentoArtMini}>
+                   <pre className={styles.miniIde}><code><span className={styles.keyword}>int</span> <span className={styles.function}>main</span>() {'{\n'}  <span className={styles.builtin}>printf</span>(<span className={styles.string}>"Hello"</span>);{'\n}'}</code></pre>
                 </div>
              </div>
 
              <div className={styles.bentoCard}>
                 <div className={styles.bentoContent}>
                    <h3>Full Mock Tests</h3>
-                   <p>Simulate the exact 190-minute timed environment of the real NQT exam.</p>
+                   <p>Simulate the exact 190-minute timed environment.</p>
+                </div>
+                <div className={styles.bentoArtMini}>
+                   <div className={styles.miniMock}>
+                      <div className={styles.miniRadio}></div>
+                      <div className={`${styles.miniRadio} ${styles.miniRadioActive}`}></div>
+                      <div className={styles.miniRadio}></div>
+                   </div>
                 </div>
              </div>
 
              <div className={styles.bentoCard}>
                 <div className={styles.bentoContent}>
                    <h3>Formula Sheets</h3>
-                   <p>Downloadable PDFs for quick revision before the exam day.</p>
+                   <p>Downloadable PDFs for quick revision.</p>
+                </div>
+                <div className={styles.bentoArtMini}>
+                   <div className={styles.miniPdf}>
+                      <div className={styles.miniPdfLine}></div>
+                      <div className={styles.miniPdfLine}></div>
+                      <div className={`${styles.miniPdfLine} ${styles.miniPdfLineShort}`}></div>
+                   </div>
                 </div>
              </div>
              
@@ -152,6 +148,12 @@ export default function HomePage() {
                 <div className={styles.bentoContent}>
                    <h3>Interview Preparation</h3>
                    <p>Past interview experiences, HR questions, and technical deep-dives to clear the final round.</p>
+                </div>
+                <div className={styles.bentoArtMiniWide}>
+                   <div className={styles.miniChat}>
+                      <div className={styles.miniMsg}>Explain Polymorphism.</div>
+                      <div className={`${styles.miniMsg} ${styles.miniMsgReply}`}>It allows objects to...</div>
+                   </div>
                 </div>
              </div>
           </div>

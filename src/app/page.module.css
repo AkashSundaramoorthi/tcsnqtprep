@@ -47,7 +47,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #E5E7EB;
+  background: #3b3e4a;
 }
 
 .browserTabs {
@@ -90,14 +90,25 @@
   display: flex;
   align-items: center;
   border-right: 1px solid var(--border);
-  cursor: default;
+  background: transparent;
+  border-top: 2px solid transparent;
+  border-bottom: none;
+  border-left: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
 .browserTab:first-child {
   border-left: 1px solid var(--border);
 }
 
-.activeTab {
+.browserTab:hover {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-2);
+}
+
+.activeTab, .activeTab:hover {
   background: var(--surface);
   color: var(--text);
   border-top: 2px solid var(--accent);
@@ -105,7 +116,7 @@
 
 .browserBody {
   display: flex;
-  background: #0D1117; /* Dark theme for IDE */
+  background: #0B0B0F;
   color: #c9d1d9;
   min-height: 280px;
 }
@@ -118,42 +129,94 @@
 
 .ideSidebar {
   width: 120px;
-  border-right: 1px solid #30363d;
+  border-right: 1px solid var(--border);
   padding: 12px 0;
-  background: #161b22;
+  background: var(--surface-2);
 }
 
 .ideFile {
   padding: 6px 16px;
   font-size: 0.75rem;
-  color: #8b949e;
+  color: var(--text-3);
   cursor: default;
 }
 
-.ideFile:first-child {
-  color: #c9d1d9;
+.ideFileActive {
+  color: var(--text);
   background: rgba(255,255,255,0.05);
-  border-left: 2px solid #58a6ff;
+  border-left: 2px solid var(--accent);
 }
 
 .ideEditor {
   padding: 16px;
   flex: 1;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   line-height: 1.6;
   overflow-x: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.ideEditor pre {
-  margin: 0;
-}
-
+.ideEditor pre { margin: 0; flex: 1; }
 .keyword { color: #ff7b72; }
 .function { color: #d2a8ff; }
 .comment { color: #8b949e; font-style: italic; }
 .builtin { color: #79c0ff; }
 .number { color: #a5d6ff; }
+
+.ideOutput {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-top: 16px;
+  overflow: hidden;
+}
+.ideOutputHeader {
+  background: var(--surface);
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.outputIcon { color: var(--green); }
+.ideOutputBody {
+  padding: 8px;
+  font-size: 0.8rem;
+  color: #a5d6ff;
+}
+
+/* Mock Mockup */
+.mockMockup { padding: 24px; width: 100%; }
+.mockHeader { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.8rem; color: var(--text-2); border-bottom: 1px solid var(--border); padding-bottom: 12px;}
+.mockTimer { color: var(--orange); font-weight: 500; font-family: var(--font-mono); }
+.mockQuestion { font-size: 0.95rem; line-height: 1.5; color: var(--text); margin-bottom: 20px; }
+.mockOptions { display: flex; flex-direction: column; gap: 8px; }
+.mockOption { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; display: flex; align-items: center; gap: 10px; color: var(--text-2); }
+.mockOptionSelected { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+.radio { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--border); }
+.radioSelected { border: 4px solid var(--accent); }
+
+/* PDF Mockup */
+.pdfMockup { width: 100%; display: flex; flex-direction: column; background: var(--bg); }
+.pdfToolbar { padding: 8px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-2); }
+.pdfPage { margin: 16px auto; width: 80%; max-width: 300px; background: #ffffff; border-radius: 4px; padding: 20px; box-shadow: var(--shadow); color: #000; }
+.pdfPage h2 { font-size: 1rem; color: #000; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 12px; }
+.pdfContent p { font-size: 0.7rem; margin-bottom: 4px; color: #333; }
+.pdfContent code { display: block; font-family: var(--font-mono); font-size: 0.8rem; background: #f0f0f0; padding: 4px; border-radius: 4px; margin-bottom: 12px; font-weight: bold; }
+
+/* Calc Mockup */
+.calcMockup { width: 100%; display: flex; align-items: center; justify-content: center; }
+.calcInner { width: 220px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); }
+.calcDisplay { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: right; font-family: var(--font-mono); font-size: 1.2rem; color: var(--text); margin-bottom: 16px; }
+.calcGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calcBtn { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; padding: 8px 0; font-size: 0.9rem; color: var(--text); font-weight: 500; cursor: default; }
+.calcBtnOp { color: var(--accent); background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); }
+
 
 /* ── Stats ───────────────────────────────────────── */
 .stats {
@@ -275,44 +338,47 @@
   color: var(--text-2);
   font-size: 1rem;
   line-height: 1.6;
+  margin-bottom: 24px;
 }
 
-.bentoArt {
-  margin-top: auto;
-  padding-top: 40px;
-}
+.bentoArt { margin-top: auto; padding-top: 20px; display: flex; align-items: center; justify-content: center; }
+.bentoArtMini { margin-top: auto; padding-top: 10px; }
+.bentoArtMiniWide { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: flex-start; }
 
+/* Roadmap Art */
 .bentoRoadmapArt {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  max-width: 240px;
+  width: 100%;
+  max-width: 280px;
 }
+.bLine { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--border); z-index: 1; }
+.bNode { width: 16px; height: 16px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--border); z-index: 2; position: relative; }
+.bNodeActive { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-dim); }
+.bNodeTooltip { position: absolute; top: -36px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--surface); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-weight: 500; }
+.bNodeTooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 4px 4px 0; border-style: solid; border-color: var(--text) transparent transparent; }
 
-.bLine {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--surface-2);
-  z-index: 1;
-}
+/* Mini IDE Art */
+.miniIde { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; font-family: var(--font-mono); font-size: 0.75rem; color: #c9d1d9; }
+.string { color: #a5d6ff; }
 
-.bNode {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--border);
-  z-index: 2;
-  position: relative;
-}
+/* Mini Mock Art */
+.miniMock { display: flex; flex-direction: column; gap: 8px; }
+.miniRadio { height: 12px; width: 100%; max-width: 120px; background: var(--surface-2); border-radius: 99px; }
+.miniRadioActive { background: var(--accent-dim); border: 1px solid var(--accent); }
 
-.bNodeActive {
-  background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-dim);
-}
+/* Mini PDF Art */
+.miniPdf { background: #ffffff; padding: 12px; border-radius: 4px; width: 80px; height: 100px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: rotate(-5deg); transition: transform 0.2s; }
+.bentoCard:hover .miniPdf { transform: rotate(0deg) scale(1.05); }
+.miniPdfLine { height: 4px; background: #e5e5e5; border-radius: 2px; }
+.miniPdfLineShort { width: 60%; }
+
+/* Mini Chat Art */
+.miniChat { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 200px; }
+.miniMsg { background: var(--surface-2); padding: 8px 12px; border-radius: 12px; border-bottom-left-radius: 2px; font-size: 0.75rem; color: var(--text-2); align-self: flex-start; }
+.miniMsgReply { background: var(--accent); color: #fff; border-bottom-left-radius: 12px; border-bottom-right-radius: 2px; align-self: flex-end; }
 
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 1024px) {

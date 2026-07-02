@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "./pyq.module.css";
 import rawData from "@/data/pyq_data.json";
+import { Search, Bookmark, ChevronDown, ChevronUp, CheckCircle2, Circle } from "lucide-react";
 
 interface MCQQuestion {
   q: string;
@@ -28,18 +29,6 @@ interface Section {
   questions: Question[];
 }
 
-const ICONS: Record<string, string> = {
-  "Numerical Ability": "🔢",
-  "Verbal Ability": "📝",
-  "Reasoning Ability": "🧩",
-  "Programming Logic MCQs": "💻",
-  "Coding Round (Hands-on)": "🚀",
-};
-
-function getIcon(section: string): string {
-  return ICONS[section] ?? "📌";
-}
-
 function isMCQ(q: Question): q is MCQQuestion {
   return "opts" in q;
 }
@@ -48,77 +37,49 @@ const LS_KEY = "tcs-nqt-pyq-revealed";
 const LS_BOOKMARKS_KEY = "tcs-nqt-pyq-bookmarks";
 
 function loadRevealedFromStorage(): Record<string, boolean> {
-  try {
-    return JSON.parse(localStorage.getItem(LS_KEY) || "{}");
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch { return {}; }
 }
-
 function saveRevealedToStorage(revealed: Record<string, boolean>) {
-  try {
-    localStorage.setItem(LS_KEY, JSON.stringify(revealed));
-  } catch {
-  }
+  try { localStorage.setItem(LS_KEY, JSON.stringify(revealed)); } catch {}
 }
-
 function loadBookmarksFromStorage(): Record<string, boolean> {
-  try {
-    return JSON.parse(localStorage.getItem(LS_BOOKMARKS_KEY) || "{}");
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(LS_BOOKMARKS_KEY) || "{}"); } catch { return {}; }
 }
-
 function saveBookmarksToStorage(bookmarks: Record<string, boolean>) {
-  try {
-    localStorage.setItem(LS_BOOKMARKS_KEY, JSON.stringify(bookmarks));
-  } catch {
-  }
+  try { localStorage.setItem(LS_BOOKMARKS_KEY, JSON.stringify(bookmarks)); } catch {}
 }
 
 const SECTIONS = rawData as Section[];
 
 function MCQCard({
-  item,
-  idx,
-  sectionIdx,
-  revealed,
-  onToggle,
-  bookmarks,
-  onBookmark,
+  item, idx, sectionIdx, revealed, onToggle, bookmarks, onBookmark,
 }: {
-  item: MCQQuestion;
-  idx: number;
-  sectionIdx: number;
-  revealed: Record<string, boolean>;
-  onToggle: (key: string) => void;
-  bookmarks: Record<string, boolean>;
-  onBookmark: (key: string) => void;
+  item: MCQQuestion; idx: number; sectionIdx: number;
+  revealed: Record<string, boolean>; onToggle: (key: string) => void;
+  bookmarks: Record<string, boolean>; onBookmark: (key: string) => void;
 }) {
   const key = `${sectionIdx}-${idx}`;
   const isRevealed = !!revealed[key];
   const isBookmarked = !!bookmarks[key];
   const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
 
+  const diffColor = item.difficulty === "Easy" ? "var(--green)" : item.difficulty === "Medium" ? "var(--yellow)" : "var(--red)";
+
   return (
     <div className={styles.qItem}>
       <div className={styles.qHeader}>
-        <span className={styles.qNum}>Q{idx + 1}</span>
-        <p className={styles.qText}>{item.q}</p>
-        <span className={`badge badge-${item.difficulty.toLowerCase()} ${styles.diffBadge}`}>
-          {item.difficulty}
-        </span>
-        <button 
-          onClick={() => onBookmark(key)} 
-          style={{ background: 'none', border: 'none', cursor: 'pointer', opacity: isBookmarked ? 1 : 0.4, fontSize: '1.2rem', padding: '0 8px', margin: 0, outline: 'none' }}
-          title={isBookmarked ? "Remove Bookmark" : "Bookmark"}
-        >
-          🔖
-        </button>
+        <div className={styles.qHeaderLeft}>
+          <span className={styles.qNum}>{idx + 1}.</span>
+          <p className={styles.qText}>{item.q}</p>
+        </div>
+        <div className={styles.qHeaderRight}>
+          <span className={styles.diffBadge} style={{ color: diffColor }}>{item.difficulty}</span>
+          <button className={styles.bookmarkBtn} onClick={() => onBookmark(key)}>
+            <Bookmark size={18} fill={isBookmarked ? "var(--text)" : "none"} color={isBookmarked ? "var(--text)" : "var(--text-3)"} />
+          </button>
+        </div>
       </div>
 
-      
       <div className={styles.optGrid}>
         {item.opts.map((opt, oi) => {
           const isCorrect = oi === item.answer;
@@ -130,53 +91,30 @@ function MCQCard({
             optClass += ` ${styles.optSelected}`;
           }
           return (
-            <button
-              key={oi}
-              className={optClass}
-              onClick={() => setSelectedOpt(oi)}
-              disabled={isRevealed}
-            >
-              <span className={styles.optLabel}>{String.fromCharCode(65 + oi)}.</span>
-              {opt}
+            <button key={oi} className={optClass} onClick={() => setSelectedOpt(oi)} disabled={isRevealed}>
+              <span className={styles.optLabel}>{String.fromCharCode(65 + oi)}</span>
+              <span className={styles.optText}>{opt}</span>
             </button>
           );
         })}
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+      <div className={styles.actionRow}>
         {!isRevealed && selectedOpt !== null && (
-          <button
-            className={`btn btn-primary ${styles.ansBtn}`}
-            style={{ marginTop: 0 }}
-            onClick={() => onToggle(key)}
-          >
-            Check Answer
-          </button>
+          <button className={`btn btn-primary`} onClick={() => onToggle(key)}>Check Answer</button>
         )}
         {!isRevealed && (
-          <button
-            className={`btn btn-ghost ${styles.ansBtn}`}
-            style={{ marginTop: 0 }}
-            onClick={() => onToggle(key)}
-          >
-            Show Answer
-          </button>
+          <button className={`btn btn-ghost`} onClick={() => onToggle(key)}>Show Answer</button>
         )}
       </div>
 
       {isRevealed && (
         <div className={styles.answer}>
-          <span className={styles.ansLabel}>
-            ✓ Correct: {item.opts[item.answer]}
-          </span>
+          <div className={styles.ansHeader}>
+            <CheckCircle2 size={16} className={styles.correctIcon} />
+            <span className={styles.ansLabel}>Correct Answer: {item.opts[item.answer]}</span>
+          </div>
           <pre className={styles.ansPre}>{item.explanation}</pre>
-          <button
-            className={`btn btn-ghost ${styles.ansBtn}`}
-            onClick={() => onToggle(key)}
-            style={{ marginTop: 8 }}
-          >
-            Hide Answer
-          </button>
         </div>
       )}
     </div>
@@ -184,78 +122,57 @@ function MCQCard({
 }
 
 function CodingCard({
-  item,
-  idx,
-  sectionIdx,
-  revealed,
-  onToggle,
-  bookmarks,
-  onBookmark,
+  item, idx, sectionIdx, revealed, onToggle, bookmarks, onBookmark,
 }: {
-  item: CodingQuestion;
-  idx: number;
-  sectionIdx: number;
-  revealed: Record<string, boolean>;
-  onToggle: (key: string) => void;
-  bookmarks: Record<string, boolean>;
-  onBookmark: (key: string) => void;
+  item: CodingQuestion; idx: number; sectionIdx: number;
+  revealed: Record<string, boolean>; onToggle: (key: string) => void;
+  bookmarks: Record<string, boolean>; onBookmark: (key: string) => void;
 }) {
   const key = `${sectionIdx}-${idx}`;
   const isRevealed = !!revealed[key];
   const isBookmarked = !!bookmarks[key];
+  const diffColor = item.difficulty === "Easy" ? "var(--green)" : item.difficulty === "Medium" ? "var(--yellow)" : "var(--red)";
 
   return (
     <div className={styles.qItem}>
       <div className={styles.qHeader}>
-        <span className={styles.qNum}>Q{idx + 1}</span>
-        <div style={{ flex: 1 }}>
+        <div className={styles.qHeaderLeft}>
+          <span className={styles.qNum}>{idx + 1}.</span>
           <pre className={`${styles.qText} ${styles.qPre}`}>{item.q}</pre>
         </div>
-        <div className={styles.badgeGroup}>
-          <span className={`badge badge-${item.difficulty.toLowerCase()} ${styles.diffBadge}`}>
-            {item.difficulty}
-          </span>
-          {item.nqtTag && (
-            <span className={styles.nqtTag}>{item.nqtTag}</span>
-          )}
-          <button 
-            onClick={() => onBookmark(key)} 
-            style={{ background: 'none', border: 'none', cursor: 'pointer', opacity: isBookmarked ? 1 : 0.4, fontSize: '1.2rem', padding: '0 8px', margin: 0, outline: 'none' }}
-            title={isBookmarked ? "Remove Bookmark" : "Bookmark"}
-          >
-            🔖
+        <div className={styles.qHeaderRight}>
+          <span className={styles.diffBadge} style={{ color: diffColor }}>{item.difficulty}</span>
+          <button className={styles.bookmarkBtn} onClick={() => onBookmark(key)}>
+            <Bookmark size={18} fill={isBookmarked ? "var(--text)" : "none"} color={isBookmarked ? "var(--text)" : "var(--text-3)"} />
           </button>
         </div>
       </div>
 
-      <button
-        className={`btn btn-ghost ${styles.ansBtn}`}
-        onClick={() => onToggle(key)}
-      >
-        {isRevealed ? "Hide Solution" : "Show Solution"}
-      </button>
+      <div className={styles.actionRow}>
+        <button className={`btn btn-ghost`} onClick={() => onToggle(key)}>
+          {isRevealed ? "Hide Solution" : "Show Solution"}
+        </button>
+      </div>
 
       {isRevealed && (
         <div className={styles.answer}>
           <span className={styles.ansLabel}>Approach</span>
           <p className={styles.approachText}>{item.approach}</p>
-          <span className={styles.ansLabel} style={{ marginTop: 12 }}>
-            Python Solution
-          </span>
-          <pre className={styles.solutionPre}>
-            <code>{item.solution}</code>
-          </pre>
+          <span className={styles.ansLabel} style={{ marginTop: 16, display: 'block' }}>Python Solution</span>
+          <pre className={styles.solutionPre}><code>{item.solution}</code></pre>
         </div>
       )}
     </div>
   );
 }
 
-type Filter = "all" | string;
+type Filter = "All" | string;
+type DiffFilter = "All" | "Easy" | "Medium" | "Hard";
 
 export default function PYQClient() {
-  const [filter, setFilter] = useState<Filter>("all");
-  const [diffFilter, setDiffFilter] = useState<'All' | 'Easy' | 'Medium' | 'Hard'>('All');
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<Filter>("All");
+  const [diffFilter, setDiffFilter] = useState<DiffFilter>("All");
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
@@ -287,117 +204,92 @@ export default function PYQClient() {
       .filter(({ q, qIdx }) => {
         if (showBookmarkedOnly && !bookmarks[`${realIdx}-${qIdx}`]) return false;
         if (diffFilter !== 'All' && q.difficulty !== diffFilter) return false;
+        if (search) {
+          const qText = q.q.toLowerCase();
+          if (!qText.includes(search.toLowerCase())) return false;
+        }
         return true;
       });
-    return {
-      ...s,
-      filteredQs,
-      realIdx,
-    };
+    return { ...s, filteredQs, realIdx };
   }).filter((s) => {
-    if (filter !== "all" && s.section !== filter) return false;
+    if (filter !== "All" && s.section !== filter) return false;
     return s.filteredQs.length > 0;
   });
 
-  const totalQ = SECTIONS.reduce((acc, s) => acc + s.questions.length, 0);
-
   return (
-    <div className={`container section`}>
-      <div className={styles.pageHeader}>
-        <div>
-          <h1 className={styles.pageTitle}>Previous Year Questions</h1>
-          <p className={styles.pageSub}>
-            {totalQ}+ curated TCS NQT PYQs with worked solutions. Click any answer to reveal it.
-          </p>
-        </div>
-        <div className={styles.warningBadge}>
-          ⚠️ For pattern practice — not official papers
-        </div>
-      </div>
-
-      
-      <div className="filter-group" style={{ marginBottom: 12 }}>
-        <button
-          className={`filter-pill ${showBookmarkedOnly ? styles.active : ""}`}
-          onClick={() => { setShowBookmarkedOnly(!showBookmarkedOnly); setDiffFilter('All'); }}
-        >
-          🔖 Bookmarked
-        </button>
-        <button
-          className={`filter-pill ${filter === "all" ? styles.active : ""}`}
-          onClick={() => { setFilter("all"); setDiffFilter('All'); }}
-        >
-          All Sections
-        </button>
-        {SECTIONS.map((s) => (
-          <button
-            key={s.section}
-            className={`filter-pill ${filter === s.section ? styles.active : ""}`}
-            onClick={() => { setFilter(s.section); setDiffFilter('All'); }}
-          >
-            {getIcon(s.section)} {s.section}
-          </button>
-        ))}
-      </div>
-
-      
-      <div className="filter-group" style={{ marginBottom: 36 }}>
-        {['All', 'Easy', 'Medium', 'Hard'].map((diff) => (
-          <button
-            key={diff}
-            className={`filter-pill ${diffFilter === diff ? styles.active : ""}`}
-            onClick={() => setDiffFilter(diff as any)}
-          >
-            {diff === 'All' ? 'All Difficulties' : diff}
-          </button>
-        ))}
-      </div>
-
-      
-      <div className={styles.sections}>
-        {visibleSections.map((section) => {
-          const realIdx = section.realIdx;
-          return (
-            <div key={section.section} className={styles.section}>
-              <div className={styles.sectionHeader}>
-                <div className={styles.sectionIcon}>{getIcon(section.section)}</div>
-                <div>
-                  <h2 className={styles.sectionTitle}>{section.section}</h2>
-                  <p className={styles.sectionDesc}>{section.desc}</p>
-                </div>
-                <span className={styles.sectionCount}>{section.filteredQs.length} Qs</span>
-              </div>
-
-              <div className={styles.qList}>
-                {section.filteredQs.map(({ q: item, qIdx: idx }) =>
-                  isMCQ(item) ? (
-                    <MCQCard
-                      key={idx}
-                      item={item}
-                      idx={idx}
-                      sectionIdx={realIdx}
-                      revealed={revealed}
-                      onToggle={toggleReveal}
-                      bookmarks={bookmarks}
-                      onBookmark={toggleBookmark}
-                    />
-                  ) : (
-                    <CodingCard
-                      key={idx}
-                      item={item as CodingQuestion}
-                      idx={idx}
-                      sectionIdx={realIdx}
-                      revealed={revealed}
-                      onToggle={toggleReveal}
-                      bookmarks={bookmarks}
-                      onBookmark={toggleBookmark}
-                    />
-                  )
-                )}
-              </div>
+    <div className={`container section ${styles.pyqLayout}`}>
+      <div className={styles.sidebar}>
+         <div className={styles.filterCard}>
+            <div className={styles.searchBox}>
+               <Search size={16} className={styles.searchIcon} />
+               <input 
+                 type="text" 
+                 placeholder="Search questions..." 
+                 value={search}
+                 onChange={(e) => setSearch(e.target.value)}
+                 className={styles.searchInput}
+               />
             </div>
-          );
-        })}
+            
+            <div className={styles.filterGroup}>
+               <h4>Difficulty</h4>
+               <div className={styles.filterOptions}>
+                  {['All', 'Easy', 'Medium', 'Hard'].map(d => (
+                     <button key={d} className={`${styles.filterBtn} ${diffFilter === d ? styles.filterBtnActive : ''}`} onClick={() => setDiffFilter(d as any)}>
+                        {d}
+                     </button>
+                  ))}
+               </div>
+            </div>
+
+            <div className={styles.filterGroup}>
+               <h4>Category</h4>
+               <div className={styles.filterOptions}>
+                  <button className={`${styles.filterBtn} ${filter === 'All' ? styles.filterBtnActive : ''}`} onClick={() => setFilter('All')}>
+                     All Categories
+                  </button>
+                  {SECTIONS.map(s => (
+                     <button key={s.section} className={`${styles.filterBtn} ${filter === s.section ? styles.filterBtnActive : ''}`} onClick={() => setFilter(s.section)}>
+                        {s.section}
+                     </button>
+                  ))}
+               </div>
+            </div>
+
+            <div className={styles.filterGroup}>
+               <button 
+                  className={`${styles.filterBtn} ${styles.bookmarkFilterBtn} ${showBookmarkedOnly ? styles.filterBtnActive : ''}`} 
+                  onClick={() => setShowBookmarkedOnly(!showBookmarkedOnly)}
+               >
+                  <Bookmark size={14} fill={showBookmarkedOnly ? "currentColor" : "none"} /> 
+                  Bookmarked Only
+               </button>
+            </div>
+         </div>
+      </div>
+
+      <div className={styles.mainContent}>
+        {visibleSections.length === 0 ? (
+           <div className={styles.emptyState}>
+              <p>No questions match your filters.</p>
+           </div>
+        ) : (
+           visibleSections.map((section) => (
+             <div key={section.section} className={styles.sectionBlock}>
+               <h2 className={styles.sectionTitle}>{section.section}</h2>
+               
+               <div className={styles.qList}>
+                 {section.filteredQs.map(({ q: item, qIdx: idx }) =>
+                   isMCQ(item) ? (
+                     <MCQCard key={idx} item={item} idx={idx} sectionIdx={section.realIdx} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                   ) : (
+                     <CodingCard key={idx} item={item as CodingQuestion} idx={idx} sectionIdx={section.realIdx} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                   )
+                 )}
+               </div>
+             </div>
+           ))
+        )}
       </div>
     </div>
   );

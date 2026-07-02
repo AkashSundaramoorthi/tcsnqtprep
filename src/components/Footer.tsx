@@ -12,8 +12,7 @@ export default function Footer() {
             <span className={styles.logoWord}>Prep Hub</span>
           </div>
           <p className={styles.tagline}>
-            Free TCS NQT preparation platform — coding IDE, aptitude guides, mock exam, and PYQs.
-            Not affiliated with TCS.
+            Independent TCS NQT preparation platform with practice questions, coding IDE, mock tests and formula sheets.
           </p>
         </div>
 
@@ -40,7 +39,7 @@ export default function Footer() {
       </div>
 
       <div className={styles.bottom}>
-        <p>© {new Date().getFullYear()} NQT Prep Hub · Built by Akash Sundaramoorthi · This is an independent platform, not affiliated with TCS.</p>
+        <p>© {new Date().getFullYear()} Akash Sundaramoorthi · Not affiliated with TCS.</p>
       </div>
     </footer>
   );

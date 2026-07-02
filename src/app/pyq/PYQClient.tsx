@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "./pyq.module.css";
 import rawData from "@/data/pyq_data.json";
-import { Search, Bookmark, ChevronDown, ChevronUp, CheckCircle2, Circle } from "lucide-react";
+import { Search, Bookmark, ChevronDown, ChevronUp, CheckCircle2, Circle, FileText, Download } from "lucide-react";
 
 interface MCQQuestion {
   q: string;
@@ -52,9 +52,9 @@ function saveBookmarksToStorage(bookmarks: Record<string, boolean>) {
 const SECTIONS = rawData as Section[];
 
 function MCQCard({
-  item, idx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
+  item, idx, displayIdx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
 }: {
-  item: MCQQuestion; idx: number; sectionIdx: number; sectionName: string;
+  item: MCQQuestion; idx: number; displayIdx?: number; sectionIdx: number; sectionName: string;
   revealed: Record<string, boolean>; onToggle: (key: string) => void;
   bookmarks: Record<string, boolean>; onBookmark: (key: string) => void;
 }) {
@@ -69,7 +69,7 @@ function MCQCard({
     <div className={styles.qItem}>
       <div className={styles.qHeader}>
         <div className={styles.qHeaderLeft}>
-          <span className={styles.qNum}>{idx + 1}.</span>
+          <span className={styles.qNum}>{(displayIdx ?? idx) + 1}.</span>
           <p className={styles.qText}>{item.q}</p>
         </div>
         <div className={styles.qHeaderRight}>
@@ -122,9 +122,9 @@ function MCQCard({
 }
 
 function CodingCard({
-  item, idx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
+  item, idx, displayIdx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
 }: {
-  item: CodingQuestion; idx: number; sectionIdx: number; sectionName: string;
+  item: CodingQuestion; idx: number; displayIdx?: number; sectionIdx: number; sectionName: string;
   revealed: Record<string, boolean>; onToggle: (key: string) => void;
   bookmarks: Record<string, boolean>; onBookmark: (key: string) => void;
 }) {
@@ -137,7 +137,7 @@ function CodingCard({
     <div className={styles.qItem}>
       <div className={styles.qHeader}>
         <div className={styles.qHeaderLeft}>
-          <span className={styles.qNum}>{idx + 1}.</span>
+          <span className={styles.qNum}>{(displayIdx ?? idx) + 1}.</span>
           <pre className={`${styles.qText} ${styles.qPre}`}>{item.q}</pre>
         </div>
         <div className={styles.qHeaderRight}>
@@ -176,6 +176,11 @@ export default function PYQClient() {
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
+  const [limits, setLimits] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    setLimits({});
+  }, [search, filter, diffFilter, showBookmarkedOnly]);
 
   useEffect(() => {
     setRevealed(loadRevealedFromStorage());
@@ -273,23 +278,112 @@ export default function PYQClient() {
            <div className={styles.emptyState}>
               <p>No questions match your filters.</p>
            </div>
+        ) : filter === "All" ? (
+           <div className={styles.sectionBlock}>
+             <h2 className={styles.sectionTitle}>All Categories</h2>
+             
+             <div className={styles.qList}>
+               {(() => {
+                 const allFilteredQs = visibleSections.flatMap(s => s.filteredQs.map(q => ({...q, sectionName: s.section, realIdx: s.realIdx})));
+                 const limit = limits['All'] || 5;
+                 const displayedQs = allFilteredQs.slice(0, limit);
+                 const hasMore = allFilteredQs.length > limit;
+
+                 return (
+                   <>
+                     {displayedQs.map(({ q: item, qIdx: idx, realIdx, sectionName }, combinedIdx) =>
+                       isMCQ(item) ? (
+                         <MCQCard key={`${realIdx}-${idx}`} item={item} idx={idx} displayIdx={combinedIdx} sectionIdx={realIdx} sectionName={sectionName} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                       ) : (
+                         <CodingCard key={`${realIdx}-${idx}`} item={item as CodingQuestion} idx={idx} displayIdx={combinedIdx} sectionIdx={realIdx} sectionName={sectionName} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                       )
+                     )}
+                     {hasMore && (
+                       <button 
+                         className="btn btn-ghost" 
+                         onClick={() => setLimits(prev => ({...prev, ['All']: limit + 5}))}
+                         style={{ alignSelf: 'center', marginTop: '16px' }}
+                       >
+                         Load More Questions
+                       </button>
+                     )}
+                   </>
+                 );
+               })()}
+             </div>
+           </div>
         ) : (
-           visibleSections.map((section) => (
-             <div key={section.section} className={styles.sectionBlock}>
-               <h2 className={styles.sectionTitle}>{section.section}</h2>
-               
-               <div className={styles.qList}>
-                 {section.filteredQs.map(({ q: item, qIdx: idx }) =>
-                   isMCQ(item) ? (
-                     <MCQCard key={idx} item={item} idx={idx} sectionIdx={section.realIdx} sectionName={section.section} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
-                   ) : (
-                     <CodingCard key={idx} item={item as CodingQuestion} idx={idx} sectionIdx={section.realIdx} sectionName={section.section} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
-                   )
+           visibleSections.map((section) => {
+             const limit = limits[section.section] || 5;
+             const displayedQs = section.filteredQs.slice(0, limit);
+             const hasMore = section.filteredQs.length > limit;
+
+             return (
+               <div key={section.section} className={styles.sectionBlock}>
+                 <h2 className={styles.sectionTitle}>{section.section}</h2>
+                 
+                 <div className={styles.qList}>
+                   {displayedQs.map(({ q: item, qIdx: idx }) =>
+                     isMCQ(item) ? (
+                       <MCQCard key={idx} item={item} idx={idx} sectionIdx={section.realIdx} sectionName={section.section} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                     ) : (
+                       <CodingCard key={idx} item={item as CodingQuestion} idx={idx} sectionIdx={section.realIdx} sectionName={section.section} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                     )
+                   )}
+                 </div>
+
+                 {hasMore && (
+                   <button 
+                     className="btn btn-ghost" 
+                     onClick={() => setLimits(prev => ({...prev, [section.section]: limit + 5}))}
+                     style={{ alignSelf: 'center', marginTop: '16px' }}
+                   >
+                     Load More Questions
+                   </button>
                  )}
                </div>
-             </div>
-           ))
+             );
+           })
         )}
+        
+        <div className={styles.sectionBlock} style={{ marginTop: '32px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Previous Papers</h2>
+            <a href="/pdfs/TCS-NQT-All-Papers.zip" download className={styles.paperBtnGhost} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Download size={16} /> Download All
+            </a>
+          </div>
+          <p className={styles.sectionSub}>
+            Practice with complete TCS NQT papers in PDF format. Open them directly in your browser or download them for offline practice.
+          </p>
+          
+          <div className={styles.paperList}>
+            {Array.from({length: 10}).map((_, i) => {
+              const num = 10 - i;
+              return (
+                <div key={num} className={styles.paperItem}>
+                   <div className={styles.paperInfo}>
+                     <div className={styles.paperIcon}>
+                       <FileText size={24} />
+                     </div>
+                     <div className={styles.paperDetails}>
+                       <h3 className={styles.paperTitle}>TCS NQT Paper {num}</h3>
+                       <p className={styles.paperMeta}>Complete Previous Year Paper • PDF</p>
+                     </div>
+                   </div>
+                   <div className={styles.paperActions}>
+                     <a href={`/pdfs/TCS-NQT-Paper-${num}.pdf`} target="_blank" rel="noopener noreferrer" className={styles.paperBtnPrimary}>
+                       View PDF
+                     </a>
+                     <a href={`/pdfs/TCS-NQT-Paper-${num}.pdf`} download className={styles.paperBtnGhost}>
+                       Download
+                     </a>
+                   </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

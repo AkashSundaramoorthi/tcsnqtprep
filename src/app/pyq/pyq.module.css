@@ -328,3 +328,116 @@
   .sidebar { width: 100%; position: static; }
   .optGrid { grid-template-columns: 1fr; }
 }
+
+/* ── Previous Papers Section ────────────────────────────────── */
+.sectionSub {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  margin-top: -8px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.paperList {
+  display: flex;
+  flex-direction: column;
+}
+
+.paperItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+
+.paperItem:last-child {
+  border-bottom: none;
+}
+
+.paperInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+}
+
+.paperIcon {
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.paperDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.paperTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.paperMeta {
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
+.paperActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.paperBtnPrimary, .paperBtnGhost {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.paperBtnPrimary {
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid var(--text);
+}
+
+.paperBtnPrimary:hover {
+  background: transparent;
+  color: var(--text);
+}
+
+.paperBtnGhost {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+
+.paperBtnGhost:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
+@media (max-width: 600px) {
+  .paperItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .paperActions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .paperBtnPrimary, .paperBtnGhost {
+    text-align: center;
+  }
+}

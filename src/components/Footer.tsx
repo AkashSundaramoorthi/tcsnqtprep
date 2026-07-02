@@ -31,9 +31,6 @@ export default function Footer() {
             <a href="https://www.tcs.com/tcs-ion/tcs-ion-career-agility" target="_blank" rel="noopener noreferrer">
               TCS iON Portal
             </a>
-            <a href="https://github.com/AkashSundaramoorthi" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
           </div>
         </div>
       </div>

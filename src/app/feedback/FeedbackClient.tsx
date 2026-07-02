@@ -3,14 +3,12 @@
 import { useState, FormEvent } from "react";
 import styles from "./feedback.module.css";
 import Link from "next/link";
+import { MessageSquare, CheckCircle2, Star } from "lucide-react";
 
 const CATEGORIES = [
   "General Feedback",
   "Bug Report",
   "Feature Request",
-  "Content Issue (Wrong Answer / Typo)",
-  "UI / UX Suggestion",
-  "Other",
 ];
 
 export default function FeedbackClient() {
@@ -70,11 +68,11 @@ export default function FeedbackClient() {
           <h1 className={styles.pageTitle}>Feedback</h1>
         </div>
         <div className={styles.successCard}>
-          <span className={styles.successIcon}>✅</span>
+          <CheckCircle2 size={48} color="var(--green)" className={styles.successIcon} />
           <h2 className={styles.successTitle}>Thank you!</h2>
           <p className={styles.successMsg}>
             Your feedback has been submitted successfully. It means a lot and
-            helps make this platform better for everyone.
+            helps me make this platform better.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
             <button className="btn btn-primary" onClick={() => { setSubmitted(false); setName(""); setEmail(""); setCategory(CATEGORIES[0]); setRating(0); setMessage(""); }}>
@@ -100,7 +98,7 @@ export default function FeedbackClient() {
 
       <div className={styles.formCard}>
         <div className={styles.formHeader}>
-          <div className={styles.formIcon}>💬</div>
+          <div className={styles.formIcon}><MessageSquare size={24} /></div>
           <div>
             <h2 className={styles.formTitle}>Feedback Form</h2>
             <p className={styles.formDesc}>All fields except message are optional</p>
@@ -161,7 +159,7 @@ export default function FeedbackClient() {
                       onClick={() => setRating(star === rating ? 0 : star)}
                       aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
                     >
-                      ★
+                      <Star size={20} color="var(--yellow)" fill={rating >= star ? "currentColor" : "none"} />
                     </button>
                   ))}
                 </div>
@@ -175,7 +173,7 @@ export default function FeedbackClient() {
               <textarea
                 id="fb-message"
                 className={styles.textarea}
-                placeholder="Tell us what's on your mind — bug reports, feature ideas, exam content issues, or just a quick note..."
+                placeholder="Tell me what's on your mind — bug reports, feature ideas, or just a quick note..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required

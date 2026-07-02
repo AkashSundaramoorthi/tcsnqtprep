@@ -76,7 +76,7 @@ export default function ContactForm() {
             required 
             rows={4}
             className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
-            placeholder="How can we help?"
+            placeholder="How can I help?"
           ></textarea>
         </div>
 

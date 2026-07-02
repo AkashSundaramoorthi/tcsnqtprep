@@ -50,7 +50,7 @@ export default function HomePage() {
           <div className={`${styles.heroLeft} fade-up`}>
             <h1 className={styles.heroTitle}>Everything You Need to Crack TCS NQT</h1>
             <p className={styles.heroSub}>
-              Master Numerical Aptitude, Logical Reasoning, Verbal Ability, Coding, Mock Tests, Interview Preparation, Formula Sheets, and Study Roadmaps — all in one place.
+              Practice TCS NQT aptitude, coding, mock tests, previous year questions, downloadable formula sheets, and preparation resources—all in one place.
             </p>
             <div className={styles.heroCtas}>
               <Link href="/coding" className="btn btn-primary">

@@ -52,9 +52,9 @@ function saveBookmarksToStorage(bookmarks: Record<string, boolean>) {
 const SECTIONS = rawData as Section[];
 
 function MCQCard({
-  item, idx, sectionIdx, revealed, onToggle, bookmarks, onBookmark,
+  item, idx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
 }: {
-  item: MCQQuestion; idx: number; sectionIdx: number;
+  item: MCQQuestion; idx: number; sectionIdx: number; sectionName: string;
   revealed: Record<string, boolean>; onToggle: (key: string) => void;
   bookmarks: Record<string, boolean>; onBookmark: (key: string) => void;
 }) {
@@ -73,7 +73,7 @@ function MCQCard({
           <p className={styles.qText}>{item.q}</p>
         </div>
         <div className={styles.qHeaderRight}>
-          <span className={styles.diffBadge} style={{ color: diffColor }}>{item.difficulty}</span>
+          <span className={styles.diffBadge} style={{ color: diffColor }}>{item.difficulty} • {sectionName}</span>
           <button className={styles.bookmarkBtn} onClick={() => onBookmark(key)}>
             <Bookmark size={18} fill={isBookmarked ? "var(--text)" : "none"} color={isBookmarked ? "var(--text)" : "var(--text-3)"} />
           </button>
@@ -122,9 +122,9 @@ function MCQCard({
 }
 
 function CodingCard({
-  item, idx, sectionIdx, revealed, onToggle, bookmarks, onBookmark,
+  item, idx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
 }: {
-  item: CodingQuestion; idx: number; sectionIdx: number;
+  item: CodingQuestion; idx: number; sectionIdx: number; sectionName: string;
   revealed: Record<string, boolean>; onToggle: (key: string) => void;
   bookmarks: Record<string, boolean>; onBookmark: (key: string) => void;
 }) {
@@ -141,7 +141,7 @@ function CodingCard({
           <pre className={`${styles.qText} ${styles.qPre}`}>{item.q}</pre>
         </div>
         <div className={styles.qHeaderRight}>
-          <span className={styles.diffBadge} style={{ color: diffColor }}>{item.difficulty}</span>
+          <span className={styles.diffBadge} style={{ color: diffColor }}>{item.difficulty} • {sectionName}</span>
           <button className={styles.bookmarkBtn} onClick={() => onBookmark(key)}>
             <Bookmark size={18} fill={isBookmarked ? "var(--text)" : "none"} color={isBookmarked ? "var(--text)" : "var(--text-3)"} />
           </button>
@@ -281,9 +281,9 @@ export default function PYQClient() {
                <div className={styles.qList}>
                  {section.filteredQs.map(({ q: item, qIdx: idx }) =>
                    isMCQ(item) ? (
-                     <MCQCard key={idx} item={item} idx={idx} sectionIdx={section.realIdx} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                     <MCQCard key={idx} item={item} idx={idx} sectionIdx={section.realIdx} sectionName={section.section} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
                    ) : (
-                     <CodingCard key={idx} item={item as CodingQuestion} idx={idx} sectionIdx={section.realIdx} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
+                     <CodingCard key={idx} item={item as CodingQuestion} idx={idx} sectionIdx={section.realIdx} sectionName={section.section} revealed={revealed} onToggle={toggleReveal} bookmarks={bookmarks} onBookmark={toggleBookmark} />
                    )
                  )}
                </div>

@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: "/exam", label: "Exam" },
   { href: "/pyq", label: "PYQ" },
   { href: "/about", label: "About" },
-  { href: "https://github.com/AkashSundaramoorthi/tcs-nqt", label: "GitHub" },
+  { href: "/feedback", label: "Feedback" },
 ];
 
 export default function Navbar() {

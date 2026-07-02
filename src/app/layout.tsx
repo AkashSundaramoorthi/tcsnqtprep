@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | TCS NQT Prep Hub",
   },
   description:
-    "The complete TCS NQT preparation platform. Practice 48 coding problems with an in-browser runner, revise 30 aptitude topics with method guides, and take a full 79-question mock exam with a live timer.",
+    "The complete TCS NQT preparation platform. Practice 50 coding problems with an in-browser runner, revise 30 aptitude topics with method guides, and take a full 80-question mock exam with a live timer.",
   keywords: [
     "TCS NQT", "TCS National Qualifier Test", "TCS NQT preparation", "TCS NQT mock exam",
     "TCS NQT aptitude", "TCS NQT coding", "TCS NQT previous year questions",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "TCS NQT Prep Hub",
     title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
     description:
-      "The complete TCS NQT preparation platform. 48 coding problems, 30 aptitude topics, 79-question mock exam.",
+      "The complete TCS NQT preparation platform. 50 coding problems, 30 aptitude topics, 80-question mock exam.",
     images: [
       {
         url: "/og-image.png",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
     description:
-      "The complete TCS NQT preparation platform. 48 coding problems, 30 aptitude topics, 79-question mock exam.",
+      "The complete TCS NQT preparation platform. 50 coding problems, 30 aptitude topics, 80-question mock exam.",
     images: ["/og-image.png"],
   },
   robots: {

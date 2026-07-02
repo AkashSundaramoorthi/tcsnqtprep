@@ -6,7 +6,19 @@ import ProgressSummary from "@/components/ProgressSummary";
 export const metadata: Metadata = {
   title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
   description:
-    "Free TCS NQT preparation platform. Practice 48 coding problems with an in-browser IDE supporting Python, JS, C, C++, Java and C#. Study 30 aptitude topics and take a timed mock exam.",
+    "Free TCS NQT preparation platform. Practice 50 coding problems with an in-browser IDE supporting Python, JS, C, C++, Java and C#. Study 30 aptitude topics and take a timed mock exam.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
+    description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam.",
+    url: "/",
+  },
+  twitter: {
+    title: "TCS NQT Prep Hub",
+    description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam.",
+  },
 };
 
 const FEATURES = [
@@ -14,7 +26,7 @@ const FEATURES = [
     title: "Coding Practice",
     desc: "48 problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser — no setup needed.",
     href: "/coding",
-    badge: "48 Problems · 6 Languages",
+    badge: "50 Problems · 6 Languages",
     badgeClass: "badge-easy",
     num: "01",
   },
@@ -45,7 +57,7 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { value: "51", label: "Coding Problems" },
+  { value: "50", label: "Coding Problems" },
   { value: "6", label: "Languages" },
   { value: "30", label: "Aptitude Topics" },
   { value: "120+", label: "Previous Year Qs" },
@@ -79,11 +91,7 @@ const STRUCTURED_DATA = {
   "@type": "WebSite",
   name: "TCS NQT Prep Hub",
   url: "https://tcs-nqt-prep.vercel.app",
-  description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam.",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://tcs-nqt-prep.vercel.app/coding",
-  },
+  description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam."
 };
 
 export default function HomePage() {

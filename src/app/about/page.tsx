@@ -4,6 +4,14 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About — TCS NQT Prep Hub",
   description: "Learn about the TCS NQT structure, sections, profile offers, and the creator behind this platform.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About — TCS NQT Prep Hub",
+    description: "Learn about the TCS NQT structure, sections, profile offers, and the creator behind this platform.",
+    url: "/about",
+  },
 };
 
 export default function AboutPage() {

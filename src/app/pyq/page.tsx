@@ -9,7 +9,11 @@ export const metadata: Metadata = {
     "TCS NQT PYQ", "TCS NQT previous year questions", "TCS NQT question paper",
     "TCS NQT 2023 questions", "TCS NQT 2024 questions", "TCS iON NQT PYQ",
   ],
+  alternates: {
+    canonical: "/pyq",
+  },
   openGraph: {
+    url: "/pyq",
     title: "TCS NQT Previous Year Questions (PYQ)",
     description: "Complete PYQ bank with worked solutions for all TCS NQT sections.",
   },

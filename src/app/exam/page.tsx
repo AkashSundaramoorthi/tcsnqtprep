@@ -10,7 +10,11 @@ export const metadata: Metadata = {
     "TCS NQT mock exam", "TCS NQT practice test", "TCS NQT online test",
     "TCS NQT exam simulator", "TCS iON NQT mock",
   ],
+  alternates: {
+    canonical: "/exam",
+  },
   openGraph: {
+    url: "/exam",
     title: "TCS NQT Mock Exam — 80 Questions, 190 Minutes",
     description: "Simulate the real TCS NQT with a 190-minute timed mock exam.",
   },

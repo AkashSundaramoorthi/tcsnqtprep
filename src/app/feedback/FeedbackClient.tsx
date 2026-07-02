@@ -13,8 +13,6 @@ const CATEGORIES = [
   "Other",
 ];
 
-const WEB3FORMS_KEY = "YOUR_ACCESS_KEY_HERE";
-
 export default function FeedbackClient() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -37,11 +35,10 @@ export default function FeedbackClient() {
     setSubmitting(true);
 
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
           subject: `[TCS NQT Prep] ${category}`,
           from_name: name || "Anonymous",
           email: email || "no-reply@tcsnqt.app",

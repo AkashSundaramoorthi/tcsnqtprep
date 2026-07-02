@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/exam", label: "Exam" },
   { href: "/pyq", label: "PYQ" },
   { href: "/about", label: "About" },
+  { href: "/feedback", label: "Feedback" },
 ];
 
 export default function Navbar() {

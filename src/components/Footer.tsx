@@ -28,6 +28,7 @@ export default function Footer() {
           <div className={styles.col}>
             <h4>Info</h4>
             <Link href="/about">About</Link>
+            <Link href="/feedback">Feedback</Link>
             <a href="https://www.tcs.com/tcs-ion/tcs-ion-career-agility" target="_blank" rel="noopener noreferrer">
               TCS iON Portal
             </a>

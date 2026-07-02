@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import styles from "./pyq.module.css";
 import rawData from "@/data/pyq_data.json";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 interface MCQQuestion {
   q: string;
   opts: string[];
@@ -29,7 +28,6 @@ interface Section {
   questions: Question[];
 }
 
-// ─── Icon map ─────────────────────────────────────────────────────────────────
 const ICONS: Record<string, string> = {
   "Numerical Ability": "🔢",
   "Verbal Ability": "📝",
@@ -46,7 +44,6 @@ function isMCQ(q: Question): q is MCQQuestion {
   return "opts" in q;
 }
 
-// ─── localStorage key ─────────────────────────────────────────────────────────
 const LS_KEY = "tcs-nqt-pyq-revealed";
 const LS_BOOKMARKS_KEY = "tcs-nqt-pyq-bookmarks";
 
@@ -62,7 +59,6 @@ function saveRevealedToStorage(revealed: Record<string, boolean>) {
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(revealed));
   } catch {
-    // ignore storage errors
   }
 }
 
@@ -78,14 +74,11 @@ function saveBookmarksToStorage(bookmarks: Record<string, boolean>) {
   try {
     localStorage.setItem(LS_BOOKMARKS_KEY, JSON.stringify(bookmarks));
   } catch {
-    // ignore storage errors
   }
 }
 
-// ─── Typed sections ───────────────────────────────────────────────────────────
 const SECTIONS = rawData as Section[];
 
-// ─── MCQ Question Card ────────────────────────────────────────────────────────
 function MCQCard({
   item,
   idx,
@@ -190,7 +183,6 @@ function MCQCard({
   );
 }
 
-// ─── Coding Question Card ─────────────────────────────────────────────────────
 function CodingCard({
   item,
   idx,
@@ -259,7 +251,6 @@ function CodingCard({
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 type Filter = "all" | string;
 
 export default function PYQClient() {
@@ -269,7 +260,6 @@ export default function PYQClient() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
 
-  // Hydrate from localStorage on mount
   useEffect(() => {
     setRevealed(loadRevealedFromStorage());
     setBookmarks(loadBookmarksFromStorage());

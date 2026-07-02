@@ -19,7 +19,6 @@ export interface Question {
 }
 
 export const QUESTIONS: Question[] = [
-  // ── Easy ──────────────────────────────────────────────────────────────────
   { id: 1, level: "Easy", title: "Even or Odd",
     desc: "Given a single integer N, determine whether the number is even or odd.\n\nAn even number is an integer that is exactly divisible by 2. An odd number is an integer that cannot be divided exactly by 2.\n\nConstraints:\n• -10^9 <= N <= 10^9\n• N can be 0 or negative.",
     fmt: "Print exactly \"Even\" if N is even, or \"Odd\" if N is odd (case-sensitive).",
@@ -113,7 +112,6 @@ export const QUESTIONS: Question[] = [
     tests: [{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5"},{"in":"5 5 5","out":"5"},{"in":"9 1 9 2 1","out":"9 1 2"},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true},{"in":"1 2 2 3 4 4 5","out":"1 2 3 4 5","hidden":true}],hints: ["Concept: Maintain a record of elements you have already seen to eliminate duplicates while keeping order.", "Algorithm: Initialize an empty list and a set for tracking. For each item, if it's not in the set, add it to the list and the set.", "Array.from(new Set(arr)).join(' ')"],
     nqtTag: "Frequently Asked" },
 
-  // ── Medium ─────────────────────────────────────────────────────────────────
   { id: 15, level: "Medium", title: "Reverse Each Word",
     desc: "Given a sentence, reverse the characters within each individual word while keeping the word order the same. This is different from reversing the entire sentence — only the characters inside each word are reversed.\n\nExample: 'Hello World' → 'olleH dlroW' (word order preserved, characters within each word reversed).\n\nConstraints:\n• 1 <= length of sentence <= 10^4\n• Sentence contains only English letters and single spaces.",
     fmt: "Print the sentence with each word's characters reversed, maintaining original word order.",

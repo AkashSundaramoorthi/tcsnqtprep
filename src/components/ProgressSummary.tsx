@@ -30,7 +30,6 @@ export default function ProgressSummary() {
       const pyqCount = Object.values(pyqProgress).filter(Boolean).length;
 
       const examHistory = JSON.parse(localStorage.getItem("tcs-nqt-exam-history") || "[]");
-      // Exam history is an array of taken exams
       const examCount = Array.isArray(examHistory) ? examHistory.length : 0;
 
       const hasProgress = codingCount > 0 || aptCount > 0 || pyqCount > 0 || examCount > 0;
@@ -43,7 +42,6 @@ export default function ProgressSummary() {
         totalProgress: hasProgress,
       });
     } catch {
-      // Ignore errors
     }
     setMounted(true);
   }, []);

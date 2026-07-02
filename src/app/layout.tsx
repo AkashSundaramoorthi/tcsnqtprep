@@ -54,7 +54,6 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // google: "YOUR_VERIFICATION_CODE", // Add actual code here later
   },
 };
 

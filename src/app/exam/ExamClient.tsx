@@ -6,7 +6,6 @@ import styles from "./exam.module.css";
 import { QUESTIONS, Question } from "@/lib/questions";
 import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runPiston, normalize } from "@/lib/runner";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Calculator from "@/components/Calculator";
 
 const CodeEditor = dynamic(() => import("@/components/CodeEditor"), { ssr: false });
@@ -445,7 +444,6 @@ export default function ExamClient({ questions }: Props) {
     );
   }
 
-  // RESULTS PHASE
   const mcqScore = shuffledExam.reduce((acc, q, i) => {
     if (q.isTyped) return acc + (answers[i] === q.typedAnswer ? 1 : 0);
     return acc + (answers[i] === q.answer ? 1 : 0);

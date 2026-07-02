@@ -39,7 +39,6 @@ function slugify(title: string): string {
     .replace(/\s+/g, "-");
 }
 
-// ── Generate formula sheet HTML ───────────────────────────────
 async function downloadFormulaSheet(topics: Topic[]) {
   const html2pdf = (await import("html2pdf.js")).default;
 
@@ -112,7 +111,6 @@ interface Html2PdfOptions {
   [key: string]: unknown;
 }
 
-// ── Component ─────────────────────────────────────────────────
 export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }) {
   const [done, setDone]               = useState<Record<string, boolean>>({});
   const [filter, setFilter]           = useState<Cat>("All");
@@ -121,7 +119,6 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
   const [mobilePanel, setMobilePanel] = useState<"list" | "content">("list");
   const [probSteps, setProbSteps]     = useState<Record<string, number>>({});
 
-  // ── Persist to localStorage ────────────────────────────────
   useEffect(() => {
     try {
       setDone(JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"));
@@ -146,7 +143,6 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ── Derived state ──────────────────────────────────────────
   const topicsMap = useMemo(() => {
     const map = new Map<string, Topic>();
     topics.forEach(t => map.set(t.title, t));

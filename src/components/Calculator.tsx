@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styles from './Calculator.module.css';
 
 export default function Calculator({ onClose }: { onClose: () => void }) {
@@ -6,7 +6,6 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
   const [result, setResult] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   
-  // Initialize with safe defaults, then hydrate from localStorage
   const [pos, setPos] = useState(() => {
     if (typeof window !== 'undefined') {
       return { x: window.innerWidth - 320, y: 100 };
@@ -16,7 +15,6 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
   
   const dragRef = useRef<{ startX: number; startY: number; initX: number; initY: number } | null>(null);
 
-  // Restore saved position on mount and clamp to current viewport
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
@@ -30,7 +28,6 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
         setPos({ x: safeX, y: safeY });
       }
     } catch {
-      // Fallback to default if JSON is corrupted
     }
   }, []);
 
@@ -61,7 +58,6 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
   const handlePointerUp = (e: React.PointerEvent) => {
     setIsDragging(false);
     e.currentTarget.releasePointerCapture(e.pointerId);
-    // Save final position to localStorage safely using the latest state value
     setPos((currentPos) => {
       try {
         localStorage.setItem('tcs-nqt-calc-pos', JSON.stringify(currentPos));
@@ -85,16 +81,13 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
 
   const calculate = () => {
     try {
-      // Basic safe evaluation replacing common symbols
       let toEval = expr
         .replace(/×/g, '*')
         .replace(/÷/g, '/')
         .replace(/\^/g, '**');
       
-      // Handle sqrt(x)
       toEval = toEval.replace(/sqrt\(([^)]+)\)/g, 'Math.sqrt($1)');
       
-      // eslint-disable-next-line no-new-func
       const res = new Function(`return ${toEval}`)();
       if (res !== undefined && !Number.isNaN(res)) {
         setResult(Number(res).toPrecision(10).replace(/\.?0+$/, ''));

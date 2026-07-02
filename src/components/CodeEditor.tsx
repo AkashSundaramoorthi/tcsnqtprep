@@ -137,7 +137,6 @@ export default function CodeEditor({ value, onChange, lang, height = "220px" }: 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Destroy previous instance
     if (viewRef.current) {
       viewRef.current.destroy();
       viewRef.current = null;

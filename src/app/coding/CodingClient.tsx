@@ -37,7 +37,6 @@ const LANG_LABELS: Record<Lang, string> = {
   csharp: "C#",
 };
 
-// ─── JS runner ───────────────────────────────────────────────────────────────
 function runJS(code: string, stdinText: string): string {
   const lines = stdinText.length ? stdinText.replace(/\n$/, "").split("\n") : [];
   let i = 0;
@@ -55,7 +54,6 @@ function runJS(code: string, stdinText: string): string {
   return out;
 }
 
-// ─── Pyodide runner ──────────────────────────────────────────────────────────
 declare global {
   interface Window {
     loadPyodide?: (opts?: { indexURL?: string }) => Promise<PyodideInterface>;
@@ -115,7 +113,6 @@ _buf.getvalue()
   return String(result ?? "");
 }
 
-// ─── Piston runner ───────────────────────────────────────────────────────────
 const PISTON_URL = "https://emkc.org/api/v2/piston";
 const PISTON_CFG: Record<string, { language: string; file: string }> = {
   c:      { language: "c",      file: "main.c" },
@@ -169,7 +166,6 @@ async function runPiston(
   return out;
 }
 
-// ─── Output normalizer ────────────────────────────────────────────────────────
 function normalize(s: string): string {
   const lines = s.split('\n').map(line => line.trimEnd());
   let start = 0, end = lines.length - 1;
@@ -178,12 +174,10 @@ function normalize(s: string): string {
   return lines.slice(start, end + 1).join('\n');
 }
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 interface Props { questions: Question[]; }
 type TestResult = { ok: boolean; input: string; expected: string; got: string; hidden?: boolean };
 type PanelTab = "tests" | "output";
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function CodingClient({ questions }: Props) {
   const [done, setDone] = useState<Record<number, boolean>>({});
   const [solutions, setSolutions] = useState<Record<number, { lang: Lang; code: string }>>({});

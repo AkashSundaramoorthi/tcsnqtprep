@@ -4,7 +4,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
-    // Server-side environment variable (hidden from browser)
     const accessKey = process.env.WEB3FORMS_KEY;
 
     if (!accessKey) {
@@ -15,13 +14,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Attach the hidden access key to the payload
     const payload = {
       ...body,
       access_key: accessKey,
     };
 
-    // Forward the request to Web3Forms
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: {

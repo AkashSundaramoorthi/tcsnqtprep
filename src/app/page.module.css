@@ -4,7 +4,7 @@
 
 /* ── Hero ─────────────────────────────────────────── */
 .hero {
-  padding: 100px 0 80px;
+  padding: 120px 0 100px;
   position: relative;
 }
 
@@ -16,7 +16,7 @@
   transform: translateX(-50%);
   width: 800px;
   height: 400px;
-  background: radial-gradient(ellipse at center, rgba(139,92,246,0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(59,130,246,0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -74,33 +74,34 @@
 }
 
 .ctaPrimary {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background: var(--text);
   color: #fff;
-  padding: 14px 28px;
+  padding: 14px 32px;
   border-radius: var(--radius-sm);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.95rem;
-  box-shadow: 0 4px 20px rgba(139,92,246,0.3);
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 .ctaPrimary:hover {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-  box-shadow: 0 6px 28px rgba(139,92,246,0.4);
+  background: #374151;
+  box-shadow: var(--shadow);
   transform: translateY(-1px);
 }
 
 .ctaSecondary {
-  background: transparent;
-  border: 1px solid var(--border-hover);
+  background: var(--surface);
+  border: 1px solid var(--border);
   color: var(--text-2);
-  padding: 14px 28px;
+  padding: 14px 32px;
   border-radius: var(--radius-sm);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.95rem;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 .ctaSecondary:hover {
-  background: var(--surface);
+  background: var(--surface-2);
   border-color: var(--border-hover);
   color: var(--text);
 }
@@ -146,7 +147,7 @@
 
 /* ── Features ────────────────────────────────────── */
 .features {
-  padding: 0 0 100px;
+  padding: 0 0 120px;
 }
 
 .sectionHead {
@@ -174,19 +175,20 @@
 .featureCard {
   display: flex;
   align-items: flex-start;
-  gap: 20px;
-  padding: 28px;
+  gap: 24px;
+  padding: 32px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   text-decoration: none;
-  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
   position: relative;
 }
 
 .featureCard:hover {
-  border-color: rgba(139,92,246,0.25);
-  background: var(--surface-2);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow);
   transform: translateY(-2px);
 }
 
@@ -244,7 +246,7 @@
 
 /* ── Study Plan ──────────────────────────────────── */
 .plan {
-  padding: 0 0 100px;
+  padding: 0 0 120px;
 }
 
 .planGrid {

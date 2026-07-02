@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg);
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
 
@@ -10,7 +10,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
-  height: 60px;
+  height: 64px;
   display: flex;
   align-items: center;
   gap: 32px;
@@ -26,9 +26,9 @@
 
 .logoMark {
   font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
 }
 
 .logoDivider {
@@ -62,23 +62,14 @@
 }
 
 .navLink:hover {
-  color: var(--text-2);
-  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  background: var(--surface-2);
 }
 
 .navLink.active {
   color: var(--text);
-}
-
-.navLink.active::after {
-  content: '';
-  position: absolute;
-  bottom: 1px;
-  left: 12px;
-  right: 12px;
-  height: 2px;
-  background: var(--accent);
-  border-radius: 99px;
+  background: var(--surface-2);
+  font-weight: 600;
 }
 
 .ctaBtn {

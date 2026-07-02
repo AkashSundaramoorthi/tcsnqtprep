@@ -256,7 +256,7 @@
 
 .dotActive {
   background: var(--accent) !important;
-  color: #0c0b0a !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
 }
 
@@ -268,7 +268,7 @@
 
 .dotActive.dotSolved {
   background: var(--accent) !important;
-  color: #0c0b0a !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
 }
 

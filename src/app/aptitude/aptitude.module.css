@@ -93,7 +93,7 @@
 
 .toggleActive {
   background: var(--accent);
-  color: #0c0b0a;
+  color: #FFFFFF;
 }
 
 /* ─── Layout ─────────────────────────────────────── */
@@ -393,7 +393,7 @@
 
 .navDotActive {
   background: var(--accent) !important;
-  color: #0c0b0a !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
 }
 
@@ -405,7 +405,7 @@
 
 .navDotActive.navDotSolved {
   background: var(--accent) !important;
-  color: #0c0b0a !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
 }
 

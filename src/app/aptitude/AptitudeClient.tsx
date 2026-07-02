@@ -39,190 +39,13 @@ function slugify(title: string): string {
     .replace(/\s+/g, "-");
 }
 
-async function downloadFormulaSheet(topics: Topic[]) {
-  const html2pdf = (await import("html2pdf.js")).default;
-
-  const cats = ["Numerical", "Reasoning", "Verbal", "Advanced"];
-  const catColors: Record<string, string> = {
-    Numerical: "#3b82f6", Reasoning: "#a855f7",
-    Verbal: "#f59e0b",    Advanced: "#8b5cf6",
-  };
-
-  // Define A4 proportions (approx 96 DPI)
-  const PAGE_WIDTH = 794;
-  const PAGE_HEIGHT = 1123;
-  const MARGIN = 40;
-  const COL_GAP = 20;
-  const COL_WIDTH = (PAGE_WIDTH - (MARGIN * 2) - COL_GAP) / 2;
-  const MAX_COL_HEIGHT = PAGE_HEIGHT - (MARGIN * 2);
-
-  // Hidden off-screen container for exact height measurement
-  const offscreen = document.createElement("div");
-  offscreen.style.position = "absolute";
-  offscreen.style.top = "-9999px";
-  offscreen.style.left = "-9999px";
-  offscreen.style.width = `${PAGE_WIDTH}px`;
-  offscreen.style.backgroundColor = "white";
-  offscreen.style.fontFamily = "'Segoe UI', system-ui, sans-serif";
-  document.body.appendChild(offscreen);
-
-  const measureCol = document.createElement("div");
-  measureCol.style.width = `${COL_WIDTH}px`;
-  offscreen.appendChild(measureCol);
-
-  const measureHtml = (html: string, isFullWidth = false) => {
-    measureCol.style.width = isFullWidth ? `${PAGE_WIDTH - MARGIN * 2}px` : `${COL_WIDTH}px`;
-    measureCol.innerHTML = html;
-    return measureCol.getBoundingClientRect().height;
-  };
-
-  const titleHtml = `
-    <div style="text-align: center; margin-bottom: 24px; border-bottom: 2px solid #f3f4f6; padding-bottom: 16px;">
-      <h1 style="font-size: 26px; font-weight: 800; color: #111; margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: -0.5px;">TCS NQT Formula Cheat Sheet</h1>
-      <div style="color: #6b7280; font-size: 12px; font-weight: 500;">Comprehensive Quick Reference Guide for Exam Preparation</div>
-    </div>
-  `;
-
-  const titleHeight = measureHtml(titleHtml, true);
-
-  type Page = { left: string[]; right: string[] };
-  const pages: Page[] = [{ left: [], right: [] }];
-  let currentColumn: "left" | "right" = "left";
-  let currentHeight = 0;
-  
-  // Page 1 has less space because the title spans across the top
-  let currentMaxHeight = MAX_COL_HEIGHT - titleHeight;
-
-  const pushToColumn = (html: string, height: number) => {
-    // If it doesn't fit, jump to the next column or page
-    if (currentHeight + height > currentMaxHeight) {
-      if (currentColumn === "left") {
-        currentColumn = "right";
-      } else {
-        currentColumn = "left";
-        currentMaxHeight = MAX_COL_HEIGHT;
-        pages.push({ left: [], right: [] });
-      }
-      currentHeight = 0;
-    }
-    
-    const page = pages[pages.length - 1];
-    if (currentColumn === "left") page.left.push(html);
-    else page.right.push(html);
-    
-    currentHeight += height;
-  };
-
-  cats.forEach(cat => {
-    const topicsInCat = topics.filter(t => t.cat === cat);
-    if (topicsInCat.length === 0) return;
-
-    const catHtml = `
-      <div style="margin-bottom: 12px;">
-        <div style="font-size: 16px; font-weight: 800; color: ${catColors[cat]}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; border-left: 4px solid ${catColors[cat]}; padding-left: 8px;">
-          ${cat} Aptitude
-        </div>
-      </div>`;
-      
-    const catHeight = measureHtml(catHtml);
-    let pendingCatHeader: { html: string, height: number } | null = { html: catHtml, height: catHeight };
-
-    topicsInCat.forEach(t => {
-      const topicHtml = `
-        <div style="margin-bottom: 16px;">
-          <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 6px; padding-bottom: 2px; border-bottom: 1px solid #e5e7eb;">
-            ${t.title.split("—")[0].trim()}
-          </div>
-          <ul style="list-style: none; padding: 0; margin: 0;">
-            ${t.formula.map(f => `
-              <li style="font-size: 10.5px; color: #374151; margin-bottom: 5px; padding-left: 12px; position: relative; line-height: 1.4;">
-                <span style="position: absolute; left: 0; top: 0; color: ${catColors[cat]};">&#8226;</span>
-                ${f.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
-              </li>
-            `).join("")}
-          </ul>
-        </div>`;
-      
-      const topicHeight = measureHtml(topicHtml);
-      
-      // If we have a pending category header, ensure it doesn't get orphaned
-      // Check if both the header and the first topic fit together
-      if (pendingCatHeader) {
-        if (currentHeight + pendingCatHeader.height + topicHeight > currentMaxHeight) {
-          if (currentColumn === "left") currentColumn = "right";
-          else {
-            currentColumn = "left";
-            currentMaxHeight = MAX_COL_HEIGHT;
-            pages.push({ left: [], right: [] });
-          }
-          currentHeight = 0;
-        }
-        pushToColumn(pendingCatHeader.html, pendingCatHeader.height);
-        pendingCatHeader = null;
-      }
-      
-      pushToColumn(topicHtml, topicHeight);
-    });
-  });
-
-  const finalContainer = document.createElement("div");
-  finalContainer.style.width = `${PAGE_WIDTH}px`;
-  finalContainer.style.backgroundColor = "white";
-  finalContainer.style.fontFamily = "'Segoe UI', system-ui, sans-serif";
-
-  pages.forEach((p, idx) => {
-    const pageDiv = document.createElement("div");
-    pageDiv.style.width = `${PAGE_WIDTH}px`;
-    pageDiv.style.height = `${PAGE_HEIGHT}px`;
-    pageDiv.style.padding = `${MARGIN}px`;
-    pageDiv.style.boxSizing = "border-box";
-    pageDiv.style.position = "relative";
-    
-    // Tell html2pdf to hard break pages here
-    if (idx > 0) pageDiv.style.pageBreakBefore = "always";
-
-    if (idx === 0) pageDiv.innerHTML += titleHtml;
-
-    const columnsContainer = document.createElement("div");
-    columnsContainer.style.display = "flex";
-    columnsContainer.style.gap = `${COL_GAP}px`;
-    columnsContainer.style.alignItems = "flex-start";
-    
-    const leftCol = document.createElement("div");
-    leftCol.style.flex = "1";
-    leftCol.innerHTML = p.left.join("");
-    
-    const rightCol = document.createElement("div");
-    rightCol.style.flex = "1";
-    rightCol.innerHTML = p.right.join("");
-    
-    columnsContainer.appendChild(leftCol);
-    columnsContainer.appendChild(rightCol);
-    
-    pageDiv.appendChild(columnsContainer);
-    finalContainer.appendChild(pageDiv);
-  });
-
-  document.body.removeChild(offscreen);
-
-  const opt: Html2PdfOptions = {
-    margin:       0, // We handle margins dynamically in the DOM
-    filename:     'TCS-NQT-Formula-Cheat-Sheet.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(finalContainer).save();
-}
-
-interface Html2PdfOptions {
-  margin?: number;
-  filename?: string;
-  image?: { type: string; quality: number };
-  html2canvas?: { scale: number; useCORS: boolean };
-  jsPDF?: { unit: string; format: string; orientation: string };
-  [key: string]: unknown;
+function downloadFormulaSheet() {
+  const link = document.createElement('a');
+  link.href = '/assets/TCS-NQT-Formula-Cheat-Sheet.pdf';
+  link.download = 'TCS-NQT-Formula-Cheat-Sheet.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }) {
@@ -296,7 +119,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
           </div>
           <button
             className={`btn btn-ghost ${s.downloadBtn}`}
-            onClick={() => downloadFormulaSheet(topics)}
+            onClick={() => downloadFormulaSheet()}
             title="Download Formula Sheet"
           >
             Download Formula Sheet

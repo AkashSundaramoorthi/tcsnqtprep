@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tcs-nqt-prep.vercel.app"),
+  metadataBase: new URL("https://tcs-nqt.vercel.app"),
   title: {
     default: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
     template: "%s | TCS NQT Prep Hub",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://tcs-nqt-prep.vercel.app",
+    url: "https://tcs-nqt.vercel.app",
     siteName: "TCS NQT Prep Hub",
     title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
     description:

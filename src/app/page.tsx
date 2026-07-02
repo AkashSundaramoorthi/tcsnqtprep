@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./page.module.css";
-import ProgressSummary from "@/components/ProgressSummary";
 
 export const metadata: Metadata = {
   title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
@@ -21,76 +20,53 @@ export const metadata: Metadata = {
   },
 };
 
-const FEATURES = [
-  {
-    title: "Coding Practice",
-    desc: "48 problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser — no setup needed.",
-    href: "/coding",
-    badge: "50 Problems · 6 Languages",
-    badgeClass: "badge-easy",
-    num: "01",
-  },
-  {
-    title: "Aptitude Guide",
-    desc: "30 topics covering Numerical, Verbal, Reasoning, and Advanced sections. Step-by-step method guides with solved practice problems for each topic.",
-    href: "/aptitude",
-    badge: "30 Topics",
-    badgeClass: "badge-numerical",
-    num: "02",
-  },
-  {
-    title: "Mock Exam",
-    desc: "80 questions across Numerical, Reasoning, Verbal, and Advanced — plus 2 live coding problems. Full NQT simulation with timed, sequentially-locked sections and a detailed results screen.",
-    href: "/exam",
-    badge: "80 Qs + Coding · 190 min",
-    badgeClass: "badge-hard",
-    num: "03",
-  },
-  {
-    title: "Previous Year Questions",
-    desc: "Curated PYQs from past TCS NQT exams across all sections — Numerical, Verbal, Reasoning, Coding, and Advanced — with worked solutions.",
-    href: "/pyq",
-    badge: "120+ PYQs",
-    badgeClass: "badge-reasoning",
-    num: "04",
-  },
-];
-
 const STATS = [
-  { value: "50", label: "Coding Problems" },
-  { value: "6", label: "Languages" },
-  { value: "30", label: "Aptitude Topics" },
-  { value: "120+", label: "Previous Year Qs" },
+  { value: "50+", label: "Coding Problems", sub: "With in-browser compilation" },
+  { value: "120+", label: "Practice Questions", sub: "Covering all TCS NQT topics" },
+  { value: "80", label: "Mock Test Questions", sub: "Full timed simulation" },
+  { value: "1", label: "Formula Sheet", sub: "Downloadable PDF guide" },
 ];
 
-const STEPS = [
+const RESOURCES = [
   {
-    step: "01",
-    title: "Study the aptitude methods",
-    body: "Don't just memorise formulas. Each topic has a method guide that shows you how to think through the problem type.",
+    title: "Formula Cheat Sheet",
+    desc: "Quick revision of all essential formulas for Numerical and Reasoning.",
+    badge: "PDF Guide",
+    href: "/assets/TCS-NQT-Formula-Cheat-Sheet.pdf",
+    download: true,
   },
   {
-    step: "02",
-    title: "Practice coding daily",
-    body: "Pick a few problems each day. Run them against test cases. The in-browser IDE supports all NQT-allowed languages.",
+    title: "Coding Bank",
+    desc: "Practice real TCS NQT coding questions in our built-in IDE.",
+    badge: "Interactive",
+    href: "/coding",
   },
   {
-    step: "03",
-    title: "Go through PYQs",
-    body: "Past questions repeat patterns. Study them with solutions — understanding the reasoning matters more than the answer.",
+    title: "Mock Simulator",
+    desc: "Experience the exact UI and timing of the real TCS NQT exam.",
+    badge: "Simulation",
+    href: "/exam",
   },
   {
-    step: "04",
-    title: "Simulate with the mock exam",
-    body: "Take the 20-minute mock under real conditions. Review every wrong answer. Repeat until you're consistently above 60%.",
+    title: "Study Roadmap",
+    desc: "A structured 30-day plan to cover all aptitude and coding topics.",
+    badge: "Guide",
+    href: "/about",
   },
+];
+
+const FAQ = [
+  { q: "Is this platform completely free?", a: "Yes, all resources, mock tests, and the coding IDE are completely free without any ads." },
+  { q: "Does the coding IDE support my language?", a: "We support Python, JavaScript, C, C++, Java, and C# — the exact languages allowed in the actual NQT." },
+  { q: "Are the questions from previous years?", a: "Yes, our question bank is heavily curated from past TCS NQT papers to ensure realistic difficulty." },
+  { q: "How does the Mock Test work?", a: "It simulates the real exam environment with 80 aptitude questions and 2 coding problems, complete with strict section timers." },
 ];
 
 const STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "TCS NQT Prep Hub",
-  url: "https://tcs-nqt-prep.vercel.app",
+  url: "https://tcsnqtprep.vercel.app",
   description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam."
 };
 
@@ -102,37 +78,66 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
       />
 
-      
       <section className={styles.hero}>
-        <div className={`container ${styles.heroInner}`}>
-          <div className={`${styles.heroBadge} fade-up`}>
-            <span className={styles.dot} />
-            Free · No login · No ads
+        <div className={`container ${styles.heroGrid}`}>
+          <div className={`${styles.heroLeft} fade-up`}>
+            <div className={styles.heroBadge}>
+              <span className={styles.dot} /> Free Educational Platform
+            </div>
+            <h1 className={styles.heroTitle}>Everything You Need to Crack TCS NQT</h1>
+            <p className={styles.heroSub}>
+              Master Numerical Aptitude, Logical Reasoning, Verbal Ability, Coding, Mock Tests, Interview Preparation, Formula Sheets, and Study Roadmaps — all in one place.
+            </p>
+            <div className={styles.heroCtas}>
+              <Link href="/coding" className="btn btn-primary">Start Practicing</Link>
+              <a href="/assets/TCS-NQT-Formula-Cheat-Sheet.pdf" download className="btn btn-ghost">Download Formula Sheet</a>
+            </div>
           </div>
-
-          <h1 className={`${styles.heroTitle} fade-up fade-up-1`}>
-            Crack TCS NQT.<br />
-            <span className="gradient-text">Prepare smart. Score high.</span>
-          </h1>
-
-          <p className={`${styles.heroSub} fade-up fade-up-2`}>
-            Coding problems with a real in-browser IDE, aptitude method guides,
-            previous year questions with solutions, and a timed mock exam.
-            Everything you need, nothing you don&apos;t.
-          </p>
-
-          <div className={`${styles.heroCtas} fade-up fade-up-3`}>
-            <Link href="/coding" className={styles.ctaPrimary}>
-              Open Coding IDE
-            </Link>
-            <Link href="/exam" className={styles.ctaSecondary}>
-              Start Mock Exam →
-            </Link>
+          
+          <div className={`${styles.heroRight} fade-up fade-up-2`}>
+            <div className={styles.dashboardPreview}>
+              <div className={styles.widgetHeader}>
+                <div className={styles.windowControls}>
+                   <span/><span/><span/>
+                </div>
+                <div className={styles.widgetTitle}>Student Dashboard</div>
+              </div>
+              <div className={styles.widgetBody}>
+                 <div className={styles.widgetRow}>
+                    <div className={styles.widgetCard}>
+                       <span className={styles.widgetLabel}>Numerical Progress</span>
+                       <div className={styles.widgetTrack}><div className={styles.widgetFill} style={{width: "75%"}}></div></div>
+                    </div>
+                    <div className={styles.widgetCard}>
+                       <span className={styles.widgetLabel}>Coding Progress</span>
+                       <div className={styles.widgetTrack}><div className={styles.widgetFill} style={{width: "40%"}}></div></div>
+                    </div>
+                 </div>
+                 <div className={styles.widgetRow}>
+                    <div className={styles.widgetCardLarge}>
+                       <div className={styles.widgetCardHeader}>
+                          <span className={styles.widgetLabel}>Upcoming Mock Test</span>
+                          <span className={`badge ${styles.widgetBadge}`}>In 2 Days</span>
+                       </div>
+                       <p className={styles.widgetText}>Full NQT Simulation (190 mins)</p>
+                    </div>
+                 </div>
+                 <div className={styles.widgetRow}>
+                    <div className={styles.widgetCard}>
+                       <span className={styles.widgetLabel}>Current Streak</span>
+                       <div className={styles.widgetValue}>🔥 12 Days</div>
+                    </div>
+                    <div className={styles.widgetCard}>
+                       <span className={styles.widgetLabel}>Today's Goal</span>
+                       <div className={styles.widgetValue}>2/5 Problems</div>
+                    </div>
+                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      
       <section className={styles.stats}>
         <div className="container">
           <div className={styles.statsGrid}>
@@ -140,68 +145,113 @@ export default function HomePage() {
               <div key={i} className={styles.statCard}>
                 <div className={styles.statValue}>{s.value}</div>
                 <div className={styles.statLabel}>{s.label}</div>
+                <div className={styles.statSub}>{s.sub}</div>
               </div>
             ))}
           </div>
-          <ProgressSummary />
         </div>
       </section>
 
-      
-      <section className={styles.features}>
+      <section className={styles.bento}>
         <div className="container">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>What&apos;s inside</h2>
-            <p className={styles.sectionSub}>Four focused tools, one goal: get you through the NQT.</p>
+            <h2 className={styles.sectionTitle}>Why Choose Us</h2>
+            <p className={styles.sectionSub}>A premium, structured toolkit designed specifically for the TCS NQT pattern.</p>
           </div>
-
-          <div className={styles.featuresGrid}>
-            {FEATURES.map((f, i) => (
-              <Link key={i} href={f.href} className={styles.featureCard}>
-                <div className={styles.featureNum}>{f.num}</div>
-                <div className={styles.featureBody}>
-                  <div className={styles.featureTop}>
-                    <h3 className={styles.featureTitle}>{f.title}</h3>
-                    <span className={`badge ${f.badgeClass}`}>{f.badge}</span>
-                  </div>
-                  <p className={styles.featureDesc}>{f.desc}</p>
+          <div className={styles.bentoGrid}>
+             <div className={`${styles.bentoCard} ${styles.bentoLarge}`}>
+                <div className={styles.bentoContent}>
+                   <h3>Structured Roadmap</h3>
+                   <p>A step-by-step curriculum that takes you from basic aptitude concepts to advanced coding in 30 days.</p>
                 </div>
-                <span className={styles.featureArrow}>→</span>
-              </Link>
+                <div className={styles.bentoArt}>
+                   <div className={styles.bentoRoadmapArt}>
+                      <div className={styles.bLine}></div>
+                      <div className={`${styles.bNode} ${styles.bNodeActive}`}></div>
+                      <div className={styles.bNode}></div>
+                      <div className={styles.bNode}></div>
+                   </div>
+                </div>
+             </div>
+             
+             <div className={styles.bentoCard}>
+                <div className={styles.bentoContent}>
+                   <h3>Built-in IDE</h3>
+                   <p>Write, compile, and run code directly in your browser with real test cases.</p>
+                </div>
+             </div>
+
+             <div className={styles.bentoCard}>
+                <div className={styles.bentoContent}>
+                   <h3>Full Mock Tests</h3>
+                   <p>Simulate the exact 190-minute timed environment of the real NQT exam.</p>
+                </div>
+             </div>
+
+             <div className={styles.bentoCard}>
+                <div className={styles.bentoContent}>
+                   <h3>Formula Sheets</h3>
+                   <p>Downloadable PDFs for quick revision before the exam day.</p>
+                </div>
+             </div>
+             
+             <div className={`${styles.bentoCard} ${styles.bentoWide}`}>
+                <div className={styles.bentoContent}>
+                   <h3>Interview Preparation</h3>
+                   <p>Past interview experiences, HR questions, and technical deep-dives to clear the final round.</p>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.resources}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <h2 className={styles.sectionTitle}>Featured Resources</h2>
+            <p className={styles.sectionSub}>Premium study materials to accelerate your preparation.</p>
+          </div>
+          <div className={styles.resourceGrid}>
+            {RESOURCES.map((r, i) => (
+              <div key={i} className={styles.resourceCard}>
+                <div className={styles.resourceThumb}>
+                   <div className={styles.thumbPattern} data-type={i}></div>
+                </div>
+                <div className={styles.resourceBody}>
+                  <span className={styles.resourceBadge}>{r.badge}</span>
+                  <h3 className={styles.resourceTitle}>{r.title}</h3>
+                  <p className={styles.resourceDesc}>{r.desc}</p>
+                  {r.download ? (
+                    <a href={r.href} download className={styles.resourceAction}>Download Now &rarr;</a>
+                  ) : (
+                    <Link href={r.href} className={styles.resourceAction}>Explore &rarr;</Link>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      
-      <section className={styles.plan}>
+      <section className={styles.faq}>
         <div className="container">
-          <div className={styles.planGrid}>
-            <div className={styles.planText}>
-              <h2 className={styles.planTitle}>Suggested study plan</h2>
-              <p className={styles.planSub}>
-                Most students have 2–4 weeks before the NQT. Here&apos;s a
-                structure that actually works.
-              </p>
-              <Link href="/about" className={styles.planLink}>
-                Read about the exam structure →
-              </Link>
-            </div>
-
-            <div className={styles.planSteps}>
-              {STEPS.map((s) => (
-                <div key={s.step} className={styles.step}>
-                  <span className={styles.stepNum}>{s.step}</span>
-                  <div className={styles.stepContent}>
-                    <h4 className={styles.stepTitle}>{s.title}</h4>
-                    <p className={styles.stepBody}>{s.body}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+           <div className={styles.faqInner}>
+              <div className={styles.faqHeader}>
+                 <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
+                 <p className={styles.sectionSub}>Everything you need to know about the platform.</p>
+              </div>
+              <div className={styles.faqList}>
+                 {FAQ.map((f, i) => (
+                    <details key={i} className={styles.faqItem}>
+                       <summary className={styles.faqQuestion}>{f.q}</summary>
+                       <div className={styles.faqAnswer}>{f.a}</div>
+                    </details>
+                 ))}
+              </div>
+           </div>
         </div>
       </section>
+
     </div>
   );
 }

@@ -30,7 +30,7 @@ const FEATURES = [
     title: "Mock Exam",
     desc: "80 questions across Numerical, Reasoning, Verbal, and Advanced — plus 2 live coding problems. Full NQT simulation with timed, sequentially-locked sections and a detailed results screen.",
     href: "/exam",
-    badge: "80 Qs + Coding · 192 min",
+    badge: "80 Qs + Coding · 190 min",
     badgeClass: "badge-hard",
     num: "03",
   },

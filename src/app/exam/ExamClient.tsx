@@ -15,7 +15,7 @@ const PHASES = [
   { id: "mcq-numerical", duration: 25 * 60, title: "Numerical Ability", calc: true },
   { id: "mcq-reasoning", duration: 25 * 60, title: "Reasoning Ability", calc: true },
   { id: "mcq-advquant", duration: 25 * 60, title: "Advanced Quant & Reasoning", calc: true },
-  { id: "mcq-verbal", duration: 26 * 60, title: "Verbal Ability", calc: false },
+  { id: "mcq-verbal", duration: 25 * 60, title: "Verbal Ability", calc: false },
   { id: "coding-easy", duration: 35 * 60, title: "Advanced Coding (Easy)", calc: false },
   { id: "break", duration: 60, title: "1-Minute Break", calc: false },
   { id: "coding-medium", duration: 55 * 60, title: "Advanced Coding (Medium)", calc: false },
@@ -225,13 +225,13 @@ export default function ExamClient({ questions }: Props) {
           <div className={styles.startIcon}>⏱️</div>
           <h1 className={styles.startTitle}>TCS NQT Mock Exam</h1>
           <p className={styles.startSub}>
-            80 MCQ · 2 Coding Problems · ~192 minutes total
+            80 MCQ · 2 Coding Problems · ~190 minutes total
           </p>
           <div className={styles.startStats} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
             <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Numerical</span></div>
             <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Reasoning</span></div>
             <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Adv Quant</span></div>
-            <div className={styles.startStat}><span className={styles.startStatNum}>26m</span><span className={styles.startStatLabel}>Verbal</span></div>
+            <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Verbal</span></div>
             <div className={styles.startStat}><span className={styles.startStatNum}>35m</span><span className={styles.startStatLabel}>Coding Easy</span></div>
             <div className={styles.startStat}><span className={styles.startStatNum}>55m</span><span className={styles.startStatLabel}>Coding Medium</span></div>
           </div>

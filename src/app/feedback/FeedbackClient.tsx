@@ -35,12 +35,13 @@ export default function FeedbackClient() {
     setSubmitting(true);
 
     try {
-      const res = await fetch("/api/feedback", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "21dc13cd-ae8b-49c4-8244-e23a8ae8a96c",
           subject: `[TCS NQT Prep] ${category}`,
-          from_name: name || "Anonymous",
+          name: name || "Anonymous",
           email: email || "no-reply@tcsnqt.app",
           category,
           rating: rating > 0 ? `${rating}/5 stars` : "Not rated",

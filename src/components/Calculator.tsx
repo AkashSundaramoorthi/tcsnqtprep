@@ -5,8 +5,34 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
   const [expr, setExpr] = useState('');
   const [result, setResult] = useState('');
   const [isDragging, setIsDragging] = useState(false);
-  const [pos, setPos] = useState({ x: window.innerWidth - 320, y: 100 });
+  
+  // Initialize with safe defaults, then hydrate from localStorage
+  const [pos, setPos] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return { x: window.innerWidth - 320, y: 100 };
+    }
+    return { x: 0, y: 100 };
+  });
+  
   const dragRef = useRef<{ startX: number; startY: number; initX: number; initY: number } | null>(null);
+
+  // Restore saved position on mount and clamp to current viewport
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const saved = localStorage.getItem('tcs-nqt-calc-pos');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Clamp to ensure it doesn't render off-screen (280px is calc width)
+        const safeX = Math.max(0, Math.min(parsed.x, window.innerWidth - 280));
+        // Rough clamp for height to prevent losing the header off the top/bottom
+        const safeY = Math.max(0, Math.min(parsed.y, window.innerHeight - 100));
+        setPos({ x: safeX, y: safeY });
+      }
+    } catch {
+      // Fallback to default if JSON is corrupted
+    }
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -35,6 +61,13 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
   const handlePointerUp = (e: React.PointerEvent) => {
     setIsDragging(false);
     e.currentTarget.releasePointerCapture(e.pointerId);
+    // Save final position to localStorage safely using the latest state value
+    setPos((currentPos) => {
+      try {
+        localStorage.setItem('tcs-nqt-calc-pos', JSON.stringify(currentPos));
+      } catch { /* ignore quota errors */ }
+      return currentPos;
+    });
   };
 
   const append = (c: string) => {

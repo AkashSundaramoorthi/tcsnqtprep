@@ -20,29 +20,6 @@
   max-width: 540px;
 }
 
-.heroBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 99px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-2);
-  margin-bottom: 28px;
-  box-shadow: var(--shadow-sm);
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: pulseDot 2s infinite;
-}
-
 .heroTitle {
   font-size: clamp(2.4rem, 4.5vw, 3.8rem);
   font-weight: 700;
@@ -65,8 +42,8 @@
   flex-wrap: wrap;
 }
 
-/* Dashboard Preview (Right Side) */
-.dashboardPreview {
+/* Browser Window Mockup (Right Side) */
+.browserWindow {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -76,18 +53,19 @@
   flex-direction: column;
 }
 
-.widgetHeader {
+.browserHeader {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 0 16px;
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
+  height: 44px;
 }
 
 .windowControls {
   display: flex;
   gap: 6px;
-  margin-right: 16px;
+  margin-right: 24px;
 }
 
 .windowControls span {
@@ -97,86 +75,85 @@
   background: #E5E7EB;
 }
 
-.widgetTitle {
+.browserTabs {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.browserTab {
+  padding: 0 16px;
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-3);
-  font-family: var(--font-geist-sans);
-}
-
-.widgetBody {
-  padding: 24px;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: var(--bg);
+  align-items: center;
+  border-right: 1px solid var(--border);
+  cursor: default;
 }
 
-.widgetRow {
-  display: flex;
-  gap: 16px;
+.browserTab:first-child {
+  border-left: 1px solid var(--border);
 }
 
-.widgetCard, .widgetCardLarge {
+.activeTab {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  flex: 1;
-  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  border-top: 2px solid var(--accent);
 }
 
-.widgetCardLarge {
+.browserBody {
+  display: flex;
+  background: #0D1117; /* Dark theme for IDE */
+  color: #c9d1d9;
+  min-height: 280px;
+}
+
+/* IDE Mockup */
+.ideMockup {
+  display: flex;
   width: 100%;
 }
 
-.widgetCardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+.ideSidebar {
+  width: 120px;
+  border-right: 1px solid #30363d;
+  padding: 12px 0;
+  background: #161b22;
 }
 
-.widgetLabel {
+.ideFile {
+  padding: 6px 16px;
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-2);
-  margin-bottom: 12px;
-  display: block;
+  color: #8b949e;
+  cursor: default;
 }
 
-.widgetBadge {
-  font-size: 0.65rem;
-  padding: 2px 8px;
-  background: #DBEAFE;
-  color: #1E40AF;
-  border: none;
+.ideFile:first-child {
+  color: #c9d1d9;
+  background: rgba(255,255,255,0.05);
+  border-left: 2px solid #58a6ff;
 }
 
-.widgetText {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text);
+.ideEditor {
+  padding: 16px;
+  flex: 1;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-x: auto;
 }
 
-.widgetTrack {
-  height: 6px;
-  background: var(--surface-2);
-  border-radius: 99px;
-  overflow: hidden;
+.ideEditor pre {
+  margin: 0;
 }
 
-.widgetFill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 99px;
-}
-
-.widgetValue {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text);
-}
+.keyword { color: #ff7b72; }
+.function { color: #d2a8ff; }
+.comment { color: #8b949e; font-style: italic; }
+.builtin { color: #79c0ff; }
+.number { color: #a5d6ff; }
 
 /* ── Stats ───────────────────────────────────────── */
 .stats {
@@ -246,7 +223,7 @@
   line-height: 1.6;
 }
 
-/* ── Bento (Why Choose Us) ───────────────────────── */
+/* ── Bento (Complete Preparation Toolkit) ───────────────────────── */
 .bento {
   padding: 0 0 120px;
 }
@@ -337,176 +314,12 @@
   box-shadow: 0 0 0 4px var(--accent-dim);
 }
 
-
-/* ── Featured Resources ──────────────────────────── */
-.resources {
-  padding: 0 0 120px;
-}
-
-.resourceGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.resourceCard {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.resourceCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.resourceThumb {
-  height: 160px;
-  background: #F3F4F6;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-}
-
-.thumbPattern {
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-  background-image: radial-gradient(circle at 2px 2px, var(--border-hover) 1px, transparent 0);
-  background-size: 20px 20px;
-}
-.thumbPattern[data-type="0"] { background-image: linear-gradient(45deg, #DBEAFE 25%, transparent 25%), linear-gradient(-45deg, #DBEAFE 25%, transparent 25%); background-size: 24px 24px; }
-.thumbPattern[data-type="1"] { background-image: repeating-linear-gradient(45deg, #E0E7FF 0, #E0E7FF 2px, transparent 2px, transparent 10px); }
-.thumbPattern[data-type="2"] { background-image: radial-gradient(#FCE7F3 2px, transparent 2px); background-size: 20px 20px; }
-
-.resourceBody {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.resourceBadge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 16px;
-  letter-spacing: 0.05em;
-}
-
-.resourceTitle {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text);
-  letter-spacing: -0.01em;
-}
-
-.resourceDesc {
-  font-size: 0.95rem;
-  color: var(--text-2);
-  line-height: 1.6;
-  margin-bottom: 32px;
-  flex: 1;
-}
-
-.resourceAction {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  transition: color 0.2s;
-}
-
-.resourceAction:hover {
-  color: var(--accent);
-}
-
-/* ── FAQ ─────────────────────────────────────────── */
-.faq {
-  padding: 0 0 120px;
-}
-
-.faqInner {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.faqHeader {
-  text-align: center;
-  margin-bottom: 56px;
-}
-
-.faqList {
-  display: flex;
-  flex-direction: column;
-}
-
-.faqItem {
-  border-bottom: 1px solid var(--border);
-}
-
-.faqItem:first-child {
-  border-top: 1px solid var(--border);
-}
-
-.faqQuestion {
-  padding: 28px 0;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: var(--text);
-  cursor: pointer;
-  list-style: none;
-  position: relative;
-  letter-spacing: -0.01em;
-  transition: color 0.2s;
-}
-
-.faqQuestion:hover {
-  color: var(--accent);
-}
-
-.faqQuestion::-webkit-details-marker {
-  display: none;
-}
-
-.faqQuestion::after {
-  content: '+';
-  position: absolute;
-  right: 0;
-  font-size: 1.4rem;
-  color: var(--text-3);
-  transition: transform 0.2s ease;
-}
-
-.faqItem[open] .faqQuestion::after {
-  content: '−';
-  transform: rotate(180deg);
-}
-
-.faqAnswer {
-  padding: 0 0 28px 0;
-  font-size: 1rem;
-  color: var(--text-2);
-  line-height: 1.7;
-}
-
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 1024px) {
   .heroGrid { grid-template-columns: 1fr; gap: 48px; }
   .heroLeft { max-width: 100%; text-align: center; }
-  .heroBadge { margin-inline: auto; }
   .heroCtas { justify-content: center; }
   .bentoGrid { grid-template-columns: repeat(2, 1fr); }
-  .resourceGrid { grid-template-columns: repeat(2, 1fr); }
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -515,7 +328,5 @@
   .heroTitle { font-size: 2.2rem; }
   .bentoGrid { grid-template-columns: 1fr; }
   .bentoLarge, .bentoWide { grid-column: span 1; grid-row: auto; }
-  .resourceGrid { grid-template-columns: 1fr; }
   .statsGrid { grid-template-columns: 1fr; }
-  .widgetRow { flex-direction: column; }
 }

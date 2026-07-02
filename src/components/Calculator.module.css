@@ -1,7 +1,7 @@
 .calcWidget {
   position: fixed;
   width: 280px;
-  background: var(--surface-1);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -28,9 +28,12 @@
 .closeBtn {
   background: none;
   border: none;
-  color: var(--text-muted);
-  font-size: 1.2rem;
+  color: var(--text-3);
+  font-size: 1.4rem;
+  line-height: 1;
   cursor: pointer;
+  padding: 4px;
+  margin: -4px;
 }
 .closeBtn:hover {
   color: var(--text);
@@ -44,23 +47,38 @@
   padding: 12px;
   text-align: right;
   margin-bottom: 16px;
-  min-height: 70px;
+  height: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 4px;
   border: 1px solid var(--border);
+  overflow: hidden;
 }
 .expr {
-  color: var(--text-muted);
-  font-size: 1rem;
-  min-height: 1.5em;
-  word-wrap: break-word;
+  color: var(--text-3);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.expr::-webkit-scrollbar {
+  display: none;
 }
 .res {
   color: var(--text);
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 600;
-  min-height: 1.5em;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.res::-webkit-scrollbar {
+  display: none;
 }
 .keypad {
   display: grid;

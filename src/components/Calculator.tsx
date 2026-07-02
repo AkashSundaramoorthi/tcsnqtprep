@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import styles from './Calculator.module.css';
 
 export default function Calculator({ onClose }: { onClose: () => void }) {
@@ -7,6 +7,14 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
   const [isDragging, setIsDragging] = useState(false);
   const [pos, setPos] = useState({ x: window.innerWidth - 320, y: 100 });
   const dragRef = useRef<{ startX: number; startY: number; initX: number; initY: number } | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     setIsDragging(true);
@@ -77,7 +85,16 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
         onPointerUp={handlePointerUp}
       >
         <span>Calculator</span>
-        <button className={styles.closeBtn} onClick={onClose} aria-label="Close">×</button>
+        <button 
+          className={styles.closeBtn} 
+          onPointerDown={(e) => {
+            e.stopPropagation(); // Prevent drag from capturing the pointer
+            onClose();
+          }}
+          aria-label="Close"
+        >
+          ×
+        </button>
       </div>
       <div className={styles.calcBody}>
         <div className={styles.display}>

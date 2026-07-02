@@ -441,9 +441,10 @@
 
 /* Shared solution block */
 .solBlock, .exampleSol {
-  background: rgba(139, 92, 246, 0.06);
-  border: 1px solid rgba(139, 92, 246, 0.18);
-  border-radius: var(--radius);
+  background: transparent;
+  border: none;
+  border-left: 2px solid rgba(139, 92, 246, 0.4);
+  border-radius: 0;
   overflow: hidden;
   animation: fadeUp 0.2s ease;
 }
@@ -480,8 +481,8 @@
 
 /* ─── Formula Strip ──────────────────────────────────────── */
 .formulaStrip {
-  background: linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(59,130,246,0.06) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
@@ -572,21 +573,21 @@
 }
 
 .diffEasy {
-  background: rgba(34, 197, 94, 0.12);
+  background: transparent;
   color: var(--green);
-  border: 1px solid rgba(34, 197, 94, 0.25);
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .diffMedium {
-  background: rgba(245, 158, 11, 0.1);
+  background: transparent;
   color: var(--yellow);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .diffHard {
-  background: rgba(239, 68, 68, 0.1);
+  background: transparent;
   color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 /* ─── Step-by-step reveal ────────────────────────────────── */

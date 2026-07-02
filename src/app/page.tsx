@@ -23,10 +23,68 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { value: "120+", label: "Practice Questions", sub: "Covering all TCS NQT topics" },
-  { value: "50+", label: "Coding Problems", sub: "With in-browser compilation" },
-  { value: "80", label: "Mock Test Questions", sub: "Full timed simulation" },
-  { value: "1", label: "Formula Cheat Sheet", sub: "Downloadable PDF guide" },
+  { value: "50", label: "Coding Problems" },
+  { value: "6", label: "Languages" },
+  { value: "30", label: "Aptitude Topics" },
+  { value: "120+", label: "Previous Year Qs" },
+];
+
+const FEATURES = [
+  {
+    title: "Coding Practice",
+    desc: "48 problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser — no setup needed.",
+    href: "/coding",
+    badge: "50 Problems · 6 Languages",
+    badgeClass: "badge-easy",
+    num: "01",
+  },
+  {
+    title: "Aptitude Guide",
+    desc: "30 topics covering Numerical, Verbal, Reasoning, and Advanced sections. Step-by-step method guides with solved practice problems for each topic.",
+    href: "/aptitude",
+    badge: "30 Topics",
+    badgeClass: "badge-numerical",
+    num: "02",
+  },
+  {
+    title: "Mock Exam",
+    desc: "80 questions across Numerical, Reasoning, Verbal, and Advanced — plus 2 live coding problems. Full NQT simulation with timed, sequentially-locked sections and a detailed results screen.",
+    href: "/exam",
+    badge: "80 Qs + Coding · 190 min",
+    badgeClass: "badge-hard",
+    num: "03",
+  },
+  {
+    title: "Previous Year Questions",
+    desc: "Curated PYQs from past TCS NQT exams across all sections — Numerical, Verbal, Reasoning, Coding, and Advanced — with worked solutions.",
+    href: "/pyq",
+    badge: "120+ PYQs",
+    badgeClass: "badge-reasoning",
+    num: "04",
+  },
+];
+
+const STEPS = [
+  {
+    step: "01",
+    title: "Study the aptitude methods",
+    body: "Don't just memorise formulas. Each topic has a method guide that shows you how to think through the problem type.",
+  },
+  {
+    step: "02",
+    title: "Practice coding daily",
+    body: "Pick a few problems each day. Run them against test cases. The in-browser IDE supports all NQT-allowed languages.",
+  },
+  {
+    step: "03",
+    title: "Go through PYQs",
+    body: "Past questions repeat patterns. Study them with solutions — understanding the reasoning matters more than the answer.",
+  },
+  {
+    step: "04",
+    title: "Simulate with the mock exam",
+    body: "Take the 20-minute mock under real conditions. Review every wrong answer. Repeat until you're consistently above 60%.",
+  },
 ];
 
 const STRUCTURED_DATA = {
@@ -48,17 +106,20 @@ export default function HomePage() {
       <section className={styles.hero}>
         <div className={`container ${styles.heroGrid}`}>
           <div className={`${styles.heroLeft} fade-up`}>
-            <h1 className={styles.heroTitle}>Everything You Need to Crack TCS NQT</h1>
-            <p className={styles.heroSub}>
-              Practice TCS NQT aptitude, coding, mock tests, previous year questions, downloadable formula sheets, and preparation resources—all in one place.
+            <h1 className={styles.heroTitle}>
+              Crack TCS NQT.<br />
+              <span className="gradient-text">Prepare smart. Score high.</span>
+            </h1>
+            <p className={`${styles.heroSub} fade-up fade-up-2`}>
+              Coding problems with a real in-browser IDE, aptitude method guides, previous year questions with solutions, and a timed mock exam. Everything you need, nothing you don&apos;t.
             </p>
             <div className={styles.heroCtas}>
               <Link href="/coding" className="btn btn-primary">
-                <Play size={16} /> Start Practicing
+                Open Coding IDE
               </Link>
-              <a href="/assets/TCS-NQT-Formula-Cheat-Sheet.pdf" download className="btn btn-ghost">
-                <Download size={16} /> Download Formula Sheet
-              </a>
+              <Link href="/exam" className="btn btn-ghost">
+                Start Mock Exam →
+              </Link>
             </div>
           </div>
           
@@ -75,87 +136,62 @@ export default function HomePage() {
               <div key={i} className={styles.statCard}>
                 <div className={styles.statValue}>{s.value}</div>
                 <div className={styles.statLabel}>{s.label}</div>
-                <div className={styles.statSub}>{s.sub}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className={styles.bento}>
+      <section className={styles.features}>
         <div className="container">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Complete Preparation Toolkit</h2>
-            <p className={styles.sectionSub}>A structured set of resources designed specifically for the TCS NQT pattern.</p>
+            <h2 className={styles.sectionTitle}>What&apos;s inside</h2>
+            <p className={styles.sectionSub}>Four focused tools, one goal: get you through the NQT.</p>
           </div>
-          <div className={styles.bentoGrid}>
-             <div className={`${styles.bentoCard} ${styles.bentoLarge}`}>
-                <div className={styles.bentoContent}>
-                   <h3>Structured Roadmap</h3>
-                   <p>A step-by-step curriculum that goes from basic aptitude concepts to advanced coding in 30 days.</p>
-                </div>
-                <div className={styles.bentoArt}>
-                   <div className={styles.bentoRoadmapArt}>
-                      <div className={styles.bLine}></div>
-                      <div className={`${styles.bNode} ${styles.bNodeActive}`}>
-                         <div className={styles.bNodeTooltip}>Day 12: Percentages</div>
-                      </div>
-                      <div className={styles.bNode}></div>
-                      <div className={styles.bNode}></div>
-                   </div>
-                </div>
-             </div>
-             
-             <div className={styles.bentoCard}>
-                <div className={styles.bentoContent}>
-                   <h3>Built-in IDE</h3>
-                   <p>Write, compile, and run code directly in the browser.</p>
-                </div>
-                <div className={styles.bentoArtMini}>
-                   <pre className={styles.miniIde}><code><span className={styles.keyword}>int</span> <span className={styles.function}>main</span>() {'{\n'}  <span className={styles.builtin}>printf</span>(<span className={styles.string}>"Hello"</span>);{'\n}'}</code></pre>
-                </div>
-             </div>
 
-             <div className={styles.bentoCard}>
-                <div className={styles.bentoContent}>
-                   <h3>Full Mock Tests</h3>
-                   <p>Simulate the exact 190-minute timed environment.</p>
+          <div className={styles.featuresGrid}>
+            {FEATURES.map((f, i) => (
+              <Link key={i} href={f.href} className={styles.featureCard}>
+                <div className={styles.featureNum}>{f.num}</div>
+                <div className={styles.featureBody}>
+                  <div className={styles.featureTop}>
+                    <h3 className={styles.featureTitle}>{f.title}</h3>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-3)' }}>{f.badge}</span>
+                  </div>
+                  <p className={styles.featureDesc}>{f.desc}</p>
                 </div>
-                <div className={styles.bentoArtMini}>
-                   <div className={styles.miniMock}>
-                      <div className={styles.miniRadio}></div>
-                      <div className={`${styles.miniRadio} ${styles.miniRadioActive}`}></div>
-                      <div className={styles.miniRadio}></div>
-                   </div>
-                </div>
-             </div>
+                <span className={styles.featureArrow}>→</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
-             <div className={styles.bentoCard}>
-                <div className={styles.bentoContent}>
-                   <h3>Formula Sheets</h3>
-                   <p>Downloadable PDFs for quick revision.</p>
+      <section className={styles.plan}>
+        <div className="container">
+          <div className={styles.planGrid}>
+            <div className={styles.planText}>
+              <h2 className={styles.planTitle}>Suggested study plan</h2>
+              <p className={styles.planSub}>
+                Most students have 2–4 weeks before the NQT. Here&apos;s a
+                structure that actually works.
+              </p>
+              <Link href="/about" className={styles.planLink}>
+                Read about the exam structure →
+              </Link>
+            </div>
+
+            <div className={styles.planSteps}>
+              {STEPS.map((s) => (
+                <div key={s.step} className={styles.step}>
+                  <span className={styles.stepNum}>{s.step}</span>
+                  <div className={styles.stepContent}>
+                    <h4 className={styles.stepTitle}>{s.title}</h4>
+                    <p className={styles.stepBody}>{s.body}</p>
+                  </div>
                 </div>
-                <div className={styles.bentoArtMini}>
-                   <div className={styles.miniPdf}>
-                      <div className={styles.miniPdfLine}></div>
-                      <div className={styles.miniPdfLine}></div>
-                      <div className={`${styles.miniPdfLine} ${styles.miniPdfLineShort}`}></div>
-                   </div>
-                </div>
-             </div>
-             
-             <div className={`${styles.bentoCard} ${styles.bentoWide}`}>
-                <div className={styles.bentoContent}>
-                   <h3>Interview Preparation</h3>
-                   <p>Past interview experiences, HR questions, and technical deep-dives to clear the final round.</p>
-                </div>
-                <div className={styles.bentoArtMiniWide}>
-                   <div className={styles.miniChat}>
-                      <div className={styles.miniMsg}>Explain Polymorphism.</div>
-                      <div className={`${styles.miniMsg} ${styles.miniMsgReply}`}>It allows objects to...</div>
-                   </div>
-                </div>
-             </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

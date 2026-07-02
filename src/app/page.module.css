@@ -11,7 +11,7 @@
 
 .heroGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 64px;
   align-items: center;
 }
@@ -44,6 +44,7 @@
 
 /* Browser Window Mockup (Right Side) */
 .browserWindow {
+  width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -118,7 +119,8 @@
   display: flex;
   background: #0B0B0F;
   color: #c9d1d9;
-  min-height: 280px;
+  height: 340px;
+  overflow: hidden;
 }
 
 /* IDE Mockup */
@@ -128,15 +130,15 @@
 }
 
 .ideSidebar {
-  width: 120px;
+  width: 110px;
   border-right: 1px solid var(--border);
   padding: 12px 0;
   background: var(--surface-2);
 }
 
 .ideFile {
-  padding: 6px 16px;
-  font-size: 0.75rem;
+  padding: 6px 14px;
+  font-size: 0.7rem;
   color: var(--text-3);
   cursor: default;
 }
@@ -148,10 +150,10 @@
 }
 
 .ideEditor {
-  padding: 16px;
+  padding: 20px;
   flex: 1;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   line-height: 1.6;
   overflow-x: auto;
   position: relative;
@@ -170,7 +172,7 @@
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  margin-top: 16px;
+  margin-top: 12px;
   overflow: hidden;
 }
 .ideOutputHeader {
@@ -186,7 +188,7 @@
 .outputIcon { color: var(--green); }
 .ideOutputBody {
   padding: 8px;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #a5d6ff;
 }
 
@@ -233,15 +235,8 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 32px 24px;
+  padding: 24px;
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.statCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
 }
 
 .statValue {
@@ -267,10 +262,8 @@
 
 /* ── Common Sections ────────────────────────────── */
 .sectionHead {
-  text-align: center;
-  margin-bottom: 64px;
-  max-width: 600px;
-  margin-inline: auto;
+  margin-bottom: 48px;
+  max-width: 680px;
 }
 
 .sectionTitle {
@@ -286,113 +279,172 @@
   line-height: 1.6;
 }
 
-/* ── Bento (Complete Preparation Toolkit) ───────────────────────── */
-.bento {
-  padding: 0 0 120px;
+/* ── Features ────────────────────────────────────── */
+.features {
+  padding: 0 0 100px;
 }
 
-.bentoGrid {
+.featuresGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  grid-auto-rows: minmax(200px, auto);
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.bentoCard {
+.featureCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 36px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
+  text-decoration: none;
   position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.bentoCard:hover {
-  box-shadow: var(--shadow);
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
+.featureCard:hover .featureTitle {
+  color: var(--accent);
 }
 
-.bentoLarge {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.bentoWide {
-  grid-column: span 2;
-}
-
-.bentoContent h3 {
-  font-size: 1.3rem;
+.featureNum {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 12px;
+  color: var(--text-3);
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.featureBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.featureTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.featureTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--text);
   letter-spacing: -0.01em;
 }
 
-.bentoContent p {
+.featureDesc {
+  font-size: 0.9rem;
   color: var(--text-2);
+  line-height: 1.65;
+}
+
+.featureArrow {
+  color: var(--text-3);
   font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 24px;
+  flex-shrink: 0;
+  transition: transform 0.2s, color 0.2s;
+  margin-top: 2px;
 }
 
-.bentoArt { margin-top: auto; padding-top: 20px; display: flex; align-items: center; justify-content: center; }
-.bentoArtMini { margin-top: auto; padding-top: 10px; }
-.bentoArtMiniWide { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: flex-start; }
+.featureCard:hover .featureArrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
 
-/* Roadmap Art */
-.bentoRoadmapArt {
+/* ── Study Plan ──────────────────────────────────── */
+.plan {
+  padding: 0 0 100px;
+}
+
+.planGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.planTitle {
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
+
+.planSub {
+  font-size: 1rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.planLink {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.planLink:hover { opacity: 0.75; }
+
+.planSteps {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  width: 100%;
-  max-width: 280px;
+  flex-direction: column;
+  gap: 0;
 }
-.bLine { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--border); z-index: 1; }
-.bNode { width: 16px; height: 16px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--border); z-index: 2; position: relative; }
-.bNodeActive { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-dim); }
-.bNodeTooltip { position: absolute; top: -36px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--surface); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap; font-weight: 500; }
-.bNodeTooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 4px 4px 0; border-style: solid; border-color: var(--text) transparent transparent; }
 
-/* Mini IDE Art */
-.miniIde { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; font-family: var(--font-mono); font-size: 0.75rem; color: #c9d1d9; }
-.string { color: #a5d6ff; }
+.step {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
 
-/* Mini Mock Art */
-.miniMock { display: flex; flex-direction: column; gap: 8px; }
-.miniRadio { height: 12px; width: 100%; max-width: 120px; background: var(--surface-2); border-radius: 99px; }
-.miniRadioActive { background: var(--accent-dim); border: 1px solid var(--accent); }
+.step:last-child {
+  border-bottom: none;
+}
 
-/* Mini PDF Art */
-.miniPdf { background: #ffffff; padding: 12px; border-radius: 4px; width: 80px; height: 100px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: rotate(-5deg); transition: transform 0.2s; }
-.bentoCard:hover .miniPdf { transform: rotate(0deg) scale(1.05); }
-.miniPdfLine { height: 4px; background: #e5e5e5; border-radius: 2px; }
-.miniPdfLineShort { width: 60%; }
+.stepNum {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-3);
+  width: 28px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
 
-/* Mini Chat Art */
-.miniChat { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 200px; }
-.miniMsg { background: var(--surface-2); padding: 8px 12px; border-radius: 12px; border-bottom-left-radius: 2px; font-size: 0.75rem; color: var(--text-2); align-self: flex-start; }
-.miniMsgReply { background: var(--accent); color: #fff; border-bottom-left-radius: 12px; border-bottom-right-radius: 2px; align-self: flex-end; }
+.stepContent { flex: 1; }
+
+.stepTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.stepBody {
+  font-size: 0.875rem;
+  color: var(--text-2);
+  line-height: 1.65;
+}
 
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 1024px) {
   .heroGrid { grid-template-columns: 1fr; gap: 48px; }
   .heroLeft { max-width: 100%; text-align: center; }
   .heroCtas { justify-content: center; }
-  .bentoGrid { grid-template-columns: repeat(2, 1fr); }
+  .planGrid { grid-template-columns: 1fr; gap: 40px; }
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
   .hero { padding: 80px 0 60px; }
   .heroTitle { font-size: 2.2rem; }
-  .bentoGrid { grid-template-columns: 1fr; }
-  .bentoLarge, .bentoWide { grid-column: span 1; grid-row: auto; }
+  .featuresGrid { grid-template-columns: 1fr; }
+  
   .statsGrid { grid-template-columns: 1fr; }
 }

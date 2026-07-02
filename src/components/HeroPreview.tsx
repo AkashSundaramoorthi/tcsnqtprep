@@ -32,33 +32,24 @@ export default function HeroPreview() {
           >
             Formula Sheet
           </button>
-          <button 
-            className={`${styles.browserTab} ${activeTab === "calc" ? styles.activeTab : ""}`}
-            onClick={() => setActiveTab("calc")}
-          >
-            Calculator
-          </button>
+
         </div>
       </div>
 
       <div className={styles.browserBody}>
         {activeTab === "ide" && (
           <div className={styles.ideMockup}>
-            <div className={styles.ideSidebar}>
-              <div className={`${styles.ideFile} ${styles.ideFileActive}`}>main.py</div>
-              <div className={styles.ideFile}>solution.js</div>
-            </div>
             <div className={styles.ideEditor}>
               <pre><code>
-<span className={styles.keyword}>def</span> <span className={styles.function}>solve_nqt</span>(arr):
-    <span className={styles.comment}># Find the maximum element</span>
-    <span className={styles.keyword}>return</span> <span className={styles.builtin}>max</span>(arr)
-
-<span className={styles.builtin}>print</span>(solve_nqt([<span className={styles.number}>10</span>, <span className={styles.number}>24</span>, <span className={styles.number}>8</span>]))
+                <span className={styles.keyword}>def</span> <span className={styles.function}>check_odd_even</span>(n):{"\n"}
+                {"    "}<span className={styles.keyword}>if</span> n % <span className={styles.number}>2</span> == <span className={styles.number}>0</span>:{"\n"}
+                {"        "}<span className={styles.keyword}>return</span> <span className={styles.string}>"Even"</span>{"\n"}
+                {"    "}<span className={styles.keyword}>return</span> <span className={styles.string}>"Odd"</span>{"\n\n"}
+                <span className={styles.builtin}>print</span>(check_odd_even(<span className={styles.number}>10</span>))
               </code></pre>
               <div className={styles.ideOutput}>
                 <div className={styles.ideOutputHeader}><Play size={12} className={styles.outputIcon} /> Output</div>
-                <div className={styles.ideOutputBody}>24</div>
+                <div className={styles.ideOutputBody}>Even</div>
               </div>
             </div>
           </div>
@@ -101,18 +92,7 @@ export default function HeroPreview() {
           </div>
         )}
 
-        {activeTab === "calc" && (
-          <div className={styles.calcMockup}>
-            <div className={styles.calcInner}>
-              <div className={styles.calcDisplay}>1024</div>
-              <div className={styles.calcGrid}>
-                {["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].map(btn => (
-                  <div key={btn} className={`${styles.calcBtn} ${["/","*","-","+","="].includes(btn) ? styles.calcBtnOp : ""}`}>{btn}</div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+
       </div>
     </div>
   );

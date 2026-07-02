@@ -94,7 +94,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
       />
 
-      {/* ── Hero ── */}
+      
       <section className={styles.hero}>
         <div className={`container ${styles.heroInner}`}>
           <div className={`${styles.heroBadge} fade-up`}>
@@ -124,7 +124,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
+      
       <section className={styles.stats}>
         <div className="container">
           <div className={styles.statsGrid}>
@@ -139,7 +139,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Features ── */}
+      
       <section className={styles.features}>
         <div className="container">
           <div className={styles.sectionHead}>
@@ -165,7 +165,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Study plan ── */}
+      
       <section className={styles.plan}>
         <div className="container">
           <div className={styles.planGrid}>

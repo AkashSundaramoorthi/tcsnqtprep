@@ -209,7 +209,7 @@ export default function CodingClient({ questions }: Props) {
       setDone(JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"));
       setSolutions(JSON.parse(localStorage.getItem(SOLUTIONS_KEY) || "{}"));
       setHintsRevealed(JSON.parse(localStorage.getItem("tcs-nqt-coding-hints") || "{}"));
-    } catch { /* empty */ }
+    } catch {  }
   }, []);
 
   const saveDone = (d: Record<number, boolean>) => {
@@ -327,7 +327,7 @@ export default function CodingClient({ questions }: Props) {
         gridTemplateColumns: sidebarOpen ? "248px 1fr" : "0 1fr",
       }}
     >
-      {/* ── Problem list sidebar ── */}
+      
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHead}>
           <h1 className={styles.sidebarTitle}>Coding</h1>
@@ -385,7 +385,7 @@ export default function CodingClient({ questions }: Props) {
         </ul>
       </aside>
 
-      {/* ── Main content ── */}
+      
       {!selected ? (
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>{"{ }"}</div>
@@ -402,7 +402,7 @@ export default function CodingClient({ questions }: Props) {
         </div>
       ) : (
         <div className={styles.splitPane}>
-          {/* ── Problem panel ── */}
+          
           <div className={styles.problemPane}>
             <div className={styles.problemNav}>
               <button
@@ -527,7 +527,7 @@ export default function CodingClient({ questions }: Props) {
             )}
           </div>
 
-          {/* ── Editor panel ── */}
+          
           <div className={styles.editorPane}>
             {confirmLangSwitch && (
               <div style={{ padding: "12px 16px", background: "rgba(239, 68, 68, 0.1)", borderBottom: "1px solid rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -547,7 +547,7 @@ export default function CodingClient({ questions }: Props) {
                 </div>
               </div>
             )}
-            {/* Language selector + action buttons */}
+            
             <div className={styles.langBar}>
               {(Object.entries(LANG_LABELS) as [Lang, string][]).map(([l, label]) => (
                 <button
@@ -585,7 +585,7 @@ export default function CodingClient({ questions }: Props) {
               )}
             </div>
 
-            {/* CodeMirror fills flex space */}
+            
             <div className={styles.editorWrap}>
               <CodeEditor
                 value={code}
@@ -595,7 +595,7 @@ export default function CodingClient({ questions }: Props) {
               />
             </div>
 
-            {/* I/O panel with tabs */}
+            
             <div className={styles.ioPanel}>
               <div className={styles.ioTabs}>
                 <button
@@ -621,7 +621,7 @@ export default function CodingClient({ questions }: Props) {
                 {activePanel === "output" ? (
                   <pre className={styles.outputPre}>{output || "Run your code to see output here."}</pre>
                 ) : results.length === 0 ? (
-                  /* ── Pre-submit: input editor (LeetCode style) ── */
+                  
                   <div className={styles.testInputView}>
                     <div className={styles.casePills}>
                       {selected.tests.map((t, i) => !t.hidden && (
@@ -652,7 +652,7 @@ export default function CodingClient({ questions }: Props) {
                     )}
                   </div>
                 ) : (
-                  /* ── Post-submit: results per case ── */
+                  
                   <div className={styles.testResultView}>
                     <div className={styles.casePills}>
                       {results.map((r, i) => !selected.tests[i].hidden && (

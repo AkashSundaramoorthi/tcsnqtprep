@@ -171,7 +171,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
   return (
     <div className={s.shell}>
 
-      {/* ── Top bar ──────────────────────────────────────── */}
+      
       <div className={s.topBar}>
         <div>
           <h1 className={s.pageTitle}>Aptitude Guide</h1>
@@ -194,7 +194,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
         </div>
       </div>
 
-      {/* ── Mobile toggle ────────────────────────────────── */}
+      
       <div className={s.mobileToggle}>
         <button
           className={`${s.toggleBtn} ${mobilePanel === "list" ? s.toggleActive : ""}`}
@@ -206,10 +206,10 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
         >{active.title.split("—")[0].trim()}</button>
       </div>
 
-      {/* ── Two-panel layout ─────────────────────────────── */}
+      
       <div className={s.layout}>
 
-        {/* LEFT — Sidebar */}
+        
         <aside className={`${s.sidebar} ${mobilePanel === "list" ? s.sidebarVisible : s.sidebarHidden}`}>
           <div className={s.catFilters}>
             {CATS.map(c => (
@@ -236,10 +236,10 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
           </div>
         </aside>
 
-        {/* RIGHT — Content panel */}
+        
         <main className={`${s.content} ${mobilePanel === "content" ? s.contentVisible : s.contentHidden}`}>
 
-          {/* Header */}
+          
           <div className={s.contentHeader}>
             <div className={s.contentHeaderLeft}>
               <span className={`badge ${CAT_BADGE[active.cat]}`}>{active.cat}</span>
@@ -254,7 +254,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
             </button>
           </div>
 
-          {/* ── Formula Strip ── */}
+          
           <section className={s.formulaStrip}>
             <div className={s.formulaHeader}>
               <span className={s.formulaLabel}>Key Formulas</span>
@@ -270,7 +270,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
             </div>
           </section>
 
-          {/* ── Method ── */}
+          
           <section className={s.section}>
             <h3 className={s.sectionLabel}>Method — Step by Step</h3>
             <ol className={s.methodList}>
@@ -283,7 +283,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
             </ol>
           </section>
 
-          {/* ── Worked Example — always visible ── */}
+          
           <section className={s.section}>
             <h3 className={s.sectionLabel}>Worked Example</h3>
             <div className={s.exampleCard}>
@@ -299,7 +299,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
             </div>
           </section>
 
-          {/* ── Practice Problems ── */}
+          
           <section className={s.section}>
             <div className={s.probHeader}>
               <h3 className={s.sectionLabel}>Practice Problems</h3>

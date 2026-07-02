@@ -17,7 +17,7 @@ export default function AboutPage() {
       </div>
 
       <div className={styles.sections}>
-        {/* Creator Section */}
+        
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionIcon}>👨‍💻</div>
@@ -55,7 +55,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* TCS NQT Info Section */}
+        
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionIcon}>🏢</div>

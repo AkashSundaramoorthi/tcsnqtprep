@@ -104,7 +104,7 @@ const customTheme = EditorView.theme({
     color: "#4fc1ff !important",
   },
   ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionIcon": {
-    /* Optional: keep them colored or turn them white? Let's keep them colored for VS Code accuracy, just pop opacity to 1 if it wasn't */
+    
     opacity: "1 !important",
   },
   ".cm-completionDetail": {

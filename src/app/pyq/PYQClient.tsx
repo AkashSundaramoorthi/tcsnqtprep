@@ -125,7 +125,7 @@ function MCQCard({
         </button>
       </div>
 
-      {/* MCQ option buttons */}
+      
       <div className={styles.optGrid}>
         {item.opts.map((opt, oi) => {
           const isCorrect = oi === item.answer;
@@ -325,7 +325,7 @@ export default function PYQClient() {
         </div>
       </div>
 
-      {/* Section filters */}
+      
       <div className="filter-group" style={{ marginBottom: 12 }}>
         <button
           className={`filter-pill ${showBookmarkedOnly ? styles.active : ""}`}
@@ -350,7 +350,7 @@ export default function PYQClient() {
         ))}
       </div>
 
-      {/* Difficulty filters */}
+      
       <div className="filter-group" style={{ marginBottom: 36 }}>
         {['All', 'Easy', 'Medium', 'Hard'].map((diff) => (
           <button
@@ -363,7 +363,7 @@ export default function PYQClient() {
         ))}
       </div>
 
-      {/* Sections */}
+      
       <div className={styles.sections}>
         {visibleSections.map((section) => {
           const realIdx = section.realIdx;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { DashboardData } from "@/lib/admin-analytics";
 
 function mask(value: string | null | undefined, head = 8) {
@@ -42,41 +42,26 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
   const [data, setData] = useState(initialData);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [refreshing, setRefreshing] = useState(false);
-  const scrollPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-
-  const restoreScroll = useCallback(() => {
-    if (typeof window === "undefined") return;
-    window.requestAnimationFrame(() => {
-      window.scrollTo(scrollPositionRef.current.x, scrollPositionRef.current.y);
-    });
-  }, []);
+  const [sessionLost, setSessionLost] = useState(false);
 
   const refresh = useCallback(async () => {
     try {
-      if (typeof window !== "undefined") {
-        scrollPositionRef.current = {
-          x: window.scrollX,
-          y: window.scrollY,
-        };
-      }
       setRefreshing(true);
       const res = await fetch("/api/admin/analytics/live", { cache: "no-store" });
       if (res.status === 404 || res.status === 401) {
-        window.location.href = "/admin/analytics";
+        setSessionLost(true);
         return;
       }
       if (!res.ok) return;
       const next = (await res.json()) as DashboardData;
       setData(next);
       setLastUpdated(new Date());
-      restoreScroll();
     } catch {
       // silent
     } finally {
       setRefreshing(false);
-      restoreScroll();
     }
-  }, [restoreScroll]);
+  }, []);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -107,6 +92,11 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
         <div>
           <h1>Analytics Control Panel</h1>
           <p style={{ marginTop: 6, color: "var(--text-2)" }}>{topSummary}</p>
+          {sessionLost ? (
+            <p style={{ marginTop: 6, color: "var(--orange)" }}>
+              Live session check failed. Refresh the page if you want to re-authenticate.
+            </p>
+          ) : null}
           {data.loadError ? (
             <p style={{ marginTop: 6, color: "var(--red)" }}>
               Some sections could not be loaded. Check database connectivity and schema.

@@ -127,6 +127,13 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
         <CountCard title="Total Events (all-time)" value={data.totalEvents} />
         <CountCard title="Page Views (7d)" value={data.pageViews7d} />
         <CountCard title="Page Views (30d)" value={data.pageViews30d} />
+        <CountCard title="Coding Completed" value={data.codingCompletedTotal} subtitle="All-time" />
+        <CountCard title="PYQ Papers Taken" value={data.pyqTakenTotal} subtitle="All-time" />
+        <CountCard
+          title="Average Exam Score"
+          value={Math.round(data.averageExamScore)}
+          subtitle={`${data.averageExamPercentage.toFixed(1)}% avg percentage`}
+        />
         <CountCard title="Unique IPs (7d)" value={data.uniqueIp7d} />
         <CountCard title="Unique IPs (30d)" value={data.uniqueIp30d} />
         <CountCard title="Unique Fingerprints (7d)" value={data.uniqueFingerprint7d} />

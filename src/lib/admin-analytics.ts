@@ -15,6 +15,10 @@ export type DashboardData = {
   totalEvents: number;
   pageViews7d: number;
   pageViews30d: number;
+  codingCompletedTotal: number;
+  pyqTakenTotal: number;
+  averageExamScore: number;
+  averageExamPercentage: number;
   uniqueIp7d: number;
   uniqueIp30d: number;
   uniqueFingerprint7d: number;
@@ -35,6 +39,10 @@ export async function loadDashboardData(client: { sql: any }): Promise<Dashboard
     totalEvents: 0,
     pageViews7d: 0,
     pageViews30d: 0,
+    codingCompletedTotal: 0,
+    pyqTakenTotal: 0,
+    averageExamScore: 0,
+    averageExamPercentage: 0,
     uniqueIp7d: 0,
     uniqueIp30d: 0,
     uniqueFingerprint7d: 0,
@@ -59,6 +67,22 @@ export async function loadDashboardData(client: { sql: any }): Promise<Dashboard
 
     const pv30Res = await client.sql`SELECT COUNT(*)::int AS cnt FROM events WHERE event_name = 'page_view' AND COALESCE(properties->>'path', '') NOT LIKE '/admin%' AND created_at > now() - interval '30 days'`;
     data.pageViews30d = (pv30Res.rows as CountRow[])[0]?.cnt ?? 0;
+
+    const codingCompletedRes = await client.sql`SELECT COUNT(*)::int AS cnt FROM events WHERE event_name = 'coding_problem_completed'`;
+    data.codingCompletedTotal = (codingCompletedRes.rows as CountRow[])[0]?.cnt ?? 0;
+
+    const pyqTakenRes = await client.sql`SELECT COUNT(*)::int AS cnt FROM events WHERE event_name = 'pyq_paper_viewed'`;
+    data.pyqTakenTotal = (pyqTakenRes.rows as CountRow[])[0]?.cnt ?? 0;
+
+    const avgExamScoreRes = await client.sql`
+      SELECT
+        COALESCE(AVG((properties->>'score')::numeric), 0)::float8 AS score_avg,
+        COALESCE(AVG((properties->>'percentage')::numeric), 0)::float8 AS pct_avg
+      FROM events
+      WHERE event_name = 'exam_completed'
+    `;
+    data.averageExamScore = Number(avgExamScoreRes.rows[0]?.score_avg ?? 0);
+    data.averageExamPercentage = Number(avgExamScoreRes.rows[0]?.pct_avg ?? 0);
 
     const uniqueIp7dRes = await client.sql`SELECT COUNT(DISTINCT ip_address)::int AS cnt FROM events WHERE ip_address IS NOT NULL AND NOT (event_name = 'page_view' AND COALESCE(properties->>'path', '') LIKE '/admin%') AND created_at > now() - interval '7 days'`;
     data.uniqueIp7d = (uniqueIp7dRes.rows as CountRow[])[0]?.cnt ?? 0;

@@ -5,14 +5,8 @@ import type { DashboardData } from "@/lib/admin-analytics";
 
 function mask(str: string | null, len: number) {
   if (!str) return "(unknown)";
-  
-  // If it looks like an IPv4 address, mask the last two octets (e.g. 192.168.x.x)
-  if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(str)) {
-    const parts = str.split('.');
-    return `${parts[0]}.${parts[1]}.***.***`;
-  }
-  
-  return str.length > len ? str.slice(0, len) + "…" : str;
+  // Masking temporarily disabled for testing
+  return str;
 }
 
 function parseFingerprint(fp: string | null | undefined) {

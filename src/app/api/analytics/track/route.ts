@@ -54,8 +54,16 @@ export async function POST(req: Request) {
     const ipAddress = forwardedFor?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || null;
     const userAgent = req.headers.get('user-agent') || null;
 
+    const KNOWN_BOT_IPS = new Set([
+      '54.183.149.156', '13.57.148.235', '66.249.70.2', '66.249.70.3', '35.177.207.241', '18.130.228.32'
+    ]);
+
     // Drop automated bots and health checks silently
-    if (!userAgent || /bot|crawler|spider|crawling|slurp|headless|postman|curl|wget|aws|python|ruby|java|go-http|httpclient|vercel/i.test(userAgent)) {
+    if (
+      !userAgent || 
+      /bot|crawler|spider|crawling|slurp|headless|postman|curl|wget|aws|python|ruby|java|go-http|httpclient|vercel/i.test(userAgent) ||
+      (ipAddress && KNOWN_BOT_IPS.has(ipAddress))
+    ) {
       return NextResponse.json({ ok: true });
     }
 

@@ -17,6 +17,7 @@
     "@next/font": "^14.2.15",
     "@replit/codemirror-lang-csharp": "^6.2.0",
     "@types/canvas-confetti": "^1.9.0",
+    "@vercel/analytics": "^2.0.1",
     "canvas-confetti": "^1.9.4",
     "codemirror": "^6.0.2",
     "geist": "^1.7.2",

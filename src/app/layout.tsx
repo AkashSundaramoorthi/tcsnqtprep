@@ -8,6 +8,7 @@ const jbMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from '@vercel/analytics/next';
+import AnalyticsClient from '@/components/AnalyticsClient';
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcsnqtprep.vercel.app"),
@@ -82,6 +83,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <Analytics />
+        <AnalyticsClient />
       </body>
     </html>
   );

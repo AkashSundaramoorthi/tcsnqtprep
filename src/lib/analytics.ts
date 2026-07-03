@@ -108,6 +108,14 @@ function getClientContext(): ClientContext {
 export function trackEvent<Name extends EventName>(name: Name, properties?: EventMap[Name]): void {
   if (!isProduction) return;
   try {
+    if (
+      name === "page_view" &&
+      typeof (properties as { path?: string } | undefined)?.path === "string" &&
+      (properties as { path?: string }).path!.startsWith("/admin")
+    ) {
+      return;
+    }
+
     const context = getClientContext();
     // fire-and-forget; do not await
     void fetch('/api/analytics/track', {

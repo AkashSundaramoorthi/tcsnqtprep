@@ -36,6 +36,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 
+    if (
+      eventName === 'page_view' &&
+      typeof properties?.path === 'string' &&
+      properties.path.startsWith('/admin')
+    ) {
+      return NextResponse.json({ ok: true });
+    }
+
     // Prevent explicit identity fields in custom properties
     if (properties && (properties.userId || properties.email)) {
       delete properties.userId;
@@ -47,35 +55,41 @@ export async function POST(req: Request) {
     const userAgent = req.headers.get('user-agent') || null;
 
     const client = createClient();
-    await client.connect();
+    try {
+      await client.connect();
 
-    // Ensure table exists (safe to run repeatedly)
-    await client.sql`
-      CREATE TABLE IF NOT EXISTS events (
-        id BIGSERIAL PRIMARY KEY,
-        event_name TEXT NOT NULL,
-        properties JSONB,
-        created_at TIMESTAMPTZ DEFAULT now()
-      )
-    `;
-    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS ip_address TEXT`;
-    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS fingerprint TEXT`;
-    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS user_agent TEXT`;
-    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS device_type TEXT`;
+      // Ensure table exists (safe to run repeatedly)
+      await client.sql`
+        CREATE TABLE IF NOT EXISTS events (
+          id BIGSERIAL PRIMARY KEY,
+          event_name TEXT NOT NULL,
+          properties JSONB,
+          created_at TIMESTAMPTZ DEFAULT now()
+        )
+      `;
+      await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS ip_address TEXT`;
+      await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS fingerprint TEXT`;
+      await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS user_agent TEXT`;
+      await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS device_type TEXT`;
 
-    const props = safeStringify(properties ?? {});
-    const cleanFingerprint = typeof fingerprint === 'string' ? fingerprint.slice(0, 1024) : null;
-    const cleanDeviceType = typeof deviceType === 'string' ? deviceType.slice(0, 32) : null;
-    const cleanUserAgent = userAgent ? userAgent.slice(0, 1024) : null;
+      const props = safeStringify(properties ?? {});
+      const cleanFingerprint = typeof fingerprint === 'string' ? fingerprint.slice(0, 1024) : null;
+      const cleanDeviceType = typeof deviceType === 'string' ? deviceType.slice(0, 32) : null;
+      const cleanUserAgent = userAgent ? userAgent.slice(0, 1024) : null;
 
-    // Insert row using parameterized template
-    await client.sql`
-      INSERT INTO events (event_name, properties, ip_address, fingerprint, user_agent, device_type)
-      VALUES (${eventName}, ${props}::jsonb, ${ipAddress}, ${cleanFingerprint}, ${cleanUserAgent}, ${cleanDeviceType})
-    `;
-
-    await client.end();
-    return NextResponse.json({ ok: true });
+      // Insert row using parameterized template
+      await client.sql`
+        INSERT INTO events (event_name, properties, ip_address, fingerprint, user_agent, device_type)
+        VALUES (${eventName}, ${props}::jsonb, ${ipAddress}, ${cleanFingerprint}, ${cleanUserAgent}, ${cleanDeviceType})
+      `;
+      return NextResponse.json({ ok: true });
+    } finally {
+      try {
+        await client.end();
+      } catch {
+        // silent
+      }
+    }
   } catch (e) {
     // Always return success-ish to avoid breaking client UX
     return NextResponse.json({ ok: true });

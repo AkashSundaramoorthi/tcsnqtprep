@@ -9,9 +9,21 @@ export default function AnalyticsClient() {
 
   useEffect(() => {
     try {
-      // Only call from client; trackPageView is a no-op in dev
-      trackPageView(window.location.pathname + window.location.search);
-    } catch (e) {
+      const fullPath = window.location.pathname + window.location.search;
+      const lastPath = sessionStorage.getItem("last_page_view_path");
+      const lastTime = sessionStorage.getItem("last_page_view_time");
+      const now = Date.now();
+
+      // Prevent redundant page views if refreshing the same page within 15 seconds
+      if (lastPath === fullPath && lastTime && now - parseInt(lastTime, 10) < 15000) {
+        return;
+      }
+
+      sessionStorage.setItem("last_page_view_path", fullPath);
+      sessionStorage.setItem("last_page_view_time", now.toString());
+
+      trackPageView(fullPath);
+    } catch {
       // silent
     }
   }, [pathname]);

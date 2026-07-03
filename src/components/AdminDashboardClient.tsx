@@ -3,10 +3,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { DashboardData } from "@/lib/admin-analytics";
 
-function mask(value: string | null | undefined, head = 8) {
-  if (!value) return "(unknown)";
-  if (value.length <= head) return value;
-  return `${value.slice(0, head)}…`;
+function mask(str: string | null, len: number) {
+  if (!str) return "(unknown)";
+  
+  // If it looks like an IPv4 address, mask the last two octets (e.g. 192.168.x.x)
+  if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(str)) {
+    const parts = str.split('.');
+    return `${parts[0]}.${parts[1]}.***.***`;
+  }
+  
+  return str.length > len ? str.slice(0, len) + "…" : str;
 }
 
 function parseFingerprint(fp: string | null | undefined) {
@@ -235,7 +241,10 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
         <BreakdownList title="Top Coding Languages" rows={data.langRows} />
         <BreakdownList title="Top PYQ Categories" rows={data.pyqRows} />
         <BreakdownList title="Exam Score Distribution" rows={data.examRows} />
-        <BreakdownList title="Top IPs (30d)" rows={data.topIpRows} />
+        <BreakdownList 
+          title="Top IPs (30d)" 
+          rows={data.topIpRows.map(r => ({ ...r, label: mask(r.label, 24) }))} 
+        />
         <BreakdownList 
           title="Top Active Users (30d)" 
           rows={data.topFingerprintRows.map(r => {

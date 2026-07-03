@@ -9,6 +9,27 @@ function mask(value: string | null | undefined, head = 8) {
   return `${value.slice(0, head)}…`;
 }
 
+function parseFingerprint(fp: string | null | undefined) {
+  if (!fp) return { os: "(unknown)", browser: "(unknown)" };
+  const ua = fp.split("|")[0]?.toLowerCase() || "";
+  
+  let os = "(unknown)";
+  if (ua.includes("windows")) os = "Windows";
+  else if (ua.includes("mac os") || ua.includes("macos")) os = "Mac";
+  else if (ua.includes("android")) os = "Android";
+  else if (ua.includes("linux")) os = "Linux";
+  else if (ua.includes("ios") || ua.includes("iphone") || ua.includes("ipad")) os = "iOS";
+  
+  let browser = "(unknown)";
+  if (ua.includes("edg") || ua.includes("edge")) browser = "Edge";
+  else if (ua.includes("opr") || ua.includes("opera")) browser = "Opera";
+  else if (ua.includes("chrome") && !ua.includes("edg") && !ua.includes("opr")) browser = "Chrome";
+  else if (ua.includes("safari") && !ua.includes("chrome")) browser = "Safari";
+  else if (ua.includes("firefox")) browser = "Firefox";
+  
+  return { os, browser };
+}
+
 function CountCard({ title, value, subtitle }: { title: string; value: number; subtitle?: string }) {
   return (
     <article className="card" style={{ padding: 14 }}>
@@ -130,8 +151,8 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
         />
         <CountCard title="Unique IPs (7d)" value={data.uniqueIp7d} />
         <CountCard title="Unique IPs (30d)" value={data.uniqueIp30d} />
-        <CountCard title="Unique Fingerprints (7d)" value={data.uniqueFingerprint7d} />
-        <CountCard title="Unique Fingerprints (30d)" value={data.uniqueFingerprint30d} />
+        <CountCard title="Unique Devices (7d)" value={data.uniqueFingerprint7d} />
+        <CountCard title="Unique Devices (30d)" value={data.uniqueFingerprint30d} />
       </section>
 
       <section className="card" style={{ overflow: "hidden", marginBottom: 14 }}>
@@ -171,32 +192,39 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
                 <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>When</th>
                 <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>Event</th>
                 <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>IP</th>
-                <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>Fingerprint</th>
+                <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>OS</th>
+                <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>Browser</th>
                 <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>Device</th>
                 <th style={{ padding: "10px 12px", textAlign: "left", color: "var(--text-2)" }}>Properties</th>
               </tr>
             </thead>
             <tbody>
-              {data.recentRows.map((r) => (
-                <tr key={r.id}>
-                  <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>{new Date(r.created_at).toLocaleString()}</td>
-                  <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)", fontFamily: "var(--font-mono)" }}>
-                    {r.event_name}
-                  </td>
-                  <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }} title={r.ip_address ?? ""}>
-                    {mask(r.ip_address, 24)}
-                  </td>
-                  <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }} title={r.fingerprint ?? ""}>
-                    {mask(r.fingerprint, 36)}
-                  </td>
-                  <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>{r.device_type ?? "(unknown)"}</td>
-                  <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>
-                    <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word", fontSize: 12 }}>
-                      {JSON.stringify(r.properties)}
-                    </pre>
-                  </td>
-                </tr>
-              ))}
+              {data.recentRows.map((r) => {
+                const { os, browser } = parseFingerprint(r.fingerprint);
+                return (
+                  <tr key={r.id}>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>{new Date(r.created_at).toLocaleString()}</td>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)", fontFamily: "var(--font-mono)" }}>
+                      {r.event_name}
+                    </td>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }} title={r.ip_address ?? ""}>
+                      {mask(r.ip_address, 24)}
+                    </td>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>
+                      {os}
+                    </td>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>
+                      {browser}
+                    </td>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>{r.device_type ?? "(unknown)"}</td>
+                    <td style={{ padding: "10px 12px", borderTop: "1px solid var(--border)" }}>
+                      <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word", fontSize: 12 }}>
+                        {JSON.stringify(r.properties)}
+                      </pre>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -208,7 +236,16 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
         <BreakdownList title="Top PYQ Categories" rows={data.pyqRows} />
         <BreakdownList title="Exam Score Distribution" rows={data.examRows} />
         <BreakdownList title="Top IPs (30d)" rows={data.topIpRows} />
-        <BreakdownList title="Top Fingerprints (30d)" rows={data.topFingerprintRows} />
+        <BreakdownList 
+          title="Top Active Users (30d)" 
+          rows={data.topFingerprintRows.map(r => {
+            if (!r.label) return r;
+            const { os, browser } = parseFingerprint(r.label);
+            // Use a small slice of the raw string to distinguish unique users with the same OS/Browser
+            const id = r.label.length > 8 ? r.label.substring(0, 8) : r.label;
+            return { ...r, label: `${os} - ${browser} [${id}…]` };
+          })} 
+        />
       </section>
     </div>
   );

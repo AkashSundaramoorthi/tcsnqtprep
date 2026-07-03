@@ -2,8 +2,9 @@ import { cookies } from 'next/headers';
 import { createClient } from '@vercel/postgres';
 import AdminLogin from '@/components/AdminLogin';
 
-const verifyAdmin = () => {
-  const c = cookies().get('admin-auth')?.value;
+const verifyAdmin = async () => {
+  const cookieStore = await cookies();
+  const c = cookieStore.get('admin-auth')?.value;
   if (!c || !process.env.ADMIN_DASHBOARD_SECRET) return false;
   // recreate token server-side
   const crypto = require('crypto');
@@ -12,7 +13,7 @@ const verifyAdmin = () => {
 };
 
 export default async function Page() {
-  const isAuth = verifyAdmin();
+  const isAuth = await verifyAdmin();
   if (!isAuth) {
     return (
       <div style={{padding:24}}>

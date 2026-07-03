@@ -54,7 +54,11 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
       }
       if (!res.ok) return;
       const next = (await res.json()) as DashboardData;
-      setData(next);
+      if (next.loadError) {
+        setData((prev) => ({ ...prev, loadError: true }));
+      } else {
+        setData(next);
+      }
       setLastUpdated(new Date());
     } catch {
       // silent

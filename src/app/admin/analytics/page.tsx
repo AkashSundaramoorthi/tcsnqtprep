@@ -28,9 +28,9 @@ export default async function Page() {
       return <AdminLogin />;
     }
 
-    // Another admin is active: hide route.
+    // Another admin is active (or a ghost session exists). Show login so they can override it.
     if (!sessionId || activeSession.session_id !== sessionId) {
-      notFound();
+      return <AdminLogin />;
     }
 
     await touchAdminSession(client, sessionId);

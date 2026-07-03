@@ -53,5 +53,5 @@ export async function touchAdminSession(client: { sql: any }, sessionId: string)
 }
 
 export async function deleteAdminSession(client: { sql: any }, sessionId: string) {
-  await client.sql`DELETE FROM admin_sessions WHERE session_id = ${sessionId}`;
+  await client.sql`DELETE FROM admin_sessions`;
 }

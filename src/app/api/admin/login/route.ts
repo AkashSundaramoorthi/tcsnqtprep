@@ -26,9 +26,8 @@ export async function POST(req: Request) {
 
     const activeSession = await getActiveAdminSession(client);
     if (activeSession) {
-      await client.end();
-      // Hide route existence when another session is already active.
-      return NextResponse.json({ ok: false }, { status: 404 });
+      // Force kick the previous ghost/stuck session since the correct password was provided.
+      await client.sql`DELETE FROM admin_sessions`;
     }
 
     const sessionId = await createAdminSession(client);

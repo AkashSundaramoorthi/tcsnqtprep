@@ -31,18 +31,20 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { eventName, properties } = body ?? {};
+    const { eventName, properties, fingerprint, deviceType } = body ?? {};
     if (typeof eventName !== 'string' || !ALLOWED_EVENTS.has(eventName)) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 
-    // Prevent PII keys - rudimentary guard
-    if (properties && (properties.userId || properties.email || properties.ip)) {
-      // drop sensitive keys
+    // Prevent explicit identity fields in custom properties
+    if (properties && (properties.userId || properties.email)) {
       delete properties.userId;
       delete properties.email;
-      delete properties.ip;
     }
+
+    const forwardedFor = req.headers.get('x-forwarded-for');
+    const ipAddress = forwardedFor?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || null;
+    const userAgent = req.headers.get('user-agent') || null;
 
     const client = createClient();
     await client.connect();
@@ -56,19 +58,26 @@ export async function POST(req: Request) {
         created_at TIMESTAMPTZ DEFAULT now()
       )
     `;
+    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS ip_address TEXT`;
+    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS fingerprint TEXT`;
+    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS user_agent TEXT`;
+    await client.sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS device_type TEXT`;
 
     const props = safeStringify(properties ?? {});
+    const cleanFingerprint = typeof fingerprint === 'string' ? fingerprint.slice(0, 1024) : null;
+    const cleanDeviceType = typeof deviceType === 'string' ? deviceType.slice(0, 32) : null;
+    const cleanUserAgent = userAgent ? userAgent.slice(0, 1024) : null;
 
     // Insert row using parameterized template
     await client.sql`
-      INSERT INTO events (event_name, properties) VALUES (${eventName}, ${props}::jsonb)
+      INSERT INTO events (event_name, properties, ip_address, fingerprint, user_agent, device_type)
+      VALUES (${eventName}, ${props}::jsonb, ${ipAddress}, ${cleanFingerprint}, ${cleanUserAgent}, ${cleanDeviceType})
     `;
 
     await client.end();
     return NextResponse.json({ ok: true });
   } catch (e) {
-    // Always return success-ish to avoid breaking client UX; log only outside production
-    try { await (globalThis as any).console?.error?.(e); } catch {} // best-effort but do not rethrow
+    // Always return success-ish to avoid breaking client UX
     return NextResponse.json({ ok: true });
   }
 }

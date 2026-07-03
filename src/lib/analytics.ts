@@ -54,15 +54,71 @@ export type EventName = keyof EventMap;
 // runtime guard: only send events in production
 const isProduction = process.env.NODE_ENV === "production";
 
+type ClientContext = {
+  fingerprint?: string;
+  deviceType?: "mobile" | "tablet" | "desktop";
+};
+
+let cachedClientContext: ClientContext | null = null;
+
+function inferDeviceType(userAgent: string): "mobile" | "tablet" | "desktop" {
+  const ua = userAgent.toLowerCase();
+  if (/ipad|tablet|playbook|silk/.test(ua)) return "tablet";
+  if (/mobi|android|iphone|ipod|phone/.test(ua)) return "mobile";
+  return "desktop";
+}
+
+function getClientContext(): ClientContext {
+  if (typeof window === "undefined") return {};
+  if (cachedClientContext) return cachedClientContext;
+
+  try {
+    const ua = navigator.userAgent || "";
+    const platform = navigator.platform || "";
+    const language = navigator.language || "";
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    const screenSize =
+      typeof window.screen !== "undefined"
+        ? `${window.screen.width}x${window.screen.height}`
+        : "";
+    const hardwareConcurrency =
+      typeof navigator.hardwareConcurrency === "number"
+        ? String(navigator.hardwareConcurrency)
+        : "";
+    const deviceMemory =
+      typeof (navigator as Navigator & { deviceMemory?: number }).deviceMemory === "number"
+        ? String((navigator as Navigator & { deviceMemory?: number }).deviceMemory)
+        : "";
+
+    cachedClientContext = {
+      // Raw website fingerprint as requested
+      fingerprint: [ua, platform, language, timezone, screenSize, hardwareConcurrency, deviceMemory]
+        .filter(Boolean)
+        .join("|"),
+      deviceType: inferDeviceType(ua),
+    };
+    return cachedClientContext;
+  } catch {
+    cachedClientContext = {};
+    return cachedClientContext;
+  }
+}
+
 // Client-side helper: fire-and-forget; never throws
 export function trackEvent<Name extends EventName>(name: Name, properties?: EventMap[Name]): void {
   if (!isProduction) return;
   try {
+    const context = getClientContext();
     // fire-and-forget; do not await
     void fetch('/api/analytics/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventName: name, properties }),
+      body: JSON.stringify({
+        eventName: name,
+        properties,
+        fingerprint: context.fingerprint,
+        deviceType: context.deviceType,
+      }),
       keepalive: true,
     }).catch(() => {
       // silent: swallow network errors in production

@@ -52,15 +52,26 @@ export default async function Page() {
 
     const recent = await client.sql`SELECT id, event_name, properties, created_at FROM events ORDER BY created_at DESC LIMIT 50`;
     recentRows = recent.rows as Array<{ id: number; event_name: string; properties: unknown; created_at: string }>;
+    try {
+      const langBreakdown = await client.sql`SELECT properties->>'language' AS language, COUNT(*)::int AS cnt FROM events WHERE event_name='coding_language_changed' GROUP BY 1 ORDER BY cnt DESC`;
+      langRows = langBreakdown.rows as Array<{ language: string | null; cnt: number }>;
+    } catch {
+      langRows = [];
+    }
 
-    const langBreakdown = await client.sql`SELECT properties->>'language' AS language, COUNT(*)::int AS cnt FROM events WHERE event_name='coding_language_changed' GROUP BY 1 ORDER BY cnt DESC`;
-    langRows = langBreakdown.rows as Array<{ language: string | null; cnt: number }>;
+    try {
+      const pyqCategory = await client.sql`SELECT properties->>'category' AS category, COUNT(*)::int AS cnt FROM events WHERE event_name='pyq_category_selected' GROUP BY 1 ORDER BY cnt DESC`;
+      pyqRows = pyqCategory.rows as Array<{ category: string | null; cnt: number }>;
+    } catch {
+      pyqRows = [];
+    }
 
-    const pyqCategory = await client.sql`SELECT properties->>'category' AS category, COUNT(*)::int AS cnt FROM events WHERE event_name='pyq_category_selected' GROUP BY 1 ORDER BY cnt DESC`;
-    pyqRows = pyqCategory.rows as Array<{ category: string | null; cnt: number }>;
-
-    const examScores = await client.sql`SELECT (properties->>'score') AS score, COUNT(*)::int AS cnt FROM events WHERE event_name='exam_completed' GROUP BY 1 ORDER BY score::int DESC`;
-    examRows = examScores.rows as Array<{ score: string | null; cnt: number }>;
+    try {
+      const examScores = await client.sql`SELECT COALESCE(properties->>'score', '(unknown)') AS score, COUNT(*)::int AS cnt FROM events WHERE event_name='exam_completed' GROUP BY 1 ORDER BY cnt DESC`;
+      examRows = examScores.rows as Array<{ score: string | null; cnt: number }>;
+    } catch {
+      examRows = [];
+    }
   } catch {
     loadError = true;
   } finally {

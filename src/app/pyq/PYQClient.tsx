@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import styles from "./pyq.module.css";
 import rawData from "@/data/pyq_data.json";
 import { Search, Bookmark, ChevronDown, ChevronUp, CheckCircle2, Circle, FileText, Download } from "lucide-react";
+import { analytics } from "@/lib/analytics";
 
 interface MCQQuestion {
   q: string;
@@ -183,6 +184,7 @@ export default function PYQClient() {
   }, [search, filter, diffFilter, showBookmarkedOnly]);
 
   useEffect(() => {
+    analytics.trackEvent("pyq_page_opened");
     setRevealed(loadRevealedFromStorage());
     setBookmarks(loadBookmarksFromStorage());
   }, []);
@@ -190,6 +192,9 @@ export default function PYQClient() {
   const toggleReveal = (key: string) => {
     setRevealed((prev) => {
       const next = { ...prev, [key]: !prev[key] };
+      if (next[key]) {
+         analytics.trackEvent("pyq_answer_revealed");
+      }
       saveRevealedToStorage(next);
       return next;
     });
@@ -198,6 +203,11 @@ export default function PYQClient() {
   const toggleBookmark = (key: string) => {
     setBookmarks((prev) => {
       const next = { ...prev, [key]: !prev[key] };
+      if (next[key]) {
+        analytics.trackEvent("pyq_bookmark_added");
+      } else {
+        analytics.trackEvent("pyq_bookmark_removed");
+      }
       saveBookmarksToStorage(next);
       return next;
     });
@@ -250,11 +260,11 @@ export default function PYQClient() {
             <div className={styles.filterGroup}>
                <h4>Category</h4>
                <div className={styles.filterOptions}>
-                  <button className={`${styles.filterBtn} ${filter === 'All' ? styles.filterBtnActive : ''}`} onClick={() => setFilter('All')}>
+                  <button className={`${styles.filterBtn} ${filter === 'All' ? styles.filterBtnActive : ''}`} onClick={() => { setFilter('All'); analytics.trackEvent("pyq_category_selected", { category: 'All' }); }}>
                      All Categories
                   </button>
                   {SECTIONS.map(s => (
-                     <button key={s.section} className={`${styles.filterBtn} ${filter === s.section ? styles.filterBtnActive : ''}`} onClick={() => setFilter(s.section)}>
+                     <button key={s.section} className={`${styles.filterBtn} ${filter === s.section ? styles.filterBtnActive : ''}`} onClick={() => { setFilter(s.section); analytics.trackEvent("pyq_category_selected", { category: s.section }); }}>
                         {s.section}
                      </button>
                   ))}
@@ -349,7 +359,7 @@ export default function PYQClient() {
         <div className={styles.sectionBlock} style={{ marginTop: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Previous Papers</h2>
-            <a href="/pdfs/TCS-NQT-All-Papers.zip" download className={styles.paperBtnGhost} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <a href="/pdfs/TCS-NQT-All-Papers.zip" download className={styles.paperBtnGhost} style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => analytics.trackEvent("pyq_download_all_clicked")}>
               <Download size={16} /> Download All
             </a>
           </div>
@@ -372,10 +382,10 @@ export default function PYQClient() {
                      </div>
                    </div>
                    <div className={styles.paperActions}>
-                     <a href={`/pdfs/TCS-NQT-Paper-${num}.pdf`} target="_blank" rel="noopener noreferrer" className={styles.paperBtnPrimary}>
+                     <a href={`/pdfs/TCS-NQT-Paper-${num}.pdf`} target="_blank" rel="noopener noreferrer" className={styles.paperBtnPrimary} onClick={() => analytics.trackEvent("pyq_paper_viewed", { paper: `Paper ${num}` })}>
                        View PDF
                      </a>
-                     <a href={`/pdfs/TCS-NQT-Paper-${num}.pdf`} download className={styles.paperBtnGhost}>
+                     <a href={`/pdfs/TCS-NQT-Paper-${num}.pdf`} download className={styles.paperBtnGhost} onClick={() => analytics.trackEvent("pyq_paper_downloaded", { paper: `Paper ${num}`, filename: `TCS-NQT-Paper-${num}.pdf` })}>
                        Download
                      </a>
                    </div>

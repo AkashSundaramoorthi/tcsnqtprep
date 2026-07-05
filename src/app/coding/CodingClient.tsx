@@ -8,6 +8,7 @@ import styles from "./coding.module.css";
 import confetti from "canvas-confetti";
 
 const CodeEditor = dynamic(() => import("@/components/CodeEditor"), { ssr: false });
+import { analytics } from "@/lib/analytics";
 
 const STORAGE_KEY = "tcs-nqt-coding-progress";
 const SOLUTIONS_KEY = "tcs-nqt-coding-solutions";
@@ -199,6 +200,7 @@ export default function CodingClient({ questions }: Props) {
   const [hintsRevealed, setHintsRevealed] = useState<Record<number, number>>({});
 
   useEffect(() => {
+    analytics.trackEvent("coding_page_opened");
     try {
       setDone(JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"));
       setSolutions(JSON.parse(localStorage.getItem(SOLUTIONS_KEY) || "{}"));
@@ -217,6 +219,7 @@ export default function CodingClient({ questions }: Props) {
   };
 
   const openQuestion = (q: Question) => {
+    analytics.trackEvent("coding_problem_opened", { problemId: String(q.id), title: q.title });
     setSelected(q);
     if (solutions[q.id]) {
       setLang(solutions[q.id].lang);
@@ -237,6 +240,7 @@ export default function CodingClient({ questions }: Props) {
       setConfirmLangSwitch(l);
       return;
     }
+    analytics.trackEvent("coding_language_changed", { problemId: String(selected?.id), language: l });
     setLang(l);
     setCode(STARTERS[l]);
     setOutput("");
@@ -290,6 +294,9 @@ export default function CodingClient({ questions }: Props) {
       const firstFail = res.findIndex((r, idx) => !r.ok && !selected.tests[idx].hidden);
       setSelectedTestIdx(firstFail >= 0 ? firstFail : 0);
       if (passed) {
+        if (!done[selected.id]) {
+          analytics.trackEvent("coding_problem_completed", { problemId: String(selected.id), title: selected.title, language: lang });
+        }
         saveDone({ ...done, [selected.id]: true });
         saveSolution({ ...solutions, [selected.id]: { lang, code } });
         confetti({ particleCount: 140, spread: 75, origin: { y: 0.6 }, colors: ["#8b5cf6", "#22c55e", "#3b82f6"] });

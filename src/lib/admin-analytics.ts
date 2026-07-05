@@ -31,6 +31,11 @@ export type DashboardData = {
   examRows: LabelCountRow[];
   topIpRows: LabelCountRow[];
   topFingerprintRows: LabelCountRow[];
+  funnelCoding: { pv: number; started: number; completed: number; };
+  funnelExam: { pv: number; started: number; completed: number; };
+  funnelPyq: { pv: number; started: number; completed: number; };
+  dailyPageViews: { day: string; cnt: number }[];
+  examDropoff: { qIdx: string; correct: number; incorrect: number }[];
   loadError: boolean;
 };
 
@@ -55,6 +60,11 @@ export async function loadDashboardData(client: { sql: any }): Promise<Dashboard
     examRows: [],
     topIpRows: [],
     topFingerprintRows: [],
+    funnelCoding: { pv: 0, started: 0, completed: 0 },
+    funnelExam: { pv: 0, started: 0, completed: 0 },
+    funnelPyq: { pv: 0, started: 0, completed: 0 },
+    dailyPageViews: [],
+    examDropoff: [],
     loadError: false,
   };
 
@@ -180,6 +190,52 @@ export async function loadDashboardData(client: { sql: any }): Promise<Dashboard
       LIMIT 10
     `;
     data.topFingerprintRows = topFpRes.rows as LabelCountRow[];
+
+    const funnelRes = await client.sql`
+      SELECT 
+        SUM(CASE WHEN event_name = 'page_view' AND properties->>'path' = '/coding' THEN 1 ELSE 0 END)::int AS coding_pv,
+        SUM(CASE WHEN event_name = 'coding_problem_opened' THEN 1 ELSE 0 END)::int AS coding_started,
+        SUM(CASE WHEN event_name = 'coding_problem_completed' THEN 1 ELSE 0 END)::int AS coding_completed,
+        SUM(CASE WHEN event_name = 'page_view' AND properties->>'path' = '/exam' THEN 1 ELSE 0 END)::int AS exam_pv,
+        SUM(CASE WHEN event_name = 'exam_started' THEN 1 ELSE 0 END)::int AS exam_started,
+        SUM(CASE WHEN event_name = 'exam_completed' THEN 1 ELSE 0 END)::int AS exam_completed,
+        SUM(CASE WHEN event_name = 'page_view' AND properties->>'path' = '/pyq' THEN 1 ELSE 0 END)::int AS pyq_pv,
+        SUM(CASE WHEN event_name = 'pyq_paper_viewed' THEN 1 ELSE 0 END)::int AS pyq_started,
+        SUM(CASE WHEN event_name = 'pyq_paper_downloaded' THEN 1 ELSE 0 END)::int AS pyq_completed
+      FROM events
+    `;
+    const f = funnelRes.rows[0] || {};
+    data.funnelCoding = { pv: f.coding_pv || 0, started: f.coding_started || 0, completed: f.coding_completed || 0 };
+    data.funnelExam = { pv: f.exam_pv || 0, started: f.exam_started || 0, completed: f.exam_completed || 0 };
+    data.funnelPyq = { pv: f.pyq_pv || 0, started: f.pyq_started || 0, completed: f.pyq_completed || 0 };
+
+    const dailyPvRes = await client.sql`
+      SELECT 
+        TO_CHAR(DATE_TRUNC('day', created_at), 'YYYY-MM-DD') AS day,
+        COUNT(*)::int AS cnt
+      FROM events
+      WHERE event_name = 'page_view' AND COALESCE(properties->>'path', '') NOT LIKE '/admin%'
+        AND created_at > now() - interval '30 days'
+      GROUP BY 1
+      ORDER BY 1 ASC
+    `;
+    data.dailyPageViews = dailyPvRes.rows as { day: string; cnt: number }[];
+
+    const examDropoffRes = await client.sql`
+      SELECT 
+        COALESCE(properties->>'questionIndex', '0') AS q_idx,
+        SUM(CASE WHEN properties->>'correct' = 'true' THEN 1 ELSE 0 END)::int AS correct_cnt,
+        SUM(CASE WHEN properties->>'correct' = 'false' THEN 1 ELSE 0 END)::int AS incorrect_cnt
+      FROM events
+      WHERE event_name = 'exam_question_answered'
+      GROUP BY 1
+      ORDER BY (COALESCE(properties->>'questionIndex', '0'))::int ASC
+    `;
+    data.examDropoff = examDropoffRes.rows.map((r: any) => ({
+      qIdx: r.q_idx,
+      correct: r.correct_cnt || 0,
+      incorrect: r.incorrect_cnt || 0
+    }));
   } catch {
     data.loadError = true;
   }

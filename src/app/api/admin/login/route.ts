@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     // Backward-compat auth cookie (kept for existing sessions)
     res.cookies.set('admin-auth', token, {
       httpOnly: true,
-      path: '/admin',
+      path: '/',
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 30,
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     // Single-session lock cookie
     res.cookies.set(ADMIN_SESSION_COOKIE, sessionId, {
       httpOnly: true,
-      path: '/admin',
+      path: '/',
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 30,

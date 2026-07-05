@@ -7,6 +7,7 @@ import { QUESTIONS, Question } from "@/lib/questions";
 import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runPiston, normalize } from "@/lib/runner";
 import dynamic from "next/dynamic";
 import Calculator from "@/components/Calculator";
+import { analytics } from "@/lib/analytics";
 
 const CodeEditor = dynamic(() => import("@/components/CodeEditor"), { ssr: false });
 
@@ -100,6 +101,10 @@ export default function ExamClient({ questions }: Props) {
   };
 
   useEffect(() => {
+    analytics.trackEvent("exam_page_opened");
+  }, []);
+
+  useEffect(() => {
     if (phaseIdx === 0 || phaseIdx === PHASES.length - 1) return;
     
     timerRef.current = setInterval(() => {
@@ -115,6 +120,7 @@ export default function ExamClient({ questions }: Props) {
   }, [phaseIdx]);
 
   const startExam = () => {
+    analytics.trackEvent("exam_started");
     // Shuffle options inside questions, but keep sections intact
     const mapped = questions.map(q => {
       if (q.isTyped) return { ...q };
@@ -190,6 +196,9 @@ export default function ExamClient({ questions }: Props) {
     const updated = [...answers];
     updated[globalIdx] = optIdx;
     setAnswers(updated);
+    
+    const isRight = optIdx === shuffledExam[globalIdx].answer;
+    analytics.trackEvent("exam_question_answered", { questionIndex: globalIdx, correct: isRight });
   };
 
   const saveTypedAnswer = () => {
@@ -198,6 +207,11 @@ export default function ExamClient({ questions }: Props) {
     const updated = [...answers];
     updated[globalIdx] = typedAnswer;
     setAnswers(updated);
+    
+    if (typedAnswer !== "") {
+      const isRight = typedAnswer === shuffledExam[globalIdx].typedAnswer;
+      analytics.trackEvent("exam_question_answered", { questionIndex: globalIdx, correct: isRight });
+    }
   };
 
   const navNext = () => {
@@ -457,6 +471,12 @@ export default function ExamClient({ questions }: Props) {
     if (isRight) acc[q.section].score++;
     return acc;
   }, {} as Record<string, {score: number, total: number}>);
+
+  useEffect(() => {
+    if (phaseIdx === PHASES.length - 1) {
+      analytics.trackEvent("exam_completed", { score: mcqScore, percentage: mcqPct, totalQuestions: shuffledExam.length });
+    }
+  }, [phaseIdx, mcqScore, mcqPct, shuffledExam.length]);
 
   return (
     <div className={`container section`}>

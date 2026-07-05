@@ -59,6 +59,80 @@ function BreakdownList({ title, rows }: { title: string; rows: Array<{ label: st
   );
 }
 
+function Funnel({ title, data }: { title: string, data: { pv: number, started: number, completed: number } }) {
+  const c1 = data.pv > 0 ? Math.round((data.started / data.pv) * 100) : 0;
+  const c2 = data.started > 0 ? Math.round((data.completed / data.started) * 100) : 0;
+  return (
+    <article className="card" style={{ padding: 14 }}>
+      <h4 style={{ marginBottom: 10 }}>{title} Funnel</h4>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: 13 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>Page Views</span>
+          <strong style={{ fontFamily: "var(--font-mono)" }}>{data.pv.toLocaleString()}</strong>
+        </div>
+        <div style={{ fontSize: "11px", color: "var(--text-3)", borderLeft: "2px solid var(--border)", marginLeft: "10px", paddingLeft: "10px", height: "16px", lineHeight: "16px" }}>
+          {c1}% conversion
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>Started</span>
+          <strong style={{ fontFamily: "var(--font-mono)" }}>{data.started.toLocaleString()}</strong>
+        </div>
+        <div style={{ fontSize: "11px", color: "var(--text-3)", borderLeft: "2px solid var(--border)", marginLeft: "10px", paddingLeft: "10px", height: "16px", lineHeight: "16px" }}>
+          {c2}% conversion
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>Completed</span>
+          <strong style={{ fontFamily: "var(--font-mono)" }}>{data.completed.toLocaleString()}</strong>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function DailyPageViews({ data }: { data: { day: string, cnt: number }[] }) {
+  if (data.length === 0) return null;
+  const max = Math.max(...data.map(d => d.cnt), 1);
+  return (
+    <section className="card" style={{ padding: "12px 14px", marginBottom: 14 }}>
+      <h3 style={{ marginBottom: 10 }}>Daily Page Views (Last 30 Days)</h3>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: "4px", height: "120px", marginTop: "20px" }}>
+        {data.map((d, i) => (
+          <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }} title={`${d.day}: ${d.cnt}`}>
+            <div style={{ width: "100%", background: "var(--primary)", height: `${(d.cnt / max) * 100}%`, minHeight: "1px", borderRadius: "2px" }} />
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "var(--text-3)", marginTop: "8px" }}>
+        <span>{data[0].day}</span>
+        <span>{data[data.length - 1].day}</span>
+      </div>
+    </section>
+  );
+}
+
+function ExamDropoff({ data }: { data: { qIdx: string, correct: number, incorrect: number }[] }) {
+  if (data.length === 0) return null;
+  return (
+    <section className="card" style={{ padding: "12px 14px", marginBottom: 14, overflowX: "auto" }}>
+      <h3 style={{ marginBottom: 10 }}>Exam Question Performance</h3>
+      <div style={{ display: "flex", gap: "8px", minWidth: "max-content", paddingBottom: "8px" }}>
+        {data.map((d, i) => {
+          const total = d.correct + d.incorrect;
+          const p = total > 0 ? Math.round((d.correct / total) * 100) : 0;
+          return (
+            <div key={i} style={{ width: "32px", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }} title={`Q${parseInt(d.qIdx)+1}: ${d.correct} correct, ${d.incorrect} incorrect (${p}%)`}>
+              <div style={{ height: "80px", width: "100%", background: "var(--surface-2)", position: "relative", borderRadius: "2px", overflow: "hidden" }}>
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "var(--green)", height: `${p}%`, minHeight: d.correct > 0 ? "1px" : "0" }} />
+              </div>
+              <span style={{ fontSize: "10px", color: "var(--text-3)" }}>{parseInt(d.qIdx)+1}</span>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 export default function AdminDashboardClient({ initialData }: { initialData: DashboardData }) {
   const [data, setData] = useState(initialData);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
@@ -154,6 +228,15 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
         <CountCard title="Unique Devices (7d)" value={data.uniqueFingerprint7d} />
         <CountCard title="Unique Devices (30d)" value={data.uniqueFingerprint30d} />
       </section>
+
+      <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 14 }}>
+        <Funnel title="Coding" data={data.funnelCoding} />
+        <Funnel title="Exam" data={data.funnelExam} />
+        <Funnel title="PYQ" data={data.funnelPyq} />
+      </section>
+
+      <DailyPageViews data={data.dailyPageViews} />
+      <ExamDropoff data={data.examDropoff} />
 
       <section className="card" style={{ overflow: "hidden", marginBottom: 14 }}>
         <header style={{ padding: "12px 14px", borderBottom: "1px solid var(--border)" }}>

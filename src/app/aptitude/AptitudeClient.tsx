@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { TOPICS, Topic } from "@/lib/aptitude";
 import s from "./aptitude.module.css";
+import { analytics } from "@/lib/analytics";
 
 const STORAGE_KEY      = "tcs-nqt-apt-progress";
 const PROB_STORAGE_KEY = "tcs-nqt-apt-prob-progress";
@@ -40,6 +41,7 @@ function slugify(title: string): string {
 }
 
 function downloadFormulaSheet() {
+  analytics.trackEvent("formula_opened", { formula: "cheat_sheet" });
   const link = document.createElement('a');
   link.href = '/assets/TCS-NQT-Formula-Cheat-Sheet.pdf';
   link.download = 'TCS-NQT-Formula-Cheat-Sheet.pdf';
@@ -57,6 +59,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
   const [probSteps, setProbSteps]     = useState<Record<string, number>>({});
 
   useEffect(() => {
+    analytics.trackEvent("aptitude_page_opened");
     try {
       setDone(JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"));
       setProbSteps(JSON.parse(localStorage.getItem(PROB_STORAGE_KEY) || "{}"));
@@ -74,6 +77,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
   }, []);
 
   const openTopic = (t: Topic) => {
+    analytics.trackEvent("aptitude_topic_opened", { topic: t.title });
     setActive(t);
     setProbIdx(0);
     setMobilePanel("content");

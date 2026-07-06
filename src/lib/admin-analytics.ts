@@ -236,7 +236,8 @@ export async function loadDashboardData(client: { sql: any }): Promise<Dashboard
       correct: r.correct_cnt || 0,
       incorrect: r.incorrect_cnt || 0
     }));
-  } catch {
+  } catch (err) {
+    console.error("Dashboard load error:", err);
     data.loadError = true;
   }
 

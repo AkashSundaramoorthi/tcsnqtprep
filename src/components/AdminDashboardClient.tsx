@@ -90,7 +90,14 @@ function Funnel({ title, data }: { title: string, data: { pv: number, started: n
 }
 
 function DailyPageViews({ data }: { data: { day: string, cnt: number }[] }) {
-  if (data.length === 0) return null;
+  if (!data || data.length === 0) {
+    return (
+      <section className="card" style={{ padding: "12px 14px", marginBottom: 14 }}>
+        <h3 style={{ marginBottom: 10 }}>Daily Page Views (Last 30 Days)</h3>
+        <p style={{ color: "var(--text-3)", fontSize: 13 }}>No data yet</p>
+      </section>
+    );
+  }
   const max = Math.max(...data.map(d => d.cnt), 1);
   return (
     <section className="card" style={{ padding: "12px 14px", marginBottom: 14 }}>
@@ -138,6 +145,20 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [refreshing, setRefreshing] = useState(false);
   const [sessionLost, setSessionLost] = useState(false);
+  const [filterText, setFilterText] = useState("");
+  const [visibleRecent, setVisibleRecent] = useState(5);
+
+  const filteredRecent = useMemo(() => {
+    return data.recentRows.filter((r) => {
+      if (!filterText) return true;
+      const term = filterText.toLowerCase();
+      if (r.event_name.toLowerCase().includes(term)) return true;
+      if (r.ip_address && r.ip_address.toLowerCase().includes(term)) return true;
+      if (r.device_type && r.device_type.toLowerCase().includes(term)) return true;
+      if (r.properties && JSON.stringify(r.properties).toLowerCase().includes(term)) return true;
+      return false;
+    });
+  }, [data.recentRows, filterText]);
 
   const refresh = useCallback(async () => {
     try {
@@ -265,8 +286,19 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
       </section>
 
       <section className="card" style={{ overflow: "hidden", marginBottom: 14 }}>
-        <header style={{ padding: "12px 14px", borderBottom: "1px solid var(--border)" }}>
-          <h3>Recent Events (live feed)</h3>
+        <header style={{ padding: "12px 14px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+          <h3 style={{ margin: 0 }}>Recent Events (live feed)</h3>
+          <input
+            type="text"
+            placeholder="Filter events, device, IP..."
+            value={filterText}
+            onChange={(e) => {
+              setFilterText(e.target.value);
+              setVisibleRecent(5);
+            }}
+            className="input"
+            style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid var(--border)", background: "var(--surface)", color: "var(--text)", fontSize: "13px", minWidth: "200px" }}
+          />
         </header>
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1024 }}>
@@ -282,7 +314,7 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
               </tr>
             </thead>
             <tbody>
-              {data.recentRows.map((r) => {
+              {filteredRecent.slice(0, visibleRecent).map((r) => {
                 const { os, browser } = parseFingerprint(r.fingerprint);
                 return (
                   <tr key={r.id}>
@@ -311,6 +343,13 @@ export default function AdminDashboardClient({ initialData }: { initialData: Das
             </tbody>
           </table>
         </div>
+        {visibleRecent < filteredRecent.length && (
+          <div style={{ padding: "12px 14px", borderTop: "1px solid var(--border)", textAlign: "center" }}>
+            <button className="btn btn-ghost" onClick={() => setVisibleRecent(v => v + 5)}>
+              Load More
+            </button>
+          </div>
+        )}
       </section>
 
       <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 12 }}>

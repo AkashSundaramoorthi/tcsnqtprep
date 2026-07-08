@@ -18,21 +18,61 @@ export const LANG_LABELS: Record<Lang, string> = {
   csharp: "C#",
 };
 
-export function runJS(code: string, stdinText: string): string {
-  const lines = stdinText.length ? stdinText.replace(/\n$/, "").split("\n") : [];
-  let i = 0;
-  let out = "";
-  const input = () => (i < lines.length ? lines[i++] : "");
-  const print = (...a: unknown[]) => { out += a.map(String).join(" ") + "\n"; };
+const JS_TIMEOUT_MS = 5000;
+
+export function runJS(code: string, stdinText: string): Promise<string> {
+  return new Promise((resolve) => {
+    // Run user JS in a blob Worker so an infinite loop can't freeze the page.
+    const workerSrc = `
+self.onmessage = function(e) {
+  var code = e.data.code;
+  var stdinText = e.data.stdinText;
+  var lines = stdinText.length ? stdinText.replace(/\\n$/, "").split("\\n") : [];
+  var i = 0;
+  var out = "";
+  var input = function() { return i < lines.length ? lines[i++] : ""; };
+  var print = function() {
+    var args = Array.prototype.slice.call(arguments);
+    out += args.map(String).join(" ") + "\\n";
+  };
   try {
     new Function("input", "print", "console", code)(input, print, {
-      log: print, error: print, warn: print,
+      log: print, error: print, warn: print
     });
-  } catch (e) {
-    out += "Runtime Error: " + String(e);
+    self.postMessage({ out: out });
+  } catch(err) {
+    self.postMessage({ out: "Runtime Error: " + String(err) });
   }
-  return out;
+};
+`;
+    const blob = new Blob([workerSrc], { type: "application/javascript" });
+    const url = URL.createObjectURL(blob);
+    const worker = new Worker(url);
+
+    const timer = setTimeout(() => {
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      resolve("⏱ Execution timed out (5 s). Check for infinite loops.");
+    }, JS_TIMEOUT_MS);
+
+    worker.onmessage = (e) => {
+      clearTimeout(timer);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      resolve(e.data.out);
+    };
+
+    worker.onerror = (e) => {
+      clearTimeout(timer);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      resolve("Runtime Error: " + e.message);
+    };
+
+    worker.postMessage({ code, stdinText });
+  });
 }
+
 
 interface PyodideInterface {
   runPythonAsync: (code: string) => Promise<unknown>;
@@ -65,6 +105,8 @@ export function loadPyodideOnce(onStatus: (s: string) => void): Promise<PyodideI
   return pyodidePromise;
 }
 
+const PYTHON_TIMEOUT_MS = 10000;
+
 export async function runPython(
   code: string,
   stdinText: string,
@@ -74,7 +116,8 @@ export async function runPython(
   onStatus("Running…");
   py.globals.set("__user_code", code);
   py.globals.set("__user_stdin", stdinText);
-  const result = await py.runPythonAsync(`
+
+  const execPromise = py.runPythonAsync(`
 import sys, io, traceback
 sys.stdin = io.StringIO(__user_stdin)
 _buf = io.StringIO()
@@ -89,7 +132,17 @@ finally:
     sys.stderr = _err
 _buf.getvalue()
 `);
-  return String(result ?? "");
+
+  const timeoutPromise = new Promise<string>((_, reject) =>
+    setTimeout(() => reject(new Error("⏱ Execution timed out (10 s). Check for infinite loops.")), PYTHON_TIMEOUT_MS)
+  );
+
+  try {
+    const result = await Promise.race([execPromise, timeoutPromise]);
+    return String(result ?? "");
+  } catch (err) {
+    return String(err);
+  }
 }
 
 const PISTON_URL = "https://emkc.org/api/v2/piston";

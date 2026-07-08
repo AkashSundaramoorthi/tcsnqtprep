@@ -242,7 +242,7 @@ export default function ExamClient({ questions }: Props) {
       for (let i = 0; i < tests.length; i++) {
         const test = tests[i];
         let out = "";
-        if (lang === "javascript") out = runJS(code, test.in);
+        if (lang === "javascript") out = await runJS(code, test.in);
         else if (lang === "python") out = await runPython(code, test.in, setRunOutput);
         else out = await runPiston(lang, code, test.in, setRunOutput);
         

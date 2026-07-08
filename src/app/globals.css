@@ -44,7 +44,71 @@
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+  /* Code editor */
+  --active-line: rgba(255, 255, 255, 0.05);
 }
+
+html.transitioning *:not(.cm-editor):not(.cm-editor *):not(.cm-scroller):not(.cm-content):not(.cm-line) {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+  transition-delay: 0s !important;
+}
+
+/* ─── Light Theme Overrides ───────────────────────── */
+[data-theme='light'] {
+  --bg: #FAFAFA;
+  --bg-2: #F4F4F5;
+  --surface: #FFFFFF;
+  --surface-2: #F4F4F5;
+
+  /* Borders */
+  --border: #E4E4E7;
+  --border-hover: #D4D4D8;
+
+  /* Brand — Primary Blue */
+  --accent: #2563EB;
+  --accent-dim: rgba(37, 99, 235, 0.1);
+  --accent-glow: rgba(37, 99, 235, 0.2);
+
+  /* Semantic colors */
+  --green: #16A34A;
+  --red: #DC2626;
+  --orange: #D97706;
+  --blue: #2563EB;
+  --purple: #7C3AED;
+  --yellow: #D97706;
+
+  /* Text */
+  --text: #09090B;
+  --text-2: #52525B;
+  --text-3: #71717A;
+
+  /* Elevation (Soft shadows for light theme) */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Code editor */
+  --active-line: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .btn-primary {
+  color: #FFFFFF;
+}
+
+[data-theme='light'] .code-block {
+  background: #F4F4F5;
+  border: 1px solid #E4E4E7;
+  color: #18181B;
+}
+
+[data-theme='light'] .badge-easy, [data-theme='light'] .diffEasy { color: #16A34A; }
+[data-theme='light'] .badge-medium, [data-theme='light'] .diffMedium { color: #D97706; }
+[data-theme='light'] .badge-hard, [data-theme='light'] .diffHard { color: #DC2626; }
+[data-theme='light'] .badge-numerical { color: #2563EB; }
+[data-theme='light'] .badge-reasoning { color: #7C3AED; }
+[data-theme='light'] .badge-verbal { color: #D97706; }
+[data-theme='light'] .badge-advanced { color: #4B5563; }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }

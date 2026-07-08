@@ -24,9 +24,10 @@ interface Props {
 const customTheme = EditorView.theme({
   "&": {
     fontSize: "13.5px",
+    fontWeight: "600",
     fontFamily: "'JetBrains Mono', 'Fira Mono', monospace",
     backgroundColor: "transparent !important",
-    color: "var(--text-2) !important",
+    color: "var(--text) !important",
     height: "100%",
     minHeight: "100%",
   },
@@ -39,10 +40,11 @@ const customTheme = EditorView.theme({
     backgroundColor: "transparent !important",
     borderRight: "1px solid var(--border)",
     color: "var(--text-3)",
+    fontWeight: "500",
   },
   ".cm-lineNumbers .cm-gutterElement": { paddingLeft: "16px", paddingRight: "10px", minWidth: "42px" },
-  ".cm-activeLine": { backgroundColor: "rgba(255,255,255,0.02)" },
-  ".cm-activeLineGutter": { backgroundColor: "rgba(255,255,255,0.02)" },
+  ".cm-activeLine": { backgroundColor: "var(--active-line)" },
+  ".cm-activeLineGutter": { backgroundColor: "var(--active-line)" },
   ".cm-foldPlaceholder": { backgroundColor: "var(--bg-2)", border: "none", color: "var(--text-3)" },
   ".cm-tooltip": {
     backgroundColor: "var(--surface) !important",

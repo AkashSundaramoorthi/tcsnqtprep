@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import styles from "./Navbar.module.css";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/coding", label: "Coding" },
@@ -47,6 +48,8 @@ export default function Navbar() {
             </Link>
           ))}
         </nav>
+
+        <ThemeToggle />
 
         <Link href="/exam" className={`btn btn-primary ${styles.ctaBtn}`}>
           Take Exam

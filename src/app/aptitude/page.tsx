@@ -20,6 +20,26 @@ export const metadata: Metadata = {
   },
 };
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "TCS NQT Aptitude Guide",
+  "description": "30 method guides for TCS NQT aptitude sections covering Numerical, Verbal, Reasoning, and Advanced sections.",
+  "provider": {
+    "@type": "Organization",
+    "name": "TCS NQT Prep Hub",
+    "sameAs": "https://tcsnqtprep.vercel.app"
+  }
+};
+
 export default function AptitudePage() {
-  return <AptitudeClient topics={TOPICS} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+      />
+      <AptitudeClient topics={TOPICS} />
+    </>
+  );
 }

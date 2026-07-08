@@ -20,6 +20,26 @@ export const metadata: Metadata = {
   },
 };
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "TCS NQT Mock Exam",
+  "description": "Simulate the real TCS NQT with an 80-question, 190-minute timed mock exam including coding sections.",
+  "provider": {
+    "@type": "Organization",
+    "name": "TCS NQT Prep Hub",
+    "sameAs": "https://tcsnqtprep.vercel.app"
+  }
+};
+
 export default function ExamPage() {
-  return <ExamClient questions={EXAM_QUESTIONS} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+      />
+      <ExamClient questions={EXAM_QUESTIONS} />
+    </>
+  );
 }

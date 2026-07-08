@@ -19,6 +19,26 @@ export const metadata: Metadata = {
   },
 };
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "TCS NQT Previous Year Questions (PYQ)",
+  "description": "Curated TCS NQT Previous Year Questions with worked solutions across all sections.",
+  "provider": {
+    "@type": "Organization",
+    "name": "TCS NQT Prep Hub",
+    "sameAs": "https://tcsnqtprep.vercel.app"
+  }
+};
+
 export default function PYQPage() {
-  return <PYQClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+      />
+      <PYQClient />
+    </>
+  );
 }

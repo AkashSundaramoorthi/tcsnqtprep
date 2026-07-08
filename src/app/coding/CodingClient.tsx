@@ -180,8 +180,8 @@ type TestResult = { ok: boolean; input: string; expected: string; got: string; h
 type PanelTab = "tests" | "output";
 
 export default function CodingClient({ questions }: Props) {
-  const [done, setDone] = useState<Record<number, boolean>>({});
-  const [solutions, setSolutions] = useState<Record<number, { lang: Lang; code: string }>>({});
+  const [done, setDone] = useState<Record<string, boolean>>({});
+  const [solutions, setSolutions] = useState<Record<string, { lang: Lang; code: string }>>({});
   const [filter, setFilter] = useState<"all" | Difficulty>("all");
   const [selected, setSelected] = useState<Question | null>(null);
   const [lang, setLang] = useState<Lang>("python");
@@ -197,23 +197,99 @@ export default function CodingClient({ questions }: Props) {
   const [selectedTestIdx, setSelectedTestIdx] = useState<number>(0);
   const [confirmLangSwitch, setConfirmLangSwitch] = useState<Lang | null>(null);
   const [nqtTagFilter, setNqtTagFilter] = useState<string>("all");
-  const [hintsRevealed, setHintsRevealed] = useState<Record<number, number>>({});
+  const [hintsRevealed, setHintsRevealed] = useState<Record<string, number>>({});
+
+  const [showMigrationBanner, setShowMigrationBanner] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(300);
+
+  const [problemPaneWidth, setProblemPaneWidth] = useState(420);
+
+  const startResizingProblem = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const startSize = problemPaneWidth;
+    const startPosition = e.pageX;
+
+    function onMouseMove(mouseMoveEvent: MouseEvent) {
+      const newWidth = startSize - startPosition + mouseMoveEvent.pageX;
+      setProblemPaneWidth(Math.max(300, Math.min(newWidth, 800)));
+    }
+    function onMouseUp() {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      document.body.style.cursor = 'default';
+    }
+
+    document.body.style.cursor = 'col-resize';
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  }, [problemPaneWidth]);
+
+
+  const startResizing = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const startSize = sidebarWidth;
+    const startPosition = e.pageX;
+
+    function onMouseMove(mouseMoveEvent: MouseEvent) {
+      const newWidth = startSize - startPosition + mouseMoveEvent.pageX;
+      setSidebarWidth(Math.max(200, Math.min(newWidth, 600)));
+    }
+    function onMouseUp() {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      document.body.style.cursor = 'default';
+    }
+
+    document.body.style.cursor = 'col-resize';
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  }, [sidebarWidth]);
+
 
   useEffect(() => {
     analytics.trackEvent("coding_page_opened");
     try {
-      setDone(JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"));
-      setSolutions(JSON.parse(localStorage.getItem(SOLUTIONS_KEY) || "{}"));
-      setHintsRevealed(JSON.parse(localStorage.getItem("tcs-nqt-coding-hints") || "{}"));
+      const storedDoneRaw = localStorage.getItem(STORAGE_KEY) || "{}";
+      const storedSolsRaw = localStorage.getItem(SOLUTIONS_KEY) || "{}";
+      const storedHintsRaw = localStorage.getItem("tcs-nqt-coding-hints") || "{}";
+      
+      let parsedDone = JSON.parse(storedDoneRaw);
+      let parsedSols = JSON.parse(storedSolsRaw);
+      let parsedHints = JSON.parse(storedHintsRaw);
+      
+      const migrated = localStorage.getItem("migrated_v2");
+      if (!migrated) {
+        const oldDoneKeys = Object.keys(parsedDone);
+        if (oldDoneKeys.length > 0) {
+          const solvedCount = oldDoneKeys.length;
+          const newDone: Record<string, boolean> = {};
+          for (let i = 0; i < Math.min(solvedCount, questions.length); i++) {
+            newDone[questions[i].id] = true;
+          }
+          parsedDone = newDone;
+          parsedSols = {};
+          parsedHints = {};
+          
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedDone));
+          localStorage.setItem(SOLUTIONS_KEY, JSON.stringify(parsedSols));
+          localStorage.setItem("tcs-nqt-coding-hints", JSON.stringify(parsedHints));
+          setShowMigrationBanner(true);
+        }
+        localStorage.setItem("migrated_v2", "true");
+      }
+      
+      setDone(parsedDone);
+      setSolutions(parsedSols);
+      setHintsRevealed(parsedHints);
     } catch {  }
   }, []);
 
-  const saveDone = (d: Record<number, boolean>) => {
+  const saveDone = (d: Record<string, boolean>) => {
     setDone(d);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
   };
 
-  const saveSolution = (sols: Record<number, { lang: Lang; code: string }>) => {
+  const saveSolution = (sols: Record<string, { lang: Lang; code: string }>) => {
     setSolutions(sols);
     localStorage.setItem(SOLUTIONS_KEY, JSON.stringify(sols));
   };
@@ -313,7 +389,7 @@ export default function CodingClient({ questions }: Props) {
   const visible = questions
     .filter((q) => filter === "all" || q.level === filter)
     .filter((q) => nqtTagFilter === "all" || q.nqtTag === nqtTagFilter)
-    .sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || a.id - b.id);
+    .sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || questions.indexOf(a) - questions.indexOf(b));
   const FILTERS: Array<"all" | Difficulty> = ["all", "Easy", "Medium", "Hard"];
   const ALL_TAGS = Array.from(new Set(questions.map((q) => q.nqtTag).filter(Boolean))) as string[];
   const currentIndex = selected ? visible.findIndex((q) => q.id === selected.id) : -1;
@@ -321,11 +397,13 @@ export default function CodingClient({ questions }: Props) {
   const nextQ = currentIndex >= 0 && currentIndex < visible.length - 1 ? visible[currentIndex + 1] : null;
 
   return (
-    <div
+    <>
+
+<div
       className={styles.page}
       style={{
-        height: `calc(100vh - ${NAVBAR_H}px)`,
-        gridTemplateColumns: sidebarOpen ? "248px 1fr" : "0 1fr",
+        ['--page-h' as string]: `calc(100vh - ${NAVBAR_H}px)`,
+        gridTemplateColumns: sidebarOpen ? `${sidebarWidth}px 2px 1fr` : "0 0 1fr",
       }}
     >
       
@@ -374,17 +452,23 @@ export default function CodingClient({ questions }: Props) {
                 onClick={() => openQuestion(q)}
               >
                 <span className={`${styles.qNum} ${done[q.id] ? styles.qNumDone : ""}`}>
-                  {done[q.id] ? "✓" : String(q.id).padStart(2, "0")}
+                  {done[q.id] ? "✓" : String(questions.indexOf(q) + 1).padStart(2, "0")}
                 </span>
-                <span className={`${styles.qTitle} ${done[q.id] ? styles.qTitleDone : ""}`}>
-                  {q.title}
-                </span>
-                <span className={`badge badge-${q.level.toLowerCase()}`}>{q.level}</span>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flex: 1, overflow: "hidden" }}>
+                  <span className={`${styles.qTitle} ${done[q.id] ? styles.qTitleDone : ""}`} style={{ width: "100%" }}>
+                    {q.title}
+                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "4px" }}>
+                    <span className={`badge badge-${q.level.toLowerCase()}`}>{q.level}</span>
+                    {q.nqtTag && <span className={styles.nqtTag} style={{ fontSize: "0.55rem", padding: "2px 4px" }}>{q.nqtTag}</span>}
+                  </div>
+                </div>
               </button>
             </li>
           ))}
         </ul>
       </aside>
+      <div className={styles.resizer} onMouseDown={startResizing} />
 
       
       {!selected ? (
@@ -402,7 +486,7 @@ export default function CodingClient({ questions }: Props) {
           </div>
         </div>
       ) : (
-        <div className={styles.splitPane}>
+        <div className={styles.splitPane} style={{ gridTemplateColumns: `${problemPaneWidth}px 2px 1fr` }}>
           
           <div className={styles.problemPane}>
             <div className={styles.problemNav}>
@@ -434,7 +518,7 @@ export default function CodingClient({ questions }: Props) {
 
             <div className={styles.problemHeader}>
               <h2 className={styles.problemTitle}>
-                <span className={styles.problemId}>Q{selected.id}.</span> {selected.title}
+                <span className={styles.problemId}>Q{currentIndex + 1}.</span> {selected.title}
               </h2>
               <div className={styles.problemMeta}>
                 <span className={`badge badge-${selected.level.toLowerCase()}`}>{selected.level}</span>
@@ -527,8 +611,7 @@ export default function CodingClient({ questions }: Props) {
               </button>
             )}
           </div>
-
-          
+          <div className={styles.resizer} onMouseDown={startResizingProblem} />
           <div className={styles.editorPane}>
             {confirmLangSwitch && (
               <div style={{ padding: "12px 16px", background: "rgba(239, 68, 68, 0.1)", borderBottom: "1px solid rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -701,5 +784,6 @@ export default function CodingClient({ questions }: Props) {
         </div>
       )}
     </div>
+    </>
   );
 }

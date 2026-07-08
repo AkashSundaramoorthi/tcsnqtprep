@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
@@ -13,13 +14,23 @@ const CodeEditor = dynamic(() => import("@/components/CodeEditor"), { ssr: false
 
 const PHASES = [
   { id: "start", duration: 0, title: "TCS NQT Mock Exam" },
-  { id: "mcq-numerical", duration: 25 * 60, title: "Numerical Ability", calc: true },
-  { id: "mcq-reasoning", duration: 25 * 60, title: "Reasoning Ability", calc: true },
-  { id: "mcq-advquant", duration: 25 * 60, title: "Advanced Quant & Reasoning", calc: true },
-  { id: "mcq-verbal", duration: 25 * 60, title: "Verbal Ability", calc: false },
-  { id: "coding-easy", duration: 35 * 60, title: "Advanced Coding (Easy)", calc: false },
+  
+  { id: "mcq-numerical", duration: 25 * 60, title: "Numerical Ability", calc: true, section: "Numerical" },
+  { id: "mcq-reasoning", duration: 25 * 60, title: "Reasoning Ability", calc: true, section: "Reasoning" },
+  { id: "mcq-advquant", duration: 25 * 60, title: "Advanced Quant & Reasoning", calc: true, section: "AdvQuant" },
+  
+  { id: "verbal-instruct-sentence", duration: 25, title: "Instructions: Sentence Completion", calc: false },
+  { id: "verbal-sentence", duration: 25, title: "Sentence Completion", calc: false, section: "Verbal", vType: "sentence", perQuestion: true },
+  
+  { id: "verbal-instruct-passage", duration: 15, title: "Instructions: Passage Recall", calc: false },
+  { id: "verbal-passage", duration: 30, title: "Passage Recall", calc: false, section: "Verbal", vType: "passage", perQuestion: true },
+  
+  { id: "verbal-email", duration: 540, title: "Email Writing", calc: false, section: "Verbal", vType: "email" },
+  
+  { id: "coding-easy", duration: 20 * 60, title: "Advanced Coding (Easy)", calc: false },
   { id: "break", duration: 60, title: "1-Minute Break", calc: false },
-  { id: "coding-medium", duration: 55 * 60, title: "Advanced Coding (Medium)", calc: false },
+  { id: "coding-medium", duration: 25 * 60, title: "Advanced Coding (Medium)", calc: false },
+  
   { id: "results", duration: 0, title: "Exam Results" }
 ];
 
@@ -40,7 +51,8 @@ export default function ExamClient({ questions }: Props) {
   const [shuffledExam, setShuffledExam] = useState<ExamQuestion[]>([]);
   const [answers, setAnswers] = useState<(number | string | null)[]>([]);
   const [current, setCurrent] = useState(0);
-  const [typedAnswer, setTypedAnswer] = useState("");
+  const [viewedQuestions, setViewedQuestions] = useState<Record<number, boolean>>({});
+  const [markedForReview, setMarkedForReview] = useState<Record<number, boolean>>({});
   
   const [showCalc, setShowCalc] = useState(false);
   const [confirmingSubmit, setConfirmingSubmit] = useState(false);
@@ -50,55 +62,62 @@ export default function ExamClient({ questions }: Props) {
   const [lang, setLang] = useState<Lang>("python");
   const [code, setCode] = useState(STARTERS["python"]);
   const [runOutput, setRunOutput] = useState("");
+  const [testResults, setTestResults] = useState<any[] | null>(null);
   const [running, setRunning] = useState(false);
-  const [codingPassedEasy, setCodingPassedEasy] = useState(false);
-  const [codingPassedMedium, setCodingPassedMedium] = useState(false);
+  const [codingPassedEasy, setCodingPassedEasy] = useState(0);
+  const [codingPassedMedium, setCodingPassedMedium] = useState(0);
+  
+  const [passageMode, setPassageMode] = useState<"read" | "write">("read");
   
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const currentPhase = PHASES[phaseIdx];
 
-  const SECTION_BY_PHASE: Record<string, ExamQuestion["section"]> = {
-    "mcq-numerical": "Numerical",
-    "mcq-reasoning": "Reasoning",
-    "mcq-advquant": "AdvQuant",
-    "mcq-verbal": "Verbal",
-  };
-
-  // Derived from the actual `section` tag on each question rather than
-  // hardcoded index math, so it stays correct even if exam.ts is edited
-  // (questions added/removed) and section sizes drift from any fixed count.
   const sectionIndices = useMemo(() => {
     const indices: Record<string, { start: number; end: number }> = {};
-    (Object.keys(SECTION_BY_PHASE) as Array<keyof typeof SECTION_BY_PHASE>).forEach(phaseId => {
-      const target = SECTION_BY_PHASE[phaseId];
+    PHASES.forEach(p => {
+      if (!p.section) return;
       let start = -1, end = 0;
       shuffledExam.forEach((q, i) => {
-        if (q.section === target) {
+        if (q.section === p.section) {
+          if (p.vType && q.verbalType !== p.vType) return;
           if (start === -1) start = i;
           end = i + 1;
         }
       });
-      indices[phaseId] = start === -1 ? { start: 0, end: 0 } : { start, end };
+      indices[p.id] = start === -1 ? { start: 0, end: 0 } : { start, end };
     });
     return indices;
   }, [shuffledExam]);
 
-  const getSectionIndices = (sectionId: string) => {
-    return sectionIndices[sectionId] ?? { start: 0, end: 0 };
-  };
-
   const advancePhase = () => {
     if (phaseIdx < PHASES.length - 1) {
+      const nextPhase = PHASES[phaseIdx + 1];
       setPhaseIdx(idx => idx + 1);
-      setTimeLeft(PHASES[phaseIdx + 1].duration);
-      setCurrent(0);
+      
+      let nextDuration = nextPhase.duration;
+      if (nextPhase.id === "verbal-passage") {
+        setPassageMode("read");
+        nextDuration = 30;
+      }
+      setTimeLeft(nextDuration);
+      
+      if (nextPhase.section) {
+         setCurrent(sectionIndices[nextPhase.id]?.start || 0);
+      } else {
+         setCurrent(0);
+      }
+      
       setConfirmingSubmit(false);
-      setTypedAnswer("");
       setCode(STARTERS[lang]);
       setRunOutput("");
+      setTestResults(null);
     }
   };
+
+  useEffect(() => {
+    setViewedQuestions(prev => ({ ...prev, [current]: true }));
+  }, [current]);
 
   useEffect(() => {
     analytics.trackEvent("exam_page_opened");
@@ -110,6 +129,26 @@ export default function ExamClient({ questions }: Props) {
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
+          if (currentPhase.id === "verbal-passage" && passageMode === "read") {
+            setPassageMode("write");
+            return 90;
+          }
+          
+          if (currentPhase.perQuestion) {
+            const indices = sectionIndices[currentPhase.id];
+            if (indices && current < indices.end - 1) {
+               setCurrent(c => c + 1);
+               if (currentPhase.id === "verbal-passage") {
+                 setPassageMode("read");
+                 return 30;
+               }
+               return currentPhase.duration;
+            } else {
+               advancePhase();
+               return 0; 
+            }
+          }
+          
           advancePhase();
           return 0;
         }
@@ -117,13 +156,41 @@ export default function ExamClient({ questions }: Props) {
       });
     }, 1000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [phaseIdx]);
+  }, [phaseIdx, current, passageMode, sectionIndices, currentPhase]);
+
+  const updateAnswer = (index: number, val: string | number | null) => {
+    setAnswers(prev => {
+      const next = [...prev];
+      next[index] = val;
+      return next;
+    });
+  };
+
+  const handleNextPerQuestion = () => {
+    if (currentPhase.id === "verbal-passage" && passageMode === "read") {
+       setPassageMode("write");
+       setTimeLeft(90);
+       return;
+    }
+    
+    const indices = sectionIndices[currentPhase.id];
+    if (indices && current < indices.end - 1) {
+       setCurrent(c => c + 1);
+       if (currentPhase.id === "verbal-passage") {
+         setPassageMode("read");
+         setTimeLeft(30);
+       } else {
+         setTimeLeft(currentPhase.duration);
+       }
+    } else {
+       advancePhase();
+    }
+  };
 
   const startExam = () => {
     analytics.trackEvent("exam_started");
-    // Shuffle options inside questions, but keep sections intact
     const mapped = questions.map(q => {
-      if (q.isTyped) return { ...q };
+      if (q.isTyped || q.verbalType) return { ...q };
       const optObjs = q.opts.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
       const shuffledOpts = shuffleArray(optObjs);
       return {
@@ -157,100 +224,78 @@ export default function ExamClient({ questions }: Props) {
   const handleRunCode = async () => {
     if (!currentCodingQ) return;
     setRunning(true);
-    let passedCount = 0;
-    const totalCount = currentCodingQ.tests.length;
-    let outLog = "";
+    setTestResults(null);
+    setRunOutput("Compiling & Testing...");
     
-    for (let i = 0; i < totalCount; i++) {
-      const test = currentCodingQ.tests[i];
-      const isPublic = !test.hidden;
+    try {
+      const tests = [...currentCodingQ.tests];
+      while (tests.length < 7) {
+        tests.push({ ...tests[tests.length - 1], hidden: true });
+      }
+      tests.forEach((t, i) => t.hidden = i >= 2);
       
-      if (isPublic) {
-        outLog += `Test ${i + 1}:\nInput:\n${test.in}\n`;
-        setRunOutput(outLog + "Running...\n");
+      let passedCount = 0;
+      let passedPrivate = 0;
+      let logs = "";
+      const resultsArray: any[] = [];
+      
+      for (let i = 0; i < tests.length; i++) {
+        const test = tests[i];
+        let out = "";
+        if (lang === "javascript") out = runJS(code, test.in);
+        else if (lang === "python") out = await runPython(code, test.in, setRunOutput);
+        else out = await runPiston(lang, code, test.in, setRunOutput);
+        
+        const isPass = normalize(out) === normalize(test.out);
+        
+        if (!test.hidden) {
+          resultsArray.push({
+            id: i + 1,
+            in: test.in,
+            expected: test.out,
+            actual: out,
+            isPass
+          });
+        } else {
+          if (isPass) passedPrivate++;
+        }
+        
+        if (isPass) passedCount++;
       }
       
-      let out = "";
-      if (lang === "javascript") out = runJS(code, test.in);
-      else if (lang === "python") out = await runPython(code, test.in, () => {});
-      else out = await runPiston(lang, code, test.in, () => {});
-      
-      if (normalize(out) === normalize(test.out)) {
-        passedCount++;
-        if (isPublic) outLog += "Output:\n" + out + "\nResult: Passed ✓\n\n";
+      if (passedCount === tests.length) {
+        logs = "All test cases (public and private) have passed successfully! ✅";
       } else {
-        if (isPublic) outLog += "Output:\n" + out + "\nExpected:\n" + test.out + "\nResult: Failed ✗\n\n";
+        logs = "Some test cases have failed (either public or private test cases) ❌";
       }
+      
+      if (currentPhase.id === "coding-easy") setCodingPassedEasy(passedPrivate);
+      else setCodingPassedMedium(passedPrivate);
+      
+      setRunOutput(logs);
+      setTestResults(resultsArray);
+    } finally {
+      setRunning(false);
     }
-    
-    outLog += `\n--- SUMMARY ---\n${passedCount}/${totalCount} test cases passed.`;
-    setRunOutput(outLog);
-    if (currentPhase.id === "coding-easy") setCodingPassedEasy(passedCount === totalCount);
-    if (currentPhase.id === "coding-medium") setCodingPassedMedium(passedCount === totalCount);
-    setRunning(false);
-  };
-
-  const selectMcqAnswer = (optIdx: number) => {
-    const { start } = getSectionIndices(currentPhase.id);
-    const globalIdx = start + current;
-    const updated = [...answers];
-    updated[globalIdx] = optIdx;
-    setAnswers(updated);
-    
-    const isRight = optIdx === shuffledExam[globalIdx].answer;
-    analytics.trackEvent("exam_question_answered", { questionIndex: globalIdx, correct: isRight });
-  };
-
-  const saveTypedAnswer = () => {
-    const { start } = getSectionIndices(currentPhase.id);
-    const globalIdx = start + current;
-    const updated = [...answers];
-    updated[globalIdx] = typedAnswer;
-    setAnswers(updated);
-    
-    if (typedAnswer !== "") {
-      const isRight = typedAnswer === shuffledExam[globalIdx].typedAnswer;
-      analytics.trackEvent("exam_question_answered", { questionIndex: globalIdx, correct: isRight });
-    }
-  };
-
-  const navNext = () => {
-    if (shuffledExam[getSectionIndices(currentPhase.id).start + current].isTyped) saveTypedAnswer();
-    setCurrent(c => c + 1);
-    setTypedAnswer(String(answers[getSectionIndices(currentPhase.id).start + current + 1] || ""));
-  };
-
-  const navPrev = () => {
-    if (shuffledExam[getSectionIndices(currentPhase.id).start + current].isTyped) saveTypedAnswer();
-    setCurrent(c => c - 1);
-    setTypedAnswer(String(answers[getSectionIndices(currentPhase.id).start + current - 1] || ""));
-  };
-
-  const jumpTo = (i: number) => {
-    if (shuffledExam[getSectionIndices(currentPhase.id).start + current].isTyped) saveTypedAnswer();
-    setCurrent(i);
-    setTypedAnswer(String(answers[getSectionIndices(currentPhase.id).start + i] || ""));
   };
 
   if (phaseIdx === 0) {
     return (
-      <div className={`container section`}>
+      <div className="container section">
         <div className={styles.startCard}>
-          <div className={styles.startIcon}>⏱️</div>
-          <h1 className={styles.startTitle}>TCS NQT Mock Exam</h1>
+          <h1 className={styles.startTitle}>TCS NQT Full Mock Exam</h1>
           <p className={styles.startSub}>
-            80 MCQ · 2 Coding Problems · ~190 minutes total
+            Complete the assessment in one sitting. The timer cannot be paused.
           </p>
-          <div className={styles.startStats} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-            <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Numerical</span></div>
-            <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Reasoning</span></div>
-            <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Adv Quant</span></div>
-            <div className={styles.startStat}><span className={styles.startStatNum}>25m</span><span className={styles.startStatLabel}>Verbal</span></div>
-            <div className={styles.startStat}><span className={styles.startStatNum}>35m</span><span className={styles.startStatLabel}>Coding Easy</span></div>
-            <div className={styles.startStat}><span className={styles.startStatNum}>55m</span><span className={styles.startStatLabel}>Coding Medium</span></div>
-          </div>
           <div className={styles.startTips}>
-            <p>💡 Note: Sections are locked sequentially. You cannot return to previous sections once submitted.</p>
+            <ul style={{ textAlign: "left", lineHeight: "1.6", margin: "10px 0 10px 20px", color: "var(--text-2)" }}>
+              <li><strong>Numerical Ability:</strong> 20 questions (25 mins)</li>
+              <li><strong>Reasoning Ability:</strong> 20 questions (25 mins)</li>
+              <li><strong>Adv Quant & Reasoning:</strong> 14 questions (25 mins)</li>
+              <li><strong>Verbal Ability:</strong> 25 questions (26 mins, strict per-question timers)</li>
+              <li><strong>Coding:</strong> 2 questions (Easy/Medium, auto-saving test cases)</li>
+            </ul>
+            <p style={{ marginTop: "10px" }}>💡 Note: Sections are locked sequentially. You cannot return to previous sections once submitted.</p>
           </div>
           <button className="btn btn-primary" style={{ fontSize: "1rem", padding: "13px 36px" }} onClick={startExam}>
             Start Full Exam →
@@ -260,298 +305,361 @@ export default function ExamClient({ questions }: Props) {
     );
   }
 
-  if (currentPhase.id.startsWith("mcq-")) {
-    const { start, end } = getSectionIndices(currentPhase.id);
-    const sectionLength = end - start;
-    const globalIdx = start + current;
-    const q = shuffledExam[globalIdx];
-    if (!q) return null;
-    
-    const answeredCount = answers.slice(start, end).filter(a => a !== null && a !== "").length;
+  if (phaseIdx === PHASES.length - 1) {
+    const calcScore = (id: string) => {
+      const indices = sectionIndices[id];
+      if (!indices) return { score: 0, total: 0 };
+      let score = 0;
+      for (let i = indices.start; i < indices.end; i++) {
+        const q = shuffledExam[i];
+        if (q.isTyped || q.verbalType === "sentence") {
+           const ans = (answers[i] as string || "").toLowerCase().trim();
+           const correct = q.answer.toString().toLowerCase().trim();
+           if (ans === correct) score++;
+        } else {
+           if (answers[i] === q.answer) score++;
+        }
+      }
+      return { score, total: indices.end - indices.start };
+    };
+
+    const num = calcScore("mcq-numerical");
+    const reas = calcScore("mcq-reasoning");
+    const adv = calcScore("mcq-advquant");
+    const verb = calcScore("verbal-sentence");
 
     return (
-      <div className={styles.examPage}>
-        {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
-        <div className={styles.examBar}>
-          <div className={`container ${styles.examBarInner}`}>
-            <span className={styles.examTitle}>{currentPhase.title}</span>
-            <div className={`${styles.timer} ${timeLeft <= 60 ? styles.timerLow : ""}`}>
-              {formatTime(timeLeft)}
+      <div className="container section">
+        <div className={styles.startCard}>
+          <h1 className={styles.startTitle}>Exam Completed! 🎉</h1>
+          <p className={styles.startSub}>Great job making it to the end.</p>
+          
+          <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "20px 0 10px 0", width: "100%" }}>
+            <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Aptitude & Verbal Scores</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "20px", textAlign: "center" }}>
+              <div>
+                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{num.score} / {num.total}</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Numerical</div>
+              </div>
+              <div>
+                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{reas.score} / {reas.total}</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Reasoning</div>
+              </div>
+              <div>
+                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{adv.score} / {adv.total}</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Adv. Quant</div>
+              </div>
+              <div>
+                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{verb.score} / {verb.total}</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Sentence Comp.</div>
+              </div>
             </div>
-            <div style={{ display: "flex", gap: "10px" }}>
-              {currentPhase.calc && (
-                <button className="btn btn-secondary" style={{ padding: "7px 16px" }} onClick={() => setShowCalc(true)}>
-                  Calculator
-                </button>
-              )}
-              <button className="btn btn-primary" style={{ padding: "7px 16px" }} onClick={() => setConfirmingSubmit(true)}>
-                Submit Section
-              </button>
+            <p style={{ marginTop: "16px", fontSize: "0.85rem", color: "var(--text-3)", textAlign: "center", fontStyle: "italic" }}>
+              * Passage Recall and Email Writing require manual subjective grading.
+            </p>
+          </div>
+
+          <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%" }}>
+            <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Coding Results (Private Tests)</h2>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedEasy === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedEasy} / 5</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Easy Passed</div>
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedMedium === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedMedium} / 5</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Medium Passed</div>
+              </div>
             </div>
           </div>
+          
+          <button className="btn btn-primary" onClick={() => window.location.reload()}>Return Home</button>
         </div>
-        
-        <div className={`container ${styles.examLayout}`}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px", minWidth: 0 }}>
-            {confirmingSubmit && (
-              <div style={{ background: "var(--surface-2)", border: "1px solid var(--border)", padding: "20px", borderRadius: "8px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                <div style={{ color: "var(--text)", fontWeight: 500 }}>
-                  Are you sure you want to submit {currentPhase.title}? You cannot return.
-                </div>
-                <div style={{ display: "flex", gap: "12px" }}>
-                  <button className="btn btn-primary" onClick={() => { if (q.isTyped) saveTypedAnswer(); advancePhase(); }}>Confirm Submit</button>
-                  <button className="btn btn-ghost" onClick={() => setConfirmingSubmit(false)}>Cancel</button>
-                </div>
-              </div>
+      </div>
+    );
+  }
+
+  const q = shuffledExam[current];
+  const indices = sectionIndices[currentPhase.id] || { start: 0, end: 0 };
+  const sectionLength = indices.end - indices.start;
+  const answeredCount = Array.from({ length: sectionLength }).filter((_, i) => answers[indices.start + i] !== null && answers[indices.start + i] !== "").length;
+  const showSidebar = !currentPhase.id.startsWith("coding-") && !currentPhase.id.startsWith("verbal-instruct") && currentPhase.id !== "break";
+
+  return (
+    <div className={styles.examPage}>
+      {showCalc && currentPhase.calc && <Calculator onClose={() => setShowCalc(false)} />}
+      
+      <div className={styles.examBar}>
+        <div className={`container ${styles.examBarInner}`}>
+          <span className={styles.examTitle}>{currentPhase.title}</span>
+          <div className={`${styles.timer} ${timeLeft <= 60 ? styles.timerLow : ""}`}>
+            {formatTime(timeLeft)}
+          </div>
+          <div style={{ display: "flex", gap: "8px" }}>
+            {currentPhase.calc && (
+              <button className={`btn btn-secondary ${styles.examActionBtn}`} onClick={() => setShowCalc(true)}>
+                🖩 <span className={styles.hideMobile}>Calculator</span>
+              </button>
             )}
+            {!currentPhase.perQuestion && (
+              <button className={`btn btn-primary ${styles.examActionBtn}`} onClick={() => setConfirmingSubmit(true)}>
+                Submit<span className={styles.hideMobile}> Section</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <div className={`container ${styles.examLayout}`} style={{ display: showSidebar ? "grid" : "block" }}>
+        <div className={styles.examMainCol} style={{ height: currentPhase.id.startsWith("coding-") ? "calc(100vh - 120px)" : "auto" }}>
+          
+          {confirmingSubmit && !currentPhase.perQuestion && (
+            <div style={{ background: "var(--surface-2)", border: "1px solid var(--border)", padding: "20px", borderRadius: "8px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ color: "var(--text)", fontWeight: 500 }}>
+                Are you sure you want to submit {currentPhase.title}? You cannot return.
+              </div>
+              <div style={{ display: "flex", gap: "12px" }}>
+                <button className="btn btn-primary" onClick={() => advancePhase()}>Confirm Submit</button>
+                <button className="btn btn-ghost" onClick={() => setConfirmingSubmit(false)}>Cancel</button>
+              </div>
+            </div>
+          )}
+
+          {/* INSTRUCTIONS */}
+          {currentPhase.id.startsWith("verbal-instruct") && (
+            <div className={styles.instructScreen}>
+              <h2>Read carefully before proceeding</h2>
+              {currentPhase.id === "verbal-instruct-sentence" && (
+                <p>Instructions for "Sentence Completion": Please type one word that best fits the meaning of the sentence. Type only one word. You will have 25 seconds for each sentence.</p>
+              )}
+              {currentPhase.id === "verbal-instruct-passage" && (
+                <p>Instructions for "Passage Recall": You will have 30 seconds to read a paragraph. After 30 seconds, it will disappear. Then, you will have 90 seconds to reconstruct the paragraph. Your answer will be scored for clear and accurate content, not word-for-word memorization.</p>
+              )}
+            </div>
+          )}
+          
+          {/* VERBAL - SENTENCE COMPLETION */}
+          {currentPhase.id === "verbal-sentence" && q && (
             <div className={styles.qCard}>
               <div className={styles.qTop}>
-                <span className={styles.qNum}>Question {current + 1} of {sectionLength}</span>
-                <span className={`badge badge-${q.section.toLowerCase()}`}>{q.section}</span>
+                 <span className={styles.qNum}>Question {current + 1 - indices.start}</span>
               </div>
-              <h2 className={styles.qText}>{q.q}</h2>
-              {q.isTyped ? (
-                <div style={{ marginTop: "20px" }}>
-                  <input
-                    type="text"
-                    value={typedAnswer}
-                    onChange={(e) => setTypedAnswer(e.target.value)}
-                    onBlur={saveTypedAnswer}
-                    placeholder="Enter whole number..."
-                    style={{ padding: "12px", background: "var(--surface-1)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: "6px", width: "100%", maxWidth: "300px", fontSize: "1.1rem" }}
-                  />
+              <div className={styles.qText}>{q.q}</div>
+              <input 
+                type="text" 
+                className={styles.typedInput} 
+                placeholder="Type exactly one word..."
+                value={(answers[current] as string) || ""}
+                onChange={(e) => updateAnswer(current, e.target.value.trim())}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleNextPerQuestion(); }}
+                autoFocus
+              />
+              <div className={styles.navRow} style={{ justifyContent: "flex-end", marginTop: "20px" }}>
+                <button className="btn btn-primary" onClick={handleNextPerQuestion}>Next →</button>
+              </div>
+            </div>
+          )}
+          
+          {/* VERBAL - PASSAGE RECALL */}
+          {currentPhase.id === "verbal-passage" && q && (
+            <div className={styles.qCard}>
+              <div className={styles.qTop}>
+                 <span className={styles.qNum}>Question {current + 1 - indices.start}</span>
+              </div>
+              <div className={styles.qText}>{q.q}</div>
+              {passageMode === "read" ? (
+                <div className={styles.passageReadBox}>
+                  <p>{q.passageText}</p>
+                  <div style={{ color: "#ef4444", marginTop: "12px" }}>The text will disappear when the timer hits zero. Read carefully.</div>
+                  <div className={styles.navRow} style={{ justifyContent: "flex-end", marginTop: "20px" }}>
+                    <button className="btn btn-primary" onClick={handleNextPerQuestion}>Start Writing →</button>
+                  </div>
                 </div>
               ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <textarea 
+                    className={styles.passageWriteBox}
+                    placeholder="Rewrite the passage in your own words..."
+                    value={(answers[current] as string) || ""}
+                    onChange={(e) => updateAnswer(current, e.target.value)}
+                    autoFocus
+                  />
+                  <div className={styles.navRow} style={{ justifyContent: "flex-end", marginTop: "10px" }}>
+                    <button className="btn btn-primary" onClick={handleNextPerQuestion}>Next →</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* VERBAL - EMAIL WRITING */}
+          {currentPhase.id === "verbal-email" && q && (
+            <div className={styles.qCard}>
+              <div className={styles.qText}><strong>Email Writing.</strong> {q.q}</div>
+              <textarea 
+                style={{ width: "100%", height: "300px", padding: "12px", marginTop: "16px", marginBottom: "24px", background: "var(--bg-1)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: "6px", outline: "none" }}
+                placeholder="Write your email here..."
+                value={(answers[current] as string) || ""}
+                onChange={(e) => updateAnswer(current, e.target.value)}
+              />
+              <div style={{ marginTop: "8px", fontWeight: "bold" }}>
+                Word Count: {((answers[current] as string) || "").split(/\s+/).filter(Boolean).length} / 100 minimum
+              </div>
+            </div>
+          )}
+
+          {/* REGULAR MCQ */}
+          {currentPhase.id.startsWith("mcq-") && q && !q.verbalType && (
+            <div className={styles.qCard}>
+              <div className={styles.qTop}>
+                <span className={styles.qNum}>Question {current + 1 - indices.start}</span>
+              </div>
+              <div className={styles.qText}>{q.q}</div>
+              {q.image && (
+                <div style={{ margin: "20px 0" }}>
+                  <img src={q.image} alt="Question figure" style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "8px" }} />
+                </div>
+              )}
+              {q.isTyped ? (
+                <input 
+                  type="text" 
+                  className={styles.typedInput} 
+                  value={(answers[current] as string) || ""}
+                  onChange={(e) => updateAnswer(current, e.target.value)}
+                />
+              ) : (
                 <div className={styles.options}>
-                  {q.opts.map((opt, i) => (
-                    <button
-                      key={i}
-                      className={`${styles.option} ${answers[globalIdx] === i ? styles.optionSelected : ""}`}
-                      onClick={() => selectMcqAnswer(i)}
-                    >
-                      <span className={styles.optKey}>{String.fromCharCode(65 + i)}</span>
-                      {opt}
-                    </button>
+                  {q.opts.map((opt, idx) => (
+                    <label key={idx} className={`${styles.option} ${answers[current] === idx ? styles.optionSelected : ""}`}>
+                      <input style={{display:"none"}} type="radio" name={`q-${current}`} checked={answers[current] === idx} onChange={() => updateAnswer(current, idx)} />
+                      <div className={styles.optKey}>{String.fromCharCode(65 + idx)}</div>
+                      <div style={{ flex: 1 }}>
+                        {opt.endsWith('.svg') ? (
+                          <img src={opt} alt={`Option ${String.fromCharCode(65 + idx)}`} style={{ maxHeight: "80px" }} />
+                        ) : (
+                          opt
+                        )}
+                      </div>
+                    </label>
                   ))}
                 </div>
               )}
-              <div className={styles.navRow}>
-                <button className="btn btn-ghost" disabled={current === 0} onClick={navPrev}>← Previous</button>
-                <button className="btn btn-ghost" disabled={current === sectionLength - 1} onClick={navNext}>Next →</button>
-              </div>
-            </div>
-          </div>
-          
-          <aside className={styles.palette}>
-            <div className={styles.paletteLabel}>Questions</div>
-            <div className={styles.paletteGrid}>
-              {Array.from({ length: sectionLength }).map((_, i) => (
-                <button
-                  key={i}
-                  className={`${styles.palBtn} ${(answers[start + i] !== null && answers[start + i] !== "") ? styles.palAnswered : ""} ${i === current ? styles.palCurrent : ""}`}
-                  onClick={() => jumpTo(i)}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-            <div className={styles.answeredCount}>{answeredCount} / {sectionLength} answered</div>
-            <button className="btn btn-primary" style={{ width: "100%" }} onClick={() => setConfirmingSubmit(true)}>Submit Section</button>
-          </aside>
-        </div>
-      </div>
-    );
-  }
-
-  if (currentPhase.id === "break") {
-    return (
-      <div className={`container section`} style={{ textAlign: "center", marginTop: "100px" }}>
-        <h1>Time for a quick break!</h1>
-        <p style={{ color: "var(--text-muted)", fontSize: "1.2rem", margin: "20px 0" }}>Take a deep breath. The next section starts automatically in:</p>
-        <div style={{ fontSize: "3rem", fontWeight: "bold", color: "var(--primary)" }}>{timeLeft}s</div>
-        <button className="btn btn-ghost" style={{ marginTop: "30px" }} onClick={advancePhase}>Skip Break</button>
-      </div>
-    );
-  }
-
-  if (currentPhase.id.startsWith("coding-")) {
-    return (
-      <div className={styles.examPage} style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-        <div className={styles.examBar}>
-          <div className={`container ${styles.examBarInner}`}>
-            <span className={styles.examTitle}>{currentPhase.title}</span>
-            <div className={`${styles.timer} ${timeLeft <= 60 ? styles.timerLow : ""}`}>
-              {formatTime(timeLeft)}
-            </div>
-            <button className="btn btn-primary" style={{ fontSize: "0.82rem", padding: "7px 16px" }} onClick={() => setConfirmingSubmit(true)}>
-              Submit Section
-            </button>
-          </div>
-        </div>
-
-        <div className={`container`} style={{ flex: 1, display: "flex", gap: "20px", padding: "20px 0", minHeight: 0 }}>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "var(--surface-1)", borderRadius: "8px", border: "1px solid var(--border)", overflow: "hidden" }}>
-            <div style={{ padding: "20px", overflowY: "auto", flex: 1 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                <h2 style={{ margin: 0, fontSize: "1.25rem", color: "var(--text)" }}>{currentCodingQ?.title}</h2>
-                <span className={`badge badge-${currentCodingQ?.level?.toLowerCase()}`}>{currentCodingQ?.level}</span>
-              </div>
-              <div style={{ whiteSpace: "pre-wrap", color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "24px" }}>
-                {currentCodingQ?.desc}
-              </div>
               
-              <h3 style={{ fontSize: "1rem", color: "var(--text)", marginBottom: "8px" }}>Output Format</h3>
-              <div style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginBottom: "24px" }}>{currentCodingQ?.fmt}</div>
+              <div className={styles.navRow}>
+                <button className="btn btn-secondary" onClick={() => setCurrent(c => c - 1)} disabled={current === indices.start}>Previous</button>
+                <button 
+                  className={`btn btn-review ${markedForReview[current] ? 'active' : ''}`}
+                  onClick={() => setMarkedForReview(prev => ({ ...prev, [current]: !prev[current] }))}
+                >
+                  {markedForReview[current] ? "Unmark Review" : "Mark for Review"}
+                </button>
+                <button className="btn btn-secondary" onClick={() => setCurrent(c => c + 1)} disabled={current === indices.end - 1}>Next</button>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* CODING */}
+          {currentPhase.id.startsWith("coding-") && currentCodingQ && (
+            <div className={styles.codingGrid}>
+              <div className={styles.codingDesc}>
+                <h3>{currentCodingQ.title}</h3>
+                <p style={{ whiteSpace: "pre-line" }}>{currentCodingQ.desc}</p>
+                <h4 style={{marginTop: "20px", marginBottom: "8px"}}>Format</h4>
+                <p>{currentCodingQ.fmt}</p>
+              </div>
+              <div className={styles.codingEditor}>
+                <div className={styles.editorToolbar}>
+                  <select value={lang} onChange={(e) => {
+                    setLang(e.target.value as Lang);
+                    setCode(STARTERS[e.target.value as Lang]);
+                  }}>
+                    {Object.entries(LANG_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                  </select>
+                  <button className="btn btn-primary" onClick={handleRunCode} disabled={running}>
+                    {running ? "Compiling..." : "Compile & Test (Auto-saves)"}
+                  </button>
+                </div>
+                <div style={{ flex: 1, overflow: "hidden" }}>
+                  <CodeEditor value={code} onChange={setCode} lang={lang} />
+                </div>
+                <div className={styles.outputBox}>
+                  <strong>Test Results:</strong>
+                  {!testResults && <pre>{runOutput || "Run code to see public test cases and private score..."}</pre>}
+                  {testResults && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "12px" }}>
+                      <div style={{ padding: "16px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "8px", fontWeight: "bold", textAlign: "center", color: runOutput.includes("✅") ? "var(--success, #10b981)" : "var(--error, #ef4444)" }}>
+                        {runOutput}
+                      </div>
+                      {testResults.map((tr: any) => (
+                        <div key={tr.id} style={{ background: "var(--surface)", border: `1px solid ${tr.isPass ? "var(--success, #10b981)" : "var(--error, #ef4444)"}`, borderRadius: "8px", padding: "12px" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", marginBottom: "8px", color: tr.isPass ? "var(--success, #10b981)" : "var(--error, #ef4444)" }}>
+                            <span>Test Case {tr.id}</span>
+                            <span>{tr.isPass ? "PASSED ✅" : "FAILED ❌"}</span>
+                          </div>
+                          <div style={{ fontSize: "0.9rem", color: "var(--text-2)" }}>
+                            <div style={{ marginBottom: "4px" }}><strong>Input:</strong></div>
+                            <pre style={{ background: "var(--bg-1)", padding: "8px", borderRadius: "4px", marginBottom: "8px", whiteSpace: "pre-wrap" }}>{tr.in}</pre>
+                            
+                            <div style={{ marginBottom: "4px" }}><strong>Expected Output:</strong></div>
+                            <pre style={{ background: "var(--bg-1)", padding: "8px", borderRadius: "4px", marginBottom: "8px", whiteSpace: "pre-wrap" }}>{tr.expected}</pre>
+                            
+                            <div style={{ marginBottom: "4px" }}><strong>Actual Output:</strong></div>
+                            <pre style={{ background: "var(--bg-1)", padding: "8px", borderRadius: "4px", margin: 0, whiteSpace: "pre-wrap" }}>{tr.actual || "No output"}</pre>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
           
-          <div style={{ flex: 1.5, display: "flex", flexDirection: "column", gap: "16px" }}>
-            {confirmingSubmit && (
-              <div style={{ background: "var(--surface-2)", border: "1px solid var(--border)", padding: "20px", borderRadius: "8px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                <div style={{ color: "var(--text)", fontWeight: 500 }}>
-                  Submit this coding round? You cannot return.
-                </div>
-                <div style={{ display: "flex", gap: "12px" }}>
-                  <button className="btn btn-primary" onClick={() => { advancePhase(); }}>Confirm Submit</button>
-                  <button className="btn btn-ghost" onClick={() => setConfirmingSubmit(false)}>Cancel</button>
-                </div>
-              </div>
-            )}
-            
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <select 
-                value={lang} 
-                onChange={(e) => {
-                  const l = e.target.value as Lang;
-                  setLang(l);
-                  setCode(STARTERS[l]);
-                }}
-                style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--border)", background: "var(--surface-1)", color: "var(--text)" }}
-              >
-                {Object.entries(LANG_LABELS).map(([k, v]) => (
-                  <option key={k} value={k}>{v}</option>
-                ))}
-              </select>
-              <div style={{ display: "flex", gap: "8px" }}>
-                <button className="btn btn-secondary" onClick={handleRunCode} disabled={running}>
-                  {running ? "Running..." : "Run Code"}
-                </button>
-                <button className="btn btn-primary" onClick={() => setConfirmingSubmit(true)}>
-                  Submit Final
-                </button>
-              </div>
-            </div>
-            
-            <div style={{ flex: 1, minHeight: 0, border: "1px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
-              <CodeEditor value={code} onChange={setCode} lang={lang} />
-            </div>
-            
-            <div style={{ height: "200px", background: "var(--surface-1)", border: "1px solid var(--border)", borderRadius: "8px", display: "flex", flexDirection: "column" }}>
-              <div style={{ padding: "8px 16px", borderBottom: "1px solid var(--border)", fontSize: "0.9rem", fontWeight: 500, color: "var(--text)" }}>Output Console (Public Tests Only)</div>
-              <pre style={{ margin: 0, padding: "16px", flex: 1, overflowY: "auto", fontSize: "0.85rem", color: "var(--text-muted)", whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
-                {runOutput || "Click 'Run Code' to test your solution."}
-              </pre>
-            </div>
-          </div>
+          {/* BREAK */}
+          {currentPhase.id === "break" && (
+             <div className="container section" style={{ textAlign: "center" }}>
+               <h1>Time for a quick break!</h1>
+               <p style={{ color: "var(--text-2)", fontSize: "1.2rem", margin: "20px 0" }}>Take a deep breath. The next section starts automatically in:</p>
+               <div style={{ fontSize: "3rem", fontWeight: "bold", color: "var(--primary)" }}>{timeLeft}s</div>
+               <button className="btn btn-ghost" style={{ marginTop: "30px" }} onClick={advancePhase}>Skip Break</button>
+             </div>
+          )}
         </div>
-      </div>
-    );
-  }
-
-  const mcqScore = shuffledExam.reduce((acc, q, i) => {
-    if (q.isTyped) return acc + (answers[i] === q.typedAnswer ? 1 : 0);
-    return acc + (answers[i] === q.answer ? 1 : 0);
-  }, 0);
-  const mcqPct = Math.round((mcqScore / shuffledExam.length) * 100);
-
-  const sectionScores = shuffledExam.reduce((acc, q, i) => {
-    if (!acc[q.section]) acc[q.section] = { score: 0, total: 0 };
-    acc[q.section].total++;
-    const isRight = q.isTyped ? answers[i] === q.typedAnswer : answers[i] === q.answer;
-    if (isRight) acc[q.section].score++;
-    return acc;
-  }, {} as Record<string, {score: number, total: number}>);
-
-  useEffect(() => {
-    if (phaseIdx === PHASES.length - 1) {
-      analytics.trackEvent("exam_completed", { score: mcqScore, percentage: mcqPct, totalQuestions: shuffledExam.length });
-    }
-  }, [phaseIdx, mcqScore, mcqPct, shuffledExam.length]);
-
-  return (
-    <div className={`container section`}>
-      <div className={styles.resultCard}>
-        <div className={`${styles.scoreBig} ${mcqPct >= 60 ? styles.scorePass : styles.scoreFail}`}>
-          {mcqScore} / {shuffledExam.length}
-        </div>
-        <div className={`${styles.scorePct} ${mcqPct >= 60 ? styles.scorePass : styles.scoreFail}`}>
-          {mcqPct}% · {mcqPct >= 60 ? "MCQ Passed 🎉" : "Keep practising 💪"}
-        </div>
-        <button className="btn btn-primary" onClick={() => window.location.reload()} style={{ margin: "20px auto 0" }}>
-          Retake Exam
-        </button>
-      </div>
-
-      <h2 className={styles.reviewTitle}>Section Breakdown</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-        {Object.entries(sectionScores).map(([sec, stats]) => (
-          <div key={sec} style={{ background: 'var(--surface-1)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)', textAlign: 'center' }}>
-            <div style={{ marginBottom: '8px' }}>
-              <span className={`badge badge-${sec.toLowerCase()}`}>{sec}</span>
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text)' }}>
-              {stats.score} / {stats.total}
-            </div>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-              {Math.round((stats.score / stats.total) * 100)}%
-            </div>
-          </div>
-        ))}
         
-        <div style={{ background: 'var(--surface-1)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)', textAlign: 'center' }}>
-          <div style={{ marginBottom: '8px' }}>
-            <span className={`badge badge-easy`}>Coding Easy</span>
-          </div>
-          <div className={codingPassedEasy ? styles.greenText : styles.redText} style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-            {codingPassedEasy ? "PASS" : "FAIL"}
-          </div>
-        </div>
-        <div style={{ background: 'var(--surface-1)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)', textAlign: 'center' }}>
-          <div style={{ marginBottom: '8px' }}>
-            <span className={`badge badge-medium`}>Coding Medium</span>
-          </div>
-          <div className={codingPassedMedium ? styles.greenText : styles.redText} style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-            {codingPassedMedium ? "PASS" : "FAIL"}
-          </div>
-        </div>
-      </div>
-
-      <h2 className={styles.reviewTitle}>MCQ Answer Review</h2>
-      <div className={styles.reviewList}>
-        {shuffledExam.map((q, i) => {
-          const ua = answers[i];
-          const isRight = q.isTyped ? ua === q.typedAnswer : ua === q.answer;
-          return (
-            <div key={i} className={`${styles.reviewItem} ${isRight ? styles.reviewRight : styles.reviewWrong}`}>
-              <div className={styles.reviewQ}><b>Q{i + 1}.</b> {q.q}</div>
-              <div className={styles.reviewRow}>
-                Your answer:{" "}
-                <span className={isRight ? styles.greenText : styles.redText}>
-                  {q.isTyped 
-                    ? (ua || "Not answered") 
-                    : (ua === null || ua === "" ? "Not answered" : `${String.fromCharCode(65 + (ua as number))}. ${q.opts[ua as number]}`)}
-                </span>{" "}
-                {isRight ? "✓" : "✗"}
-              </div>
-              {!isRight && (
-                <div className={styles.reviewRow}>
-                  Correct: <span className={styles.greenText}>{q.isTyped ? q.typedAnswer : `${String.fromCharCode(65 + q.answer)}. ${q.opts[q.answer]}`}</span>
-                </div>
-              )}
-              <div className={styles.reviewExp}>{q.exp}</div>
+        {/* PALETTE / SIDEBAR */}
+        {showSidebar && (
+          <aside className={styles.palette}>
+            <div className={styles.paletteLabel}>Question Palette</div>
+            <div className={styles.paletteGrid}>
+              {Array.from({ length: sectionLength }).map((_, i) => {
+                const globalIdx = indices.start + i;
+                return (
+                  <button
+                    key={i}
+                    className={`${styles.palBtn} ${
+                      globalIdx === current ? styles.palCurrent : 
+                      markedForReview[globalIdx] ? styles.palReview : 
+                      (answers[globalIdx] !== null && answers[globalIdx] !== "") ? styles.palAnswered : 
+                      viewedQuestions[globalIdx] ? styles.palViewed : ""
+                    }`}
+                    onClick={() => {
+                      if (!currentPhase.perQuestion) setCurrent(globalIdx);
+                    }}
+                    style={{ cursor: currentPhase.perQuestion ? "default" : "pointer" }}
+                  >
+                    {i + 1}
+                  </button>
+                );
+              })}
             </div>
-          );
-        })}
+            <div className={styles.answeredCount} style={{ textAlign: "center", fontSize: "0.85rem", color: "var(--text-3)", marginBottom: "16px" }}>
+              {answeredCount} / {sectionLength} answered
+            </div>
+            {!currentPhase.perQuestion && (
+              <button className="btn btn-primary" style={{ width: "100%" }} onClick={() => setConfirmingSubmit(true)}>Submit Section</button>
+            )}
+          </aside>
+        )}
       </div>
     </div>
   );

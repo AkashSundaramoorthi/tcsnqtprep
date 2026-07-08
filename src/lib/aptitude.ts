@@ -17,8 +17,8 @@ export const TOPICS: Topic[] = [
       "Cyclicity lengths: {0,1,5,6} -> 1, {4,9} -> 2, {2,3,7,8} -> 4",
       "Unit digit of a^b = Unit digit of [ (last digit of a) ^ (b mod cyclicity) ]",
       "If b mod cyclicity == 0, use the cyclicity length as the effective exponent.",
-      "HCF(a, b) * LCM(a, b) = a * b",
-      "If d = k * q (k is a factor of d), then N mod k = (N mod d) mod k"
+      "HCF(a, b) × LCM(a, b) = a × b",
+      "If d = k × q (k is a factor of d), then N mod k = (N mod d) mod k"
     ],
     "example": {
       "problem": "Find the unit digit of 7⁹⁵.",
@@ -79,11 +79,11 @@ export const TOPICS: Topic[] = [
     "title": "Percentages — Growth, Decrease & Successive Changes",
     "desc": "A percentage is just a fraction out of 100. The trap in NQT questions is successive changes — if something increases by 20% then decreases by 20%, you do NOT get back to the start. You multiply the multipliers: 1.2 × 0.8 = 0.96, so you end up 4% down. Always convert percentages to multipliers before chaining them.",
     "formula": [
-      "Percentage Value = (Part / Base) * 100",
-      "Net Successive Change (a% then b%) = a + b + (a * b / 100)",
-      "If A is x% more than B, then B is less than A by = [ x / (100 + x) ] * 100",
-      "If A is x% less than B, then B is more than A by = [ x / (100 - x) ] * 100",
-      "Population / Depreciated Value after n years = Initial * (1 ± r/100)^n"
+      "\\text{Percentage Value} = \\frac{\\text{Part}}{\\text{Base}} \\times 100",
+      "\\text{Net Successive Change (a\\% then b\\%)} = a + b + \\frac{a \\times b}{100}",
+      "\\text{If A is } x\\% \\text{ more than B, then B is less than A by } = \\frac{x}{100 + x} \\times 100",
+      "\\text{If A is } x\\% \\text{ less than B, then B is more than A by } = \\frac{x}{100 - x} \\times 100",
+      "\\text{Population after } n \\text{ years} = \\text{Initial} \\times \\left(1 \\pm \\frac{r}{100}\\right)^n"
     ],
     "example": {
       "problem": "A number is increased by 20% and then decreased by 20%. What is the net change?",
@@ -139,12 +139,12 @@ export const TOPICS: Topic[] = [
     "title": "Profit, Loss & Discount — Marked Price & Trade Problems",
     "desc": "Profit and loss are always calculated on Cost Price unless the question says otherwise. Marked Price is what's written on the tag, Selling Price is what's actually paid after discount. The key relationship: SP = MP × (1 − discount%) = CP × (1 + profit%). Most questions give you two of these and ask for the third.",
     "formula": [
-      "Profit% = [ (SP - CP) / CP ] * 100",
-      "Loss% = [ (CP - SP) / CP ] * 100",
-      "Selling Price (SP) after Discount = MP * (1 - Discount%/100)",
-      "Net Profit% after Mark-up (x%) and Discount (y%) = x - y - (x * y / 100)",
-      "If CP of m articles = SP of n articles, then Gain% = [ (m - n) / n ] * 100",
-      "Two items sold at identical SP (one at +x%, one at -x%) results in an overall Loss% = (x / 10)^2"
+      "\\text{Profit}\\% = \\frac{\\text{SP} - \\text{CP}}{\\text{CP}} \\times 100",
+      "\\text{Loss}\\% = \\frac{\\text{CP} - \\text{SP}}{\\text{CP}} \\times 100",
+      "\\text{SP after Discount} = \\text{MP} \\times \\left(1 - \\frac{\\text{Discount}\\%}{100}\\right)",
+      "\\text{Net Profit}\\% = x - y - \\frac{x \\times y}{100}",
+      "\\text{If CP of m = SP of n, Gain}\\% = \\frac{m - n}{n} \\times 100",
+      "\\text{Overall Loss}\\% = \\left(\\frac{x}{10}\\right)^2"
     ],
     "example": {
       "problem": "A shopkeeper marks goods 40% above cost price and gives a 10% discount. Find the profit%.",
@@ -200,9 +200,9 @@ export const TOPICS: Topic[] = [
     "title": "Ratio, Proportion & Age Problems",
     "desc": "A ratio just means \"for every X of one thing there are Y of another.\" Age problems use the fact that the difference between two people's ages never changes — if A is 5 years older than B today, A is still 5 years older in 10 years. Set up a variable x for the ratio multiplier, write the future or past ages in terms of x, then solve.",
     "formula": [
-      "If A:B = p:q and B:C = r:s, then combined ratio A:B:C = (p*r) : (q*r) : (q*s)",
-      "Product of Extremes = Product of Means (If a/b = c/d, then a * d = b * c)",
-      "Age matching: If ratio changes from a:b to c:d after x years, solve: (at + x) / (bt + x) = c / d"
+      "If A:B = p:q and B:C = r:s, then combined ratio A:B:C = (p × r) : (q × r) : (q × s)",
+      "\\text{If } \\frac{a}{b} = \\frac{c}{d} \\text{, then } a \\times d = b \\times c",
+      "\\text{Age matching: solve } \\frac{at + x}{bt + x} = \\frac{c}{d}"
     ],
     "example": {
       "problem": "Ages of A and B are in ratio 5:7. After 6 years it becomes 3:4. Find A's present age.",
@@ -252,16 +252,16 @@ export const TOPICS: Topic[] = [
     "title": "Speed, Distance & Time — Trains, Boats & Relative Speed",
     "desc": "The core formula is Distance = Speed × Time, and every question is just a rearrangement of this. For trains passing each other or a platform, the distance is the length of the train plus the length of whatever it's passing. For boats, going downstream means adding the stream speed, upstream means subtracting it. Relative speed: if two objects move toward each other, add their speeds; if in the same direction, subtract.",
     "formula": [
-      "Speed = Distance / Time",
-      "Conversion: km/h to m/s = Multiply by 5/18 | m/s to km/h = Multiply by 18/5",
+      "\\text{Speed} = \\frac{\\text{Distance}}{\\text{Time}}",
+      "\\text{km/h to m/s: } \\times \\frac{5}{18} \\quad | \\quad \\text{m/s to km/h: } \\times \\frac{18}{5}",
       "Train crossing stationary object (pole/man): Distance = Length of Train",
       "Train crossing platform/bridge: Distance = Length of Train + Length of Platform",
       "Relative Speed (Opposite Directions) = Speed_A + Speed_B",
       "Relative Speed (Same Direction) = Speed_A - Speed_B",
-      "Average Speed (equal split distance covered at speeds a and b) = 2ab / (a + b)",
+      "\\text{Average Speed} = \\frac{2ab}{a + b}",
       "Downstream Speed (d) = Boat Speed (b) + Stream Speed (s)",
       "Upstream Speed (u) = Boat Speed (b) - Stream Speed (s)",
-      "Boat Speed in still water (b) = (d + u) / 2 | Stream Speed (s) = (d - u) / 2"
+      "b = \\frac{d + u}{2} \\quad | \\quad s = \\frac{d - u}{2}"
     ],
     "example": {
       "problem": "A 240 m train passes a pole in 24 seconds. How long to pass a 650 m platform?",
@@ -312,11 +312,11 @@ export const TOPICS: Topic[] = [
     "title": "Time & Work — Pipes, Efficiency & Shared Work",
     "desc": "If a person completes a job in N days, their rate of work is 1/N per day. Add rates when people work together: if A does 1/6 per day and B does 1/12 per day, together they do 1/6 + 1/12 = 3/12 = 1/4 per day, so they finish in 4 days. Pipes work the same way — inlet pipes add to the rate, outlet pipes subtract.",
     "formula": [
-      "If a person completes work in D days, their 1-day work rate = 1 / D",
-      "If Work is constant: Days taken is inversely proportional to Efficiency (E1 * D1 = E2 * D2)",
-      "Pairwise rates combined: 2 * (A + B + C) = (A + B) + (B + C) + (C + A)",
+      "\\text{1-day work rate} = \\frac{1}{D}",
+      "If Work is constant: Days taken is inversely proportional to Efficiency (E1 × D1 = E2 × D2)",
+      "Pairwise rates combined: 2 × (A + B + C) = (A + B) + (B + C) + (C + A)",
       "Net Pipe Filling Rate = Sum of Fill Rates - Sum of Drain Rates",
-      "Chain Rule / Mandays formula: (M1 * D1 * H1) / W1 = (M2 * D2 * H2) / W2"
+      "\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}"
     ],
     "example": {
       "problem": "A+B finish work in 12 days, B+C in 15 days, C+A in 20 days. How long for all three together?",
@@ -363,68 +363,13 @@ export const TOPICS: Topic[] = [
   },
   {
     "cat": "Numerical",
-    "title": "Simple & Compound Interest — Doubling, CI−SI Difference",
-    "desc": "Simple Interest is calculated only on the principal every year: SI = P×R×T/100. Compound Interest is calculated on the growing total, so interest earns interest. The difference between CI and SI for 2 years is always P×(R/100)² — memorize this shortcut. For doubling time with SI: years = 100/R.",
-    "formula": [
-      "Simple Interest (SI) = (P * R * T) / 100",
-      "Compound Interest Amount (A) = P * (1 + R / 100)^T",
-      "Difference between CI and SI for 2 Years = P * (R / 100)^2",
-      "Difference between CI and SI for 3 Years = P * (R / 100)^2 * (3 + R / 100)",
-      "Sum doubles itself under SI in t years at Rate (R) = 100 / t"
-    ],
-    "example": {
-      "problem": "A sum becomes ₹1352 in 2 years at 4% compound interest per annum. Find the principal.",
-      "solution": "Amount = P × (1 + R/100)ᵀ\n1352 = P × (1 + 4/100)²\n1352 = P × (1.04)²\n1352 = P × 1.0816\nP = 1352 / 1.0816 = ₹1250."
-    },
-    "method": [
-      "Simple Interest = (P × R × T) / 100. Amount = P + SI.",
-      "Compound Amount = P × (1 + R/100)ᵀ. CI = Amount − P.",
-      "CI − SI for 2 years = P × (R/100)².",
-      "Sum doubles in t years at SI → Rate = 100/t %. Triples in 2t years.",
-      "Half-yearly: halve the rate, double the periods."
-    ],
-    "problems": [
-      {
-        "q": "SI on ₹2000 at 5% for 3 years?",
-        "sol": "SI = PRT/100 = 2000×5×3/100 = ₹300.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "At what rate will ₹5000 become ₹6000 in 4 years at SI?",
-        "sol": "SI = 6000−5000 = ₹1000.\nR = SI×100/(P×T) = 1000×100/(5000×4) = 5%.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "A sum doubles in 8 years at SI. In how many years will it triple?",
-        "sol": "R = 100/8 = 12.5%.\nTo triple, SI = 2P.\n2P = P×12.5×T/100 → T = 16 years.",
-        "difficulty": "Medium"
-      },
-      {
-        "q": "Find CI on ₹8000 at 5% for 2 years.",
-        "sol": "Amount = 8000 × (1.05)² = 8000 × 1.1025 = ₹8820.\nCI = 8820 − 8000 = ₹820.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "Difference between CI and SI on ₹10000 at 10% for 2 years?",
-        "sol": "Diff = P × (R/100)²\n= 10000 × (0.10)² = 10000 × 0.01 = ₹100.",
-        "difficulty": "Medium"
-      },
-      {
-        "q": "CI−SI on a sum at 8% for 2 years is ₹128. Find the sum.",
-        "sol": "Diff = P × (R/100)²\n128 = P × (0.08)²\n128 = P × 0.0064\nP = 128/0.0064 = ₹20,000.",
-        "difficulty": "Hard"
-      }
-    ]
-  },
-  {
-    "cat": "Numerical",
     "title": "Averages, Mixtures & Alligation — Replacement & Blending",
     "desc": "Average = Total Sum ÷ Number of items. When one item in a group changes, the change in average × number of items = the change in that item's value. Alligation is a cross-method for mixing two things at different concentrations or prices — draw a cross, put the target in the middle, subtract diagonally to get the ratio of the two ingredients.",
     "formula": [
-      "Average = Total Sum / Count of Elements",
-      "Corrected Average = (Original Sum - Incorrect Value + Correct Value) / Count",
-      "Alligation Ratio (Quantity of Cheaper / Quantity of Dearer) = (Dearer Price - Mean Price) / (Mean Price - Cheaper Price)",
-      "Pure Liquid Remaining after n structural replacements = Initial Volume * (1 - Quantity Removed / Initial Volume)^n"
+      "\\begin{aligned} \\text{Average} &= \\\\ &\\frac{\\text{Total Sum}}{\\text{Count of Elements}} \\end{aligned}",
+      "\\begin{aligned} \\text{Corrected Average} &= \\\\ &\\frac{\\text{Original Sum} - \\text{Incorrect} + \\text{Correct}}{\\text{Count}} \\end{aligned}",
+      "\\begin{aligned} \\text{Ratio} &= \\\\ &\\frac{\\text{Dearer} - \\text{Mean}}{\\text{Mean} - \\text{Cheaper}} \\end{aligned}",
+      "\\begin{aligned} \\text{Remaining} &= \\text{Initial} \\times \\\\ &\\left(1 - \\frac{\\text{Removed}}{\\text{Initial}}\\right)^n \\end{aligned}"
     ],
     "example": {
       "problem": "Tea at ₹20/kg and ₹25/kg is mixed to sell at ₹22/kg. Find the mixing ratio.",
@@ -474,11 +419,11 @@ export const TOPICS: Topic[] = [
     "title": "Permutation, Combination & Probability — Counting & Chance",
     "desc": "Permutation is for arrangements where order matters (how many ways to arrange 3 people in a line). Combination is for selections where order doesn't matter (how many ways to choose 3 people from 5). The key formula: nPr = n!/(n−r)!, nCr = n!/(r!(n−r)!). Probability = favourable outcomes ÷ total outcomes — always count the total space carefully first.",
     "formula": [
-      "Permutations (Order matters): nPr = n! / (n - r)!",
-      "Combinations (Order does not matter): nCr = n! / [ r! * (n - r)! ]",
-      "Arrangement of n items where an item repeats p times = n! / p!",
+      "\\text{nPr} = \\frac{n!}{(n - r)!}",
+      "\\text{nCr} = \\frac{n!}{r! \\times (n - r)!}",
+      "\\text{Arrangement (n items, p repeats)} = \\frac{n!}{p!}",
       "Circular arrangement of n distinct objects = (n - 1)!",
-      "Probability P(E) = Favorable Outcomes / Total Sample Space Outcomes"
+      "P(E) = \\frac{\\text{Favorable Outcomes}}{\\text{Total Outcomes}}"
     ],
     "example": {
       "problem": "Two dice are rolled. What is the probability that the sum is 7?",
@@ -530,12 +475,12 @@ export const TOPICS: Topic[] = [
     "desc": "An Arithmetic Progression adds the same number each time (2, 5, 8, 11...). A Geometric Progression multiplies by the same number each time (2, 6, 18, 54...). For AP: nth term = a + (n−1)d, sum = n/2 × (first + last). For GP: nth term = a×rⁿ⁻¹. NQT often asks you to find a missing term or the sum — identify whether the differences are constant (AP) or the ratios are constant (GP) first.",
     "formula": [
       "Arithmetic Progression nth term: a_n = a + (n - 1)d",
-      "Arithmetic Progression Sum: S_n = (n / 2) * [ 2a + (n - 1)d ] or (n / 2) * (a + l)",
-      "Geometric Progression nth term: a_n = a * r^(n - 1)",
-      "Geometric Progression Sum (r > 1): S_n = a * (r^n - 1) / (r - 1)",
+      "S_n = \\frac{n}{2} [ 2a + (n - 1)d ]",
+      "Geometric Progression nth term: a_n = a × r^(n - 1)",
+      "Geometric Progression Sum (r > 1): S_n = a × (r^n - 1) / (r - 1)",
       "Infinite Geometric Series Sum (|r| < 1): S_inf = a / (1 - r)",
-      "Sum of first n natural numbers = n * (n + 1) / 2",
-      "Sum of squares of first n natural numbers = [ n * (n + 1) * (2n + 1) ] / 6"
+      "Sum of first n natural numbers = n × (n + 1) / 2",
+      "Sum of squares of first n natural numbers = [ n × (n + 1) × (2n + 1) ] / 6"
     ],
     "example": {
       "problem": "Find the sum of first 20 terms of AP: 1, 3, 5, 7, …",
@@ -871,91 +816,39 @@ export const TOPICS: Topic[] = [
   },
   {
     "cat": "Reasoning",
-    "title": "Clocks & Calendars — Hand Angles & Odd Day Method",
-    "desc": "For clock angles: the minute hand moves 6° per minute, the hour hand moves 0.5° per minute. The angle between them at H hours M minutes is |30H − 5.5M|. For calendars, the \"odd days\" method counts the remainder when days are divided by 7 — each ordinary year has 1 odd day, each leap year has 2. January 1 2000 was a Saturday — use that as your anchor for day-of-week problems.",
+    "title": "Non-Verbal / Visual Reasoning — Dice & Cubes, Cube Folding & Paper Cutting, Pattern/Figure Series, Embedded Figures, Visual Analogies",
+    "desc": "Non-verbal reasoning tests your ability to understand and interpret visual information. Common question types include finding the next figure in a pattern series, determining which unfolded paper matches a folded cube, identifying embedded figures hidden inside a complex drawing, solving dice orientation puzzles by identifying opposite faces, and recognizing the underlying relationship in visual analogies.",
     "formula": [
-      "Angle between Clock Hands = | 30*H - 5.5*M | (If angle > 180, evaluate 360 - angle)",
-      "Hands overlapping repetition period = Every 65 and 5/11 minutes",
-      "Odd days calculation system: Ordinary Year = 1 odd day | Leap Year = 2 odd days",
-      "Century cycles odd days mapping: 100y = 5, 200y = 3, 300y = 1, 400y = 0"
+      "Standard Dice: Opposite faces always sum to 7 (1 opposite 6, 2 opposite 5, 3 opposite 4).",
+      "Unfolded Cube Rule: On a flat net of a cube, faces in a straight line that are separated by exactly one face are ALWAYS opposite each other.",
+      "Pattern Series: Track the rotation (clockwise or counter-clockwise), movement of specific elements, and addition/deletion of lines.",
+      "Paper Cutting: Imagine unfolding the paper in reverse order. Symmetries will appear across the fold lines."
+    ],
+    "method": [
+      "For Dice/Cubes: Find a common face across multiple views of the same dice. Write adjacent faces in clockwise order to deduce opposites.",
+      "For Figure Series: Focus on one element at a time (e.g., an arrow or dot). Trace its movement across the series before looking at other elements.",
+      "For Embedded Figures: Mentally rotate the target shape if allowed, and systematically scan quadrants of the complex figure.",
+      "For Paper Folding: Use the axis of the last fold as a mirror line to reflect the cuts."
     ],
     "example": {
-      "problem": "At what time between 4 and 5 o'clock will the hour and minute hands coincide?",
-      "solution": "At 4:00, hour hand is at 4×30 = 120°.\nMinute hand gains 5.5° per minute on hour hand.\nMinutes for minute hand to catch hour hand:\n  = 120° / 5.5° per minute\n  = 240/11\n  = 21 9/11 minutes.\nHands coincide at 4:21 9/11."
+      "problem": "Two positions of a dice are shown. In the first position, faces 1, 2, and 3 are visible. In the second position, faces 1, 4, and 5 are visible. Which face is opposite to 1?",
+      "solution": "Face 1 is common to both views. The faces adjacent to 1 in the first view are 2 and 3. The faces adjacent to 1 in the second view are 4 and 5. Since a dice has 6 faces and faces 2, 3, 4, and 5 are all adjacent to 1, the only remaining face (face 6) MUST be opposite to 1."
     },
-    "method": [
-      "Minute hand: 6° per minute. Hour hand: 0.5° per minute.",
-      "Angle between hands = |30H − 5.5M|. If > 180°, subtract from 360°.",
-      "Hands coincide every 65 5/11 minutes → 11 times in 12 hours.",
-      "Odd days: ordinary year=1, leap year=2. Century: 100y=5, 200y=3, 300y=1, 400y=0."
-    ],
     "problems": [
       {
-        "q": "Angle between clock hands at 3:00?",
-        "sol": "|30×3 − 5.5×0| = |90−0| = 90°.",
+        "q": "Three positions of a dice are given. View 1 shows faces: A, B, C. View 2 shows: C, D, E. View 3 shows: A, E, F. What face is opposite to C?",
+        "sol": "From View 1 and View 2, the common face is C. Adjacent to C are A, B, D, and E. Since a dice has 6 faces (A,B,C,D,E,F), the only face not adjacent to C is F. Therefore, F is opposite to C.",
         "difficulty": "Easy"
       },
       {
-        "q": "Angle between clock hands at 6:00?",
-        "sol": "|30×6 − 5.5×0| = 180°.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "How many times in 12 hours do clock hands form a right angle?",
-        "sol": "Hands form right angles 22 times in 12 hours.",
+        "q": "An unfolded cube (a net) consists of 4 squares in a straight vertical line labeled 1, 2, 3, 4 from top to bottom, with square 5 attached to the left of square 2, and square 6 attached to the right of square 3. Which face is opposite to square 2?",
+        "sol": "Using the alternate face rule for straight lines on a cube net: faces separated by one square are opposite. In the vertical line 1-2-3-4, face 1 is opposite 3, and face 2 is opposite 4. Therefore, 4 is opposite to 2.",
         "difficulty": "Medium"
       },
       {
-        "q": "Odd days in a normal (non-leap) year?",
-        "sol": "365 = 52 weeks + 1 day.\n1 odd day.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "1 Jan 2008 was Tuesday. What day was 1 Jan 2009? (2008 is a leap year)",
-        "sol": "Leap year = 2 odd days.\nTuesday + 2 = Thursday.",
-        "difficulty": "Medium"
-      }
-    ]
-  },
-  {
-    "cat": "Verbal",
-    "title": "Reading Comprehension — Inference, Tone & Main Idea",
-    "desc": "Read the questions before reading the passage — this tells you what to look for. Main idea questions want the central theme, not a supporting detail. Inference questions want what must be true based on the passage, not what might be true. Tone questions ask about the author's attitude — look for emotionally loaded words. Never bring outside knowledge in; every answer must be supported by something in the passage text.",
-    "formula": [
-      "Main Idea checking boundary: Evaluate the structural introductory or summarizing lines of the paragraph",
-      "Inference testing constraint: Hypotheses must map cleanly to explicit evidence inside the passage limits"
-    ],
-    "example": {
-      "problem": "Passage: 'Despite repeated warnings, the firm ignored every safety norm.'\nQuestion: The author's tone is?\n(a) Appreciative  (b) Critical  (c) Neutral  (d) Sarcastic",
-      "solution": "Key signal words: 'despite repeated warnings' + 'ignored every safety norm'.\nThese are strongly disapproving phrases.\nThe author clearly thinks the firm acted wrongly.\nAnswer: (b) Critical."
-    },
-    "method": [
-      "Skim the passage once for overall gist, then read questions before returning for details.",
-      "Main idea: usually found in the opening or closing sentence.",
-      "Tone: spot the author's adjectives/adverbs. Disapproving = critical. Praising = appreciative.",
-      "Inference: the answer must be logically supported by the passage — not outside knowledge.",
-      "Title: must cover the WHOLE passage, not just one detail."
-    ],
-    "problems": [
-      {
-        "q": "The main idea of a paragraph is best found in its ___.\n(a) Examples (b) Topic sentence (c) Last word (d) Sub-headings",
-        "sol": "(b) Topic sentence — usually the first or last sentence of the paragraph.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "An inventor's struggles and ultimate success are described. Best title?\n(a) Famous Inventors (b) From Failure to Innovation (c) History of Science",
-        "sol": "(b) — captures both the struggle and the triumph described.",
-        "difficulty": "Medium"
-      },
-      {
-        "q": "Author uses 'unfortunately', 'sadly', 'regrettably' throughout. The tone is?",
-        "sol": "Sorrowful / pessimistic.\nConsistent use of negative adverbs marks a lamenting tone.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "'Renewable energy is not merely an option; it is the only path forward.' This is:\n(a) Fact (b) Opinion (c) Inference",
-        "sol": "(b) Opinion — 'only path forward' is the author's assertion, not a proven fact.",
-        "difficulty": "Medium"
+        "q": "In a figure series, the first frame has a single arrow pointing UP. The second frame has the arrow pointing RIGHT and a dot appears. The third frame has the arrow pointing DOWN and a second dot appears. What should the fourth frame look like?",
+        "sol": "The arrow rotates 90 degrees clockwise in each frame (UP -> RIGHT -> DOWN). The next rotation is LEFT. The number of dots increases by one in each frame (0 -> 1 -> 2). Therefore, the fourth frame will have the arrow pointing LEFT and contain 3 dots.",
+        "difficulty": "Hard"
       }
     ]
   },
@@ -1064,60 +957,13 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
-    "cat": "Verbal",
-    "title": "Para Jumbles & Cloze Test — Ordering & Context Filling",
-    "desc": "For para jumbles, find the opening sentence first — it introduces a topic without using pronouns like \"he\", \"she\", \"it\", or \"this\" to refer to something not yet mentioned. Then find pairs of sentences that must go together (a question followed by its answer, a problem followed by its solution). For cloze tests, read the entire paragraph before filling any blank — the surrounding context tells you the tone and the grammatical requirement for each gap.",
-    "formula": [
-      "Opening sentence constraints: Cannot begin with cross-referencing markers, linking pronouns, or conclusive transition words",
-      "Logical Connector clues: Cause-Effect -> 'therefore', Contrast -> 'however', Addition -> 'moreover'"
-    ],
-    "example": {
-      "problem": "Arrange into a paragraph:\nP) It quickly became popular.\nQ) The company launched a new phone.\nR) Sales doubled within a month.",
-      "solution": "Find the opener: Q introduces a new topic ('The company launched…') with no back-reference.\nP follows Q: 'It' refers to the phone (from Q).\nR is the conclusion: 'Sales doubled' shows the result.\nCorrect order: Q → P → R."
-    },
-    "method": [
-      "Opener: no pronoun back-references ('this', 'it', 'they') at the start.",
-      "Closer: states a result, conclusion or future action ('Thus', 'Therefore').",
-      "Linkers: 'however'=contrast, 'therefore/hence'=result, 'moreover'=addition.",
-      "For cloze test: read the whole passage first, test each option for grammar AND meaning.",
-      "Collocations: 'good AT', 'fond OF', 'so that'=purpose, 'despite'+noun phrase."
-    ],
-    "problems": [
-      {
-        "q": "Which CANNOT be an opening sentence?\n(a) 'In 1947, India gained independence.'\n(b) 'This led to chaos.'\n(c) 'Therefore, it failed.'",
-        "sol": "(b) and (c) use back-references.\n(a) introduces independently — only valid opener.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "He worked hard ___ he could pass the exam.\n(so that / because / although / unless)",
-        "sol": "'so that' — expresses purpose (he worked hard in order to pass).",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "The weather was bad; ___, the match was cancelled.\n(therefore / however / meanwhile)",
-        "sol": "'therefore' — shows cause → effect.",
-        "difficulty": "Easy"
-      },
-      {
-        "q": "She has been working here ___ 2015.\n(since / for / from / by)",
-        "sol": "'since' — used with a specific point in time.\n'for' is used with a duration (e.g. 'for 9 years').",
-        "difficulty": "Medium"
-      },
-      {
-        "q": "'___ the rain, the match continued.'\n(Despite / Although / Because of / Since)",
-        "sol": "'Despite' — it's a preposition taking a noun phrase ('the rain').\n'Although' needs a full clause.",
-        "difficulty": "Medium"
-      }
-    ]
-  },
-  {
     "cat": "Advanced",
     "title": "Algebra — Linear Systems, Quadratics & Word Equations",
     "desc": "Linear equations have one solution; simultaneous equations need two equations to solve for two unknowns — add or subtract the equations to eliminate one variable. For quadratics (ax²+bx+c=0), try factoring first: find two numbers that multiply to ac and add to b. Word problems become algebra by assigning a variable to the unknown and translating each sentence into an equation literally.",
     "formula": [
-      "Quadratic solution formula (ax^2 + bx + c = 0): x = [ -b ± √(b^2 - 4ac) ] / 2a",
-      "Sum of quadratic roots = -b / a | Product of quadratic roots = c / a",
-      "Two-digit integer expansion rule: Value of number with tens digit 't' and units digit 'u' = 10t + u"
+      "\\text{Quadratic solution (} ax^2 + bx + c = 0 \\text{): } x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
+      "\\text{Sum of quadratic roots} = \\frac{-b}{a} \\quad | \\quad \\text{Product of quadratic roots} = \\frac{c}{a}",
+      "\\text{Two-digit integer expansion rule: Value of number with tens digit 't' and units digit 'u'} = 10t + u"
     ],
     "example": {
       "problem": "The sum of two numbers is 20 and their difference is 4. Find both numbers.",
@@ -1162,8 +1008,8 @@ export const TOPICS: Topic[] = [
     "title": "Geometry & Mensuration — 2D Areas, 3D Volumes & Theorems",
     "desc": "Mensuration is about measuring shapes. For 2D: area of triangle = ½×base×height, circle = πr². For 3D: volume of cylinder = πr²h, cone = ⅓πr²h, sphere = 4/3πr³. The Pythagorean theorem (a²+b²=c²) applies to any right triangle. The most common NQT trick is giving you a combined shape — break it into standard shapes, calculate each part separately, then add or subtract.",
     "formula": [
-      "2D Area properties: Circle = πr^2, Triangle = 0.5 * b * h, Square = d^2 / 2 (where d is the diagonal)",
-      "3D Volume metrics: Cylinder = πr^2h, Cone = (1/3)πr^2h, Sphere = (4/3)πr^3",
+      "\\text{Circle} = \\pi r^2, \\text{Triangle} = \\frac{1}{2}bh, \\text{Square} = \\frac{d^2}{2}",
+      "\\text{Cyl} = \\pi r^2h, \\text{Cone} = \\frac{1}{3}\\pi r^2h, \\text{Sphere} = \\frac{4}{3}\\pi r^3",
       "Pythagorean Theorem: Hypotenuse^2 = Base^2 + Perpendicular^2"
     ],
     "example": {
@@ -1246,11 +1092,11 @@ export const TOPICS: Topic[] = [
   },
   {
     "title": "Clocks & Calendars — Angles, Overlap & Day Calculations",
-    "cat": "Numerical",
+    "cat": "Reasoning",
     "desc": "The minute and hour hands overlap every 65 and 5/11 minutes — they do NOT overlap every hour on the hour. To find overlaps, set up the equation: minute hand position = hour hand position, using the 6° and 0.5° per minute rates. For calendar problems, remember that a century year (1900, 2100) is NOT a leap year unless divisible by 400 — so 2000 was a leap year but 1900 was not.",
     "formula": [
       "Angle between hands = |30H - 5.5M|",
-      "Hands overlap exactly every 65 5/11 minutes",
+      "\\text{Hands overlap every } 65 \\frac{5}{11} \\text{ minutes}",
       "Leap year has 366 days (2 odd days), Ordinary year has 365 days (1 odd day)",
       "Odd days in 100 years = 5, 200 years = 3, 300 years = 1, 400 years = 0"
     ],
@@ -1299,11 +1145,11 @@ export const TOPICS: Topic[] = [
     "cat": "Numerical",
     "desc": "For instalments, the key is that each instalment pays off both the current interest and part of the principal. Work backwards from the last instalment — it has the least interest accumulated. The formula for equal instalments on CI is structured like a geometric series. For SI instalments, the interest on each remaining amount is simple and additive — list each payment's interest separately and sum them.",
     "formula": [
-      "Simple Interest (SI) = (P * R * T) / 100",
-      "Compound Interest Amount (A) = P * (1 + R / 100)^T",
+      "\\text{SI} = \\frac{P \\times R \\times T}{100}",
+      "A = P \\left(1 + \\frac{R}{100}\\right)^T",
       "Compound Interest (CI) = A - P",
-      "Difference between CI and SI for 2 Years = P * (R / 100)^2",
-      "If compounded half-yearly, Rate = R/2, Time = 2T"
+      "\\text{CI} - \\text{SI (2 Yrs)} = P \\left(\\frac{R}{100}\\right)^2",
+      "\\text{Half-yearly: Rate} = \\frac{R}{2}, \\text{Time} = 2T"
     ],
     "method": [
       "Identify the given values: Principal (P), Rate (R), and Time (T).",
@@ -1315,27 +1161,27 @@ export const TOPICS: Topic[] = [
     ],
     "example": {
       "problem": "Find the compound interest on ₹5000 at 10% per annum for 2 years.",
-      "solution": "Principal (P) = 5000, Rate (R) = 10%, Time (T) = 2 years\nAmount (A) = 5000 * (1 + 10/100)^2\nA = 5000 * (1.1)^2 = 5000 * 1.21 = 6050\nCI = Amount - Principal\nCI = 6050 - 5000 = ₹1050"
+      "solution": "Principal (P) = 5000, Rate (R) = 10%, Time (T) = 2 years\nAmount (A) = 5000 × (1 + 10/100)^2\nA = 5000 × (1.1)^2 = 5000 × 1.21 = 6050\nCI = Amount - Principal\nCI = 6050 - 5000 = ₹1050"
     },
     "problems": [
       {
         "q": "Find the simple interest on ₹8000 at 5% per annum for 3 years.",
-        "sol": "P = 8000, R = 5, T = 3\nSI = (8000 * 5 * 3) / 100\nSI = ₹1200",
+        "sol": "P = 8000, R = 5, T = 3\nSI = (8000 × 5 × 3) / 100\nSI = ₹1200",
         "difficulty": "Easy"
       },
       {
         "q": "The difference between CI and SI on a sum for 2 years at 8% per annum is ₹32. Find the sum.",
-        "sol": "Difference for 2 years = P * (R / 100)^2\n32 = P * (8 / 100)^2\n32 = P * (64 / 10000)\nP = (32 * 10000) / 64 = ₹5000",
+        "sol": "Difference for 2 years = P × (R / 100)^2\n32 = P × (8 / 100)^2\n32 = P × (64 / 10000)\nP = (32 × 10000) / 64 = ₹5000",
         "difficulty": "Medium"
       },
       {
         "q": "A sum of money doubles itself in 8 years at simple interest. What is the rate of interest?",
-        "sol": "Amount = 2P, so SI = P.\nSI = (P * R * T) / 100\nP = (P * R * 8) / 100\nR = 100 / 8 = 12.5%",
+        "sol": "Amount = 2P, so SI = P.\nSI = (P × R × T) / 100\nP = (P × R × 8) / 100\nR = 100 / 8 = 12.5%",
         "difficulty": "Easy"
       },
       {
         "q": "Find the compound interest on ₹10000 at 20% per annum for 1 year, compounded half-yearly.",
-        "sol": "P = 10000, R = 20/2 = 10%, T = 1*2 = 2 periods\nA = 10000 * (1 + 10/100)^2\nA = 10000 * 1.21 = 12100\nCI = 12100 - 10000 = ₹2100",
+        "sol": "P = 10000, R = 20/2 = 10%, T = 1 × 2 = 2 periods\nA = 10000 × (1 + 10/100)^2\nA = 10000 × 1.21 = 12100\nCI = 12100 - 10000 = ₹2100",
         "difficulty": "Medium"
       },
       {
@@ -1347,13 +1193,13 @@ export const TOPICS: Topic[] = [
   },
   {
     "title": "Data Interpretation — Tables, Bar Charts & Pie Charts",
-    "cat": "Advanced",
+    "cat": "Numerical",
     "desc": "Read the title and units of the chart before anything else — most errors come from misreading the scale or units. For percentage questions on pie charts, remember the whole circle = 100% = 360°. For bar charts, approximate values confidently rather than trying to read exact decimals. For tables, calculate only what the question asks — don't compute everything in the table hoping it helps.",
     "formula": [
-      "Percentage Share = (Value / Total) * 100",
-      "Percentage Change = ((Final - Initial) / Initial) * 100",
-      "Average = Sum of Observations / Number of Observations",
-      "Ratio A:B = Value of A / Value of B"
+      "\\text{Percentage Share} = \\frac{\\text{Value}}{\\text{Total}} \\times 100",
+      "\\text{Percentage Change} = \\frac{\\text{Final} - \\text{Initial}}{\\text{Initial}} \\times 100",
+      "\\text{Average} = \\frac{\\text{Sum of Observations}}{\\text{Number of Observations}}",
+      "\\text{Ratio } A:B = \\frac{\\text{Value of A}}{\\text{Value of B}}"
     ],
     "method": [
       "Carefully read the headings, labels, and units of the table or chart.",
@@ -1365,7 +1211,7 @@ export const TOPICS: Topic[] = [
     ],
     "example": {
       "problem": "Table shows revenue in millions:\nCompany | 2022 | 2023\nA | 150 | 180\nB | 200 | 250\nC | 100 | 90\nFind the percentage growth of Company A from 2022 to 2023.",
-      "solution": "Initial Revenue (2022) = 150\nFinal Revenue (2023) = 180\nGrowth = 180 - 150 = 30\nPercentage Growth = (30 / 150) * 100\n= (1/5) * 100 = 20%"
+      "solution": "Initial Revenue (2022) = 150\nFinal Revenue (2023) = 180\nGrowth = 180 - 150 = 30\nPercentage Growth = (30 / 150) × 100\n= (1/5) × 100 = 20%"
     },
     "problems": [
       {
@@ -1380,12 +1226,12 @@ export const TOPICS: Topic[] = [
       },
       {
         "q": "A pie chart shows market share: A (40%), B (30%), C (20%), D (10%). If total sales are ₹500,000, what is the sales value of Company C?",
-        "sol": "Share of C = 20%\nSales of C = 20% of 500,000\n= (20/100) * 500000\n= ₹100,000",
+        "sol": "Share of C = 20%\nSales of C = 20% of 500,000\n= (20/100) × 500000\n= ₹100,000",
         "difficulty": "Easy"
       },
       {
         "q": "A bar chart shows production of 50, 70, 90, 80 units in 4 years. Find the percentage increase from year 1 to year 2.",
-        "sol": "Year 1 = 50, Year 2 = 70\nIncrease = 70 - 50 = 20\nPercentage increase = (20 / 50) * 100 = 40%",
+        "sol": "Year 1 = 50, Year 2 = 70\nIncrease = 70 - 50 = 20\nPercentage increase = (20 / 50) × 100 = 40%",
         "difficulty": "Medium"
       },
       {
@@ -1394,8 +1240,7 @@ export const TOPICS: Topic[] = [
         "difficulty": "Medium"
       }
     ]
-  }
-  ,
+  },
   {
     "cat": "Verbal",
     "title": "Para Jumbles — Sentence Ordering & Connectors",

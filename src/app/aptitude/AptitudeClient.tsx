@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { TOPICS, Topic } from "@/lib/aptitude";
 import s from "./aptitude.module.css";
 import { analytics } from "@/lib/analytics";
+import { BlockMath } from "react-katex";
+import "katex/dist/katex.min.css";
 
 const STORAGE_KEY      = "tcs-nqt-apt-progress";
 const PROB_STORAGE_KEY = "tcs-nqt-apt-prob-progress";
@@ -156,20 +158,48 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
             ))}
           </div>
           <div className={s.topicList}>
-            {visibleTopics.map(t => (
-              <button
-                key={t.title}
-                className={`${s.topicRow} ${active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
-                onClick={() => openTopic(t)}
-              >
-                <span className={s.topicDot} style={{ background: done[slugify(t.title)] ? "var(--green)" : CAT_COLOR[t.cat] }} />
-                <div className={s.topicRowText}>
-                  <span className={s.topicRowTitle}>{t.title.split("—")[0].trim()}</span>
-                  <span className={s.topicRowSub}>{t.title.split("—")[1]?.trim() || t.desc.split(",")[0]}</span>
-                </div>
-                {done[slugify(t.title)] && <span className={s.doneCheck}>✓</span>}
-              </button>
-            ))}
+            {filter === "All" ? (
+              CATS.filter(c => c !== "All").map(cat => {
+                const topics = visibleTopics.filter(t => t.cat === cat);
+                if (topics.length === 0) return null;
+                return (
+                  <div key={cat} className={s.catGroup} style={{ marginBottom: "8px" }}>
+                    <div className={s.catGroupHeader} style={{ color: CAT_COLOR[cat], fontSize: "0.75rem", textTransform: "uppercase", fontWeight: "700", padding: "12px 12px 6px 12px", letterSpacing: "0.05em", opacity: 0.8 }}>
+                      {cat} Topics
+                    </div>
+                    {topics.map(t => (
+                      <button
+                        key={t.title}
+                        className={`${s.topicRow} ${active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
+                        onClick={() => openTopic(t)}
+                      >
+                        <span className={s.topicDot} style={{ background: done[slugify(t.title)] ? "var(--green)" : CAT_COLOR[t.cat] }} />
+                        <div className={s.topicRowText}>
+                          <span className={s.topicRowTitle}>{t.title.split("—")[0].trim()}</span>
+                          <span className={s.topicRowSub}>{t.title.split("—")[1]?.trim() || t.desc.split(",")[0]}</span>
+                        </div>
+                        {done[slugify(t.title)] && <span className={s.doneCheck}>✓</span>}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })
+            ) : (
+              visibleTopics.map(t => (
+                <button
+                  key={t.title}
+                  className={`${s.topicRow} ${active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
+                  onClick={() => openTopic(t)}
+                >
+                  <span className={s.topicDot} style={{ background: done[slugify(t.title)] ? "var(--green)" : CAT_COLOR[t.cat] }} />
+                  <div className={s.topicRowText}>
+                    <span className={s.topicRowTitle}>{t.title.split("—")[0].trim()}</span>
+                    <span className={s.topicRowSub}>{t.title.split("—")[1]?.trim() || t.desc.split(",")[0]}</span>
+                  </div>
+                  {done[slugify(t.title)] && <span className={s.doneCheck}>✓</span>}
+                </button>
+              ))
+            )}
           </div>
         </aside>
 
@@ -198,12 +228,17 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
               <span className={s.formulaHint}>Memorise these before attempting problems</span>
             </div>
             <div className={s.formulaGrid}>
-              {active.formula.map((f, i) => (
-                <div key={i} className={s.formulaCard}>
-                  <span className={s.formulaIdx}>{i + 1}</span>
-                  <span className={s.formulaText}>{f}</span>
-                </div>
-              ))}
+              {active.formula.map((f, i) => {
+                const isLatex = f.includes("\\\\") || f.includes("\\frac") || f.includes("\\text");
+                return (
+                  <div key={i} className={s.formulaCard}>
+                    <span className={s.formulaIdx}>{i + 1}</span>
+                    <span className={s.formulaText}>
+                      {isLatex ? <BlockMath math={f} /> : f}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </section>
 

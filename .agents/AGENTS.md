@@ -35,3 +35,4 @@ This file serves as the automatic context for Antigravity (agy). Whenever you st
 - **PYQ Filtering:** Added a stateful difficulty filter (Easy, Medium, Hard) to the PYQ section that automatically resets when changing tabs.
 - **Coding Practice:** Completed a comprehensive rewrite of all 50 coding hints in `src/lib/questions.ts`, strictly adhering to the [Concept, Algorithm, Code] 3-step hint format.
 - **TypeScript:** Typed the `html2pdf.js` integration by fully defining the `Html2PdfOptions` interface and fixing implicit `any` errors in the Aptitude client.
+- **Analytics IP Filtering:** Implemented an `IGNORED_IP` environment variable check in `src/app/api/analytics/track/route.ts` to silently drop internal traffic, and added a `clean_my_ip.mjs` script to purge existing IP-associated events from the Postgres database.

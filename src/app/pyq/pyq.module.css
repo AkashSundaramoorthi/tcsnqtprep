@@ -440,4 +440,13 @@
   .paperBtnPrimary, .paperBtnGhost {
     text-align: center;
   }
+  
+  .qHeader {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+  .qHeaderRight {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

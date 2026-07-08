@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import styles from "./Navbar.module.css";
 
 const NAV_LINKS = [
@@ -15,6 +16,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className={styles.header}>
@@ -25,12 +27,21 @@ export default function Navbar() {
           <span className={styles.logoSub}>Prep Hub</span>
         </Link>
 
-        <nav className={styles.nav}>
+        <button 
+          className={styles.hamburger} 
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
+
+        <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ""}`}>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={`${styles.navLink} ${pathname === link.href ? styles.active : ""}`}
+              onClick={() => setMenuOpen(false)}
             >
               {link.label}
             </Link>

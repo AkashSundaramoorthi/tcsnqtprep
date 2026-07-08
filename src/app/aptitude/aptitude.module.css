@@ -515,6 +515,11 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.formulaGrid::-webkit-scrollbar {
+  display: none;
 }
 
 .formulaCard {
@@ -550,6 +555,24 @@
   font-family: 'JetBrains Mono', monospace;
   color: var(--text);
   line-height: 1.55;
+  width: 100%;
+}
+
+.formulaText :global(.katex) {
+  font-size: 1em;
+}
+
+.formulaText :global(.katex) * {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.formulaText :global(.katex-display) {
+  margin: 0 !important;
+  text-align: left !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center;
+  min-width: max-content;
 }
 
 /* ─── Problem top row ────────────────────────────────────── */
@@ -692,6 +715,45 @@
     grid-template-columns: 1fr;
   }
 
+  .contentHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .formulaCard {
+    flex-direction: column;
+  }
+  
+  .probTopRow {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .topBar {
+    flex-direction: column;
+  }
+
+  .progressArea {
+    align-items: flex-start;
+  }
+
+  /* Formula text — allow scroll for wide maths, no squishing */
+  .formulaText {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .formulaText::-webkit-scrollbar { display: none; }
+
+  /* Prob card options take full width */
+  .optBtn {
+    width: 100%;
+  }
+
+  /* Step block text stays readable */
+  .stepLine {
+    flex-wrap: wrap;
+  }
+
   .mobileToggle {
     display: flex;
   }
@@ -716,14 +778,14 @@
   .contentVisible {
     display: flex;
   }
+}
 
-  .topBar {
-    flex-direction: column;
-  }
-
-  .progressArea {
-    align-items: flex-start;
-  }
+@media (max-width: 480px) {
+  .shell { padding: 16px 12px 80px; }
+  .formulaStrip { padding: 0; }
+  .formulaCard { padding: 10px 12px; }
+  .topicTitle { font-size: 1.1rem; }
+  .section { margin-top: 20px; }
 }
 
 @media (min-width: 769px) {

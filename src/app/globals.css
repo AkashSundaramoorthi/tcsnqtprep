@@ -107,6 +107,37 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-primary:active { transform: scale(0.98); }
 
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-2);
+  border-color: var(--border-hover);
+}
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-review {
+  background: var(--surface);
+  color: var(--purple);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.btn-review:hover {
+  background: var(--purple-dim);
+  border-color: var(--purple);
+}
+.btn-review.active {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--text-2);

@@ -7,7 +7,7 @@ import { Play, Download } from "lucide-react";
 export const metadata: Metadata = {
   title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
   description:
-    "Free TCS NQT preparation platform. Practice 50 coding problems with an in-browser IDE supporting Python, JS, C, C++, Java and C#. Study 30 aptitude topics and take a timed mock exam.",
+    "Free TCS NQT preparation platform. Practice 53 coding problems with an in-browser IDE supporting Python, JS, C, C++, Java and C#. Study 27 aptitude topics and take a timed mock exam.",
   alternates: {
     canonical: "/",
   },
@@ -23,26 +23,26 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { value: "50", label: "Coding Problems" },
+  { value: "53", label: "Coding Problems" },
   { value: "6", label: "Languages" },
-  { value: "30", label: "Aptitude Topics" },
+  { value: "27", label: "Aptitude Topics" },
   { value: "120+", label: "Previous Year Qs" },
 ];
 
 const FEATURES = [
   {
     title: "Coding Practice",
-    desc: "48 problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser — no setup needed.",
+    desc: "53 problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser — no setup needed.",
     href: "/coding",
-    badge: "50 Problems · 6 Languages",
+    badge: "53 Problems · 6 Languages",
     badgeClass: "badge-easy",
     num: "01",
   },
   {
     title: "Aptitude Guide",
-    desc: "30 topics covering Numerical, Verbal, Reasoning, and Advanced sections. Step-by-step method guides with solved practice problems for each topic.",
+    desc: "27 topics covering Numerical, Verbal, Reasoning, and Advanced sections. Step-by-step method guides with solved practice problems for each topic.",
     href: "/aptitude",
-    badge: "30 Topics",
+    badge: "27 Topics",
     badgeClass: "badge-numerical",
     num: "02",
   },

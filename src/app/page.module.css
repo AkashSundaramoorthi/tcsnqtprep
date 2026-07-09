@@ -73,7 +73,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #3b3e4a;
+  background: var(--border-hover);
 }
 
 .browserTabs {
@@ -105,7 +105,7 @@
 }
 
 .browserTab:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--active-line);
   color: var(--text-2);
 }
 
@@ -117,8 +117,8 @@
 
 .browserBody {
   display: flex;
-  background: #0B0B0F;
-  color: #c9d1d9;
+  background: var(--surface);
+  color: var(--text);
   height: 340px;
   overflow: hidden;
 }
@@ -145,7 +145,7 @@
 
 .ideFileActive {
   color: var(--text);
-  background: rgba(255,255,255,0.05);
+  background: var(--active-line);
   border-left: 2px solid var(--accent);
 }
 
@@ -162,11 +162,12 @@
 }
 
 .ideEditor pre { margin: 0; flex: 1; }
-.keyword { color: #ff7b72; }
-.function { color: #d2a8ff; }
-.comment { color: #8b949e; font-style: italic; }
-.builtin { color: #79c0ff; }
-.number { color: #a5d6ff; }
+.keyword { color: var(--purple); }
+.function { color: var(--blue); }
+.comment { color: var(--text-3); font-style: italic; }
+.builtin { color: var(--orange); }
+.number { color: var(--green); }
+.string { color: var(--green); }
 
 .ideOutput {
   background: var(--surface-2);
@@ -189,7 +190,7 @@
 .ideOutputBody {
   padding: 8px;
   font-size: 0.7rem;
-  color: #a5d6ff;
+  color: var(--text);
 }
 
 /* Mock Mockup */

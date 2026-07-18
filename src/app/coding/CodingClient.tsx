@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { Question, Difficulty } from "@/lib/questions";
-import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runPiston, normalize } from "@/lib/runner";
+import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runJudge0, normalize } from "@/lib/runner";
 import styles from "./coding.module.css";
 import confetti from "canvas-confetti";
 
@@ -178,7 +178,7 @@ export default function CodingClient({ questions }: Props) {
       let out: string;
       if (lang === "javascript") out = await runJS(code, inp);
       else if (lang === "python") out = await runPython(code, inp, setStatus);
-      else out = await runPiston(lang, code, inp, setStatus);
+      else out = await runJudge0(lang, code, inp, setStatus);
       setOutput(out.trimEnd() || "(no output)");
     } catch (e) {
       setOutput("Error: " + String(e));
@@ -195,15 +195,24 @@ export default function CodingClient({ questions }: Props) {
     setStatus("");
     setActivePanel("tests");
     try {
-      const res: TestResult[] = [];
-      for (const t of selected.tests) {
-        let got = "";
-        try {
-          if (lang === "javascript") got = await runJS(code, t.in);
-          else if (lang === "python") got = await runPython(code, t.in, setStatus);
-          else got = await runPiston(lang, code, t.in, setStatus);
-        } catch (e) { got = "Error: " + String(e); }
-        res.push({ ok: normalize(got) === normalize(t.out), input: t.in, expected: t.out, got: got.trimEnd() });
+      let res: TestResult[] = [];
+      if (lang === "python") {
+        for (const t of selected.tests) {
+          let got = "";
+          try {
+            got = await runPython(code, t.in, setStatus);
+          } catch (e) { got = "Error: " + String(e); }
+          res.push({ ok: normalize(got) === normalize(t.out), input: t.in, expected: t.out, got: got.trimEnd() });
+        }
+      } else {
+        res = await Promise.all(selected.tests.map(async (t) => {
+          let got = "";
+          try {
+            if (lang === "javascript") got = await runJS(code, t.in);
+            else got = await runJudge0(lang, code, t.in, setStatus);
+          } catch (e) { got = "Error: " + String(e); }
+          return { ok: normalize(got) === normalize(t.out), input: t.in, expected: t.out, got: got.trimEnd() };
+        }));
       }
       setResults(res);
       const passed = res.every((r) => r.ok);
@@ -218,6 +227,9 @@ export default function CodingClient({ questions }: Props) {
         saveSolution({ ...solutions, [selected.id]: { lang, code } });
         confetti({ particleCount: 140, spread: 75, origin: { y: 0.6 }, colors: ["#8b5cf6", "#22c55e", "#3b82f6"] });
       }
+    } catch (err) {
+      setActivePanel("output");
+      setOutput("Something went wrong while running your code: " + String(err instanceof Error ? err.message : err) + ". Please try again.");
     } finally {
       setRunning(false);
       setStatus("");

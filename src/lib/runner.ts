@@ -24,7 +24,7 @@ export function runJS(code: string, stdinText: string): Promise<string> {
   return new Promise((resolve) => {
     // Run user JS in a blob Worker so an infinite loop can't freeze the page.
     const workerSrc = `
-self.onmessage = function(e) {
+self.onmessage = async function(e) {
   var code = e.data.code;
   var stdinText = e.data.stdinText;
   var lines = stdinText.length ? stdinText.replace(/\\n$/, "").split("\\n") : [];
@@ -36,12 +36,13 @@ self.onmessage = function(e) {
     out += args.map(String).join(" ") + "\\n";
   };
   try {
-    new Function("input", "print", "console", code)(input, print, {
-      log: print, error: print, warn: print
-    });
+    const wrappedCode = "return (async () => {\\n" + code + "\\n})();";
+    const userFunc = new Function("input", "print", "console", wrappedCode);
+    await userFunc(input, print, { log: print, error: print, warn: print });
+    await new Promise(r => setTimeout(r, 150));
     self.postMessage({ out: out });
   } catch(err) {
-    self.postMessage({ out: "Runtime Error: " + String(err) });
+    self.postMessage({ out: out + "Runtime Error: " + String(err) });
   }
 };
 `;
@@ -145,56 +146,72 @@ _buf.getvalue()
   }
 }
 
-const PISTON_URL = "https://emkc.org/api/v2/piston";
-const PISTON_CFG: Record<string, { language: string; file: string }> = {
-  c:      { language: "c",      file: "main.c" },
-  cpp:    { language: "c++",    file: "main.cpp" },
-  java:   { language: "java",   file: "Main.java" },
-  csharp: { language: "csharp", file: "main.cs" },
+const JUDGE0_URL = "https://ce.judge0.com";
+const JUDGE0_LANG_IDS: Record<string, number> = {
+  c: 50,
+  cpp: 54,
+  java: 62,
+  csharp: 51,
 };
 
-let pistonRuntimes: Array<{ language: string; version: string; aliases?: string[] }> | null = null;
-async function getPistonRuntimes() {
-  if (pistonRuntimes) return pistonRuntimes;
-  const res = await fetch(`${PISTON_URL}/runtimes`);
-  pistonRuntimes = await res.json();
-  return pistonRuntimes!;
-}
-
-export async function runPiston(
+export async function runJudge0(
   langKey: string,
   code: string,
   stdin: string,
   onStatus: (s: string) => void,
 ): Promise<string> {
-  const cfg = PISTON_CFG[langKey];
-  if (!cfg) throw new Error(`No Piston config for ${langKey}`);
-  onStatus(`Compiling ${LANG_LABELS[langKey as Lang]}…`);
+  try {
+    const langId = JUDGE0_LANG_IDS[langKey];
+    if (!langId) throw new Error(`No Judge0 config for ${langKey}`);
+    onStatus(`Compiling ${LANG_LABELS[langKey as Lang]}…`);
 
-  const runtimes = await getPistonRuntimes();
-  const rt = runtimes.find(
-    (r) => r.language === cfg.language || r.aliases?.includes(cfg.language),
-  );
+    const res = await fetch(`${JUDGE0_URL}/submissions?wait=true`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        language_id: langId,
+        source_code: code,
+        stdin: stdin,
+      }),
+    });
+    
+    if (!res.ok) {
+      if (res.status === 429) {
+        return "Execution service error (HTTP 429): Rate limit exceeded. Please try again.";
+      }
+      let bodyExcerpt = "";
+      try {
+        bodyExcerpt = (await res.text()).substring(0, 100);
+      } catch (e) {
+        bodyExcerpt = "<unreadable>";
+      }
+      return `Execution service error (HTTP ${res.status}): ${bodyExcerpt}`;
+    }
 
-  const res = await fetch(`${PISTON_URL}/execute`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      language: rt?.language ?? cfg.language,
-      version: rt?.version ?? "*",
-      files: [{ name: cfg.file, content: code }],
-      stdin,
-    }),
-  });
-  const data = await res.json();
-  onStatus("");
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      return "Execution service returned an unreadable response. Please try running again.";
+    }
+    
+    onStatus("");
 
-  if (data.compile && data.compile.code !== 0) {
-    return `Compilation Error:\n${data.compile.stderr || data.compile.stdout}`;
+    if (data.status?.id === 6 || data.compile_output) {
+      return `Compilation Error:\n${data.compile_output || data.stderr || "Unknown compile error"}`;
+    }
+    
+    if (data.status?.id >= 7 && data.status?.id <= 12) {
+      return `Runtime Error (${data.status?.description || "Error"}):\n${data.stderr || data.message || ""}\n${data.stdout || ""}`.trim();
+    }
+
+    let out = data.stdout ?? "";
+    if (data.stderr) out += data.stderr;
+    return out;
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return `Could not reach the execution service: ${msg}. Check your connection and try again.`;
   }
-  let out = data.run?.stdout ?? "";
-  if (data.run?.stderr) out += data.run.stderr;
-  return out;
 }
 
 export function normalize(s: string): string {

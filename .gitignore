@@ -44,3 +44,6 @@ next-env.d.ts
 *.py
 scratch/
 tmp/
+kickbacks.vsix
+AGENTS.md
+.agents/

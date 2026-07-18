@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { ExamQuestion } from "@/lib/exam";
 import styles from "./exam.module.css";
 import { QUESTIONS, Question } from "@/lib/questions";
-import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runPiston, normalize } from "@/lib/runner";
+import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runJudge0, normalize } from "@/lib/runner";
 import dynamic from "next/dynamic";
 import Calculator from "@/components/Calculator";
 import { analytics } from "@/lib/analytics";
@@ -239,28 +239,51 @@ export default function ExamClient({ questions }: Props) {
       let logs = "";
       const resultsArray: any[] = [];
       
-      for (let i = 0; i < tests.length; i++) {
-        const test = tests[i];
-        let out = "";
-        if (lang === "javascript") out = await runJS(code, test.in);
-        else if (lang === "python") out = await runPython(code, test.in, setRunOutput);
-        else out = await runPiston(lang, code, test.in, setRunOutput);
-        
-        const isPass = normalize(out) === normalize(test.out);
-        
-        if (!test.hidden) {
-          resultsArray.push({
-            id: i + 1,
-            in: test.in,
-            expected: test.out,
-            actual: out,
-            isPass
-          });
-        } else {
-          if (isPass) passedPrivate++;
+      if (lang === "python") {
+        for (let i = 0; i < tests.length; i++) {
+          const test = tests[i];
+          let out = "";
+          try {
+            out = await runPython(code, test.in, setRunOutput);
+          } catch (e) { out = String(e); }
+          
+          const isPass = normalize(out) === normalize(test.out);
+          
+          if (!test.hidden) {
+            resultsArray.push({
+              id: i + 1,
+              in: test.in,
+              expected: test.out,
+              actual: out,
+              isPass
+            });
+          } else {
+            if (isPass) passedPrivate++;
+          }
+          
+          if (isPass) passedCount++;
         }
+      } else {
+        const promises = tests.map(async (test, i) => {
+          let out = "";
+          try {
+            if (lang === "javascript") out = await runJS(code, test.in);
+            else out = await runJudge0(lang, code, test.in, setRunOutput);
+          } catch (e) { out = String(e); }
+          
+          const isPass = normalize(out) === normalize(test.out);
+          return { id: i + 1, in: test.in, expected: test.out, actual: out, isPass, hidden: test.hidden };
+        });
         
-        if (isPass) passedCount++;
+        const resolved = await Promise.all(promises);
+        for (const r of resolved) {
+          if (!r.hidden) {
+            resultsArray.push({ id: r.id, in: r.in, expected: r.expected, actual: r.actual, isPass: r.isPass });
+          } else {
+            if (r.isPass) passedPrivate++;
+          }
+          if (r.isPass) passedCount++;
+        }
       }
       
       if (passedCount === tests.length) {
@@ -274,6 +297,8 @@ export default function ExamClient({ questions }: Props) {
       
       setRunOutput(logs);
       setTestResults(resultsArray);
+    } catch (err) {
+      setRunOutput("Something went wrong while running your code: " + String(err instanceof Error ? err.message : err) + ". Please try again.");
     } finally {
       setRunning(false);
     }

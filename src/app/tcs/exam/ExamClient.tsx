@@ -41,7 +41,8 @@ export default function ExamClient({ questions, track }: Props) {
   
   const [showCalc, setShowCalc] = useState(false);
   const [confirmingSubmit, setConfirmingSubmit] = useState(false);
-  const [missedPage, setMissedPage] = useState(1);
+  const [aptMissedPage, setAptMissedPage] = useState(1);
+  const [verbMissedPage, setVerbMissedPage] = useState(1);
   
   const [codingFinalCodeEasy, setCodingFinalCodeEasy] = useState("");
   const [codingFinalCodeMedium, setCodingFinalCodeMedium] = useState("");
@@ -587,7 +588,8 @@ export default function ExamClient({ questions, track }: Props) {
                 <div>
                   <h3 style={{ fontSize: "1.3rem", marginBottom: "20px", color: "var(--error, #ef4444)" }}>Aptitude Questions You Missed</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                    {aptitudeMissed.map((mq, i, arr) => {
+                    {aptitudeMissed.slice((aptMissedPage - 1) * 5, aptMissedPage * 5).map((mq, index, arr) => {
+                      const i = index + (aptMissedPage - 1) * 5;
                       const showHeading = i === 0 || mq.section !== arr[i - 1].section;
                       return (
                         <div key={i}>
@@ -619,6 +621,13 @@ export default function ExamClient({ questions, track }: Props) {
                       );
                     })}
                   </div>
+                  {aptitudeMissed.length > 5 && (
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
+                      <button className="btn btn-secondary" onClick={() => setAptMissedPage(p => Math.max(1, p - 1))} disabled={aptMissedPage === 1}>← Previous</button>
+                      <span style={{ fontSize: "0.9rem", color: "var(--text-3)" }}>Page {aptMissedPage} of {Math.ceil(aptitudeMissed.length / 5)}</span>
+                      <button className="btn btn-secondary" onClick={() => setAptMissedPage(p => Math.min(Math.ceil(aptitudeMissed.length / 5), p + 1))} disabled={aptMissedPage === Math.ceil(aptitudeMissed.length / 5)}>Next →</button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -643,7 +652,9 @@ export default function ExamClient({ questions, track }: Props) {
                 <div>
                   <h3 style={{ fontSize: "1.3rem", marginBottom: "20px", color: "var(--error, #ef4444)" }}>Verbal Questions You Missed</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                    {verbalMissed.map((mq, i) => (
+                    {verbalMissed.slice((verbMissedPage - 1) * 5, verbMissedPage * 5).map((mq, index) => {
+                      const i = index + (verbMissedPage - 1) * 5;
+                      return (
                       <div key={i} style={{ padding: "20px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)" }}>
                         <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.1rem" }}>{i + 1}. {mq.question}</div>
                         <div style={{ fontSize: "0.9rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "16px" }}>Topic: {mq.topic}</div>
@@ -663,8 +674,15 @@ export default function ExamClient({ questions, track }: Props) {
                           <strong>Explanation:</strong> {mq.exp}
                         </div>
                       </div>
-                    ))}
+                    );})}
                   </div>
+                  {verbalMissed.length > 5 && (
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
+                      <button className="btn btn-secondary" onClick={() => setVerbMissedPage(p => Math.max(1, p - 1))} disabled={verbMissedPage === 1}>← Previous</button>
+                      <span style={{ fontSize: "0.9rem", color: "var(--text-3)" }}>Page {verbMissedPage} of {Math.ceil(verbalMissed.length / 5)}</span>
+                      <button className="btn btn-secondary" onClick={() => setVerbMissedPage(p => Math.min(Math.ceil(verbalMissed.length / 5), p + 1))} disabled={verbMissedPage === Math.ceil(verbalMissed.length / 5)}>Next →</button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

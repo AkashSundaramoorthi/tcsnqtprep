@@ -537,159 +537,198 @@ export default function ExamClient({ questions, track }: Props) {
     const missedQuestions = track !== "hackwithinfy" ? getMissedQuestions() : [];
 
 
+    const aptitudeMissed = missedQuestions.filter(q => q.section !== "Verbal");
+    const verbalMissed = missedQuestions.filter(q => q.section === "Verbal");
+
     return (
-      <div className="container section">
-        <div className={styles.startCard} style={{ maxWidth: "800px", width: "100%" }}>
+      <div className="container section" style={{ maxWidth: "1200px", width: "100%", margin: "0 auto", paddingBottom: "60px" }}>
+        <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <h1 className={styles.startTitle}>Exam Completed! 🎉</h1>
           <p className={styles.startSub}>Great job making it to the end.</p>
+        </div>
+        
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
           
           {track !== "hackwithinfy" && (
-            <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "20px 0 10px 0", width: "100%" }}>
-              <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Aptitude & Verbal Scores</h2>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "20px", textAlign: "center" }}>
-                <div>
-                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{num.score} / {num.total}</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Numerical</div>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "32px" }}>
+              <h2 style={{ fontSize: "1.6rem", marginBottom: "24px", color: "var(--text)", borderBottom: "2px solid var(--border)", paddingBottom: "12px" }}>Aptitude Performance</h2>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "24px", marginBottom: "32px" }}>
+                <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.2rem", fontWeight: "bold", color: "var(--primary)" }}>{num.score} / {num.total}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Numerical</div>
                 </div>
-                <div>
-                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{reas.score} / {reas.total}</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Reasoning</div>
+                <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.2rem", fontWeight: "bold", color: "var(--primary)" }}>{reas.score} / {reas.total}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Reasoning</div>
                 </div>
-                <div>
-                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{adv.score} / {adv.total}</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Adv. Quant</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{verb.score} / {verb.total}</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Sentence Comp.</div>
+                <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.2rem", fontWeight: "bold", color: "var(--primary)" }}>{adv.score} / {adv.total}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Adv. Quant</div>
                 </div>
               </div>
-              <p style={{ marginTop: "16px", fontSize: "0.85rem", color: "var(--text-3)", textAlign: "center", fontStyle: "italic" }}>
+
+              {weakAreas.length > 0 && (
+                <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", marginBottom: "32px", borderLeft: "4px solid var(--orange)" }}>
+                  <h3 style={{ fontSize: "1.2rem", marginBottom: "12px", color: "var(--text)" }}>Areas for Improvement</h3>
+                  <p style={{ fontSize: "0.95rem", color: "var(--text-2)", marginBottom: "12px" }}>Based on your mistakes, review these exact topics in the Aptitude Guide:</p>
+                  <ul style={{ paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {weakAreas.map((topic, i) => (
+                      <li key={i} style={{ fontSize: "1rem", color: "var(--text)" }}>{topic}</li>
+                    ))}
+                  </ul>
+                  <div style={{ marginTop: "16px" }}>
+                    <a href={`/tcs/aptitude`} className="btn btn-secondary" style={{ fontSize: "0.9rem", padding: "8px 16px" }}>Go to Aptitude Guide →</a>
+                  </div>
+                </div>
+              )}
+
+              {aptitudeMissed.length > 0 && (
+                <div>
+                  <h3 style={{ fontSize: "1.3rem", marginBottom: "20px", color: "var(--error, #ef4444)" }}>Aptitude Questions You Missed</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                    {aptitudeMissed.map((mq, i, arr) => {
+                      const showHeading = i === 0 || mq.section !== arr[i - 1].section;
+                      return (
+                        <div key={i}>
+                          {showHeading && (
+                            <h4 style={{ fontSize: "1.15rem", color: "var(--text)", paddingBottom: "8px", marginBottom: "16px", borderBottom: "1px solid var(--border)" }}>
+                              {mq.section} Ability
+                            </h4>
+                          )}
+                          <div style={{ padding: "20px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                            <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.1rem" }}>{i + 1}. {mq.question}</div>
+                            <div style={{ fontSize: "0.9rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "16px" }}>Topic: {mq.topic}</div>
+                            
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
+                              <div style={{ padding: "12px", background: "rgba(239, 68, 68, 0.1)", borderRadius: "6px", border: "1px solid rgba(239, 68, 68, 0.2)" }}>
+                                <div style={{ fontSize: "0.85rem", color: "var(--error, #ef4444)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "6px" }}>Your Answer</div>
+                                <div style={{ color: "var(--text)", fontSize: "1rem" }}>{mq.userAnsText}</div>
+                              </div>
+                              <div style={{ padding: "12px", background: "rgba(16, 185, 129, 0.1)", borderRadius: "6px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
+                                <div style={{ fontSize: "0.85rem", color: "var(--success, #10b981)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "6px" }}>Correct Answer</div>
+                                <div style={{ color: "var(--text)", fontSize: "1rem" }}>{mq.correctAnsText}</div>
+                              </div>
+                            </div>
+                            
+                            <div style={{ fontSize: "1rem", color: "var(--text-2)", background: "var(--surface)", border: "1px solid var(--border)", padding: "16px", borderRadius: "8px" }}>
+                              <strong>Explanation:</strong> {mq.exp}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {track !== "hackwithinfy" && (
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "32px" }}>
+              <h2 style={{ fontSize: "1.6rem", marginBottom: "24px", color: "var(--text)", borderBottom: "2px solid var(--border)", paddingBottom: "12px" }}>Verbal Performance</h2>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px", marginBottom: "32px", maxWidth: "300px" }}>
+                <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.2rem", fontWeight: "bold", color: "var(--primary)" }}>{verb.score} / {verb.total}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Sentence Comp.</div>
+                </div>
+              </div>
+              
+              <p style={{ fontSize: "0.9rem", color: "var(--text-3)", fontStyle: "italic", marginBottom: "32px" }}>
                 * Passage Recall and Email Writing require manual subjective grading.
               </p>
+
+              {verbalMissed.length > 0 && (
+                <div>
+                  <h3 style={{ fontSize: "1.3rem", marginBottom: "20px", color: "var(--error, #ef4444)" }}>Verbal Questions You Missed</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                    {verbalMissed.map((mq, i) => (
+                      <div key={i} style={{ padding: "20px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                        <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.1rem" }}>{i + 1}. {mq.question}</div>
+                        <div style={{ fontSize: "0.9rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "16px" }}>Topic: {mq.topic}</div>
+                        
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
+                          <div style={{ padding: "12px", background: "rgba(239, 68, 68, 0.1)", borderRadius: "6px", border: "1px solid rgba(239, 68, 68, 0.2)" }}>
+                            <div style={{ fontSize: "0.85rem", color: "var(--error, #ef4444)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "6px" }}>Your Answer</div>
+                            <div style={{ color: "var(--text)", fontSize: "1rem" }}>{mq.userAnsText}</div>
+                          </div>
+                          <div style={{ padding: "12px", background: "rgba(16, 185, 129, 0.1)", borderRadius: "6px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
+                            <div style={{ fontSize: "0.85rem", color: "var(--success, #10b981)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "6px" }}>Correct Answer</div>
+                            <div style={{ color: "var(--text)", fontSize: "1rem" }}>{mq.correctAnsText}</div>
+                          </div>
+                        </div>
+                        
+                        <div style={{ fontSize: "1rem", color: "var(--text-2)", background: "var(--surface)", border: "1px solid var(--border)", padding: "16px", borderRadius: "8px" }}>
+                          <strong>Explanation:</strong> {mq.exp}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
-          {weakAreas.length > 0 && (
-            <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%", borderLeft: "4px solid var(--orange)" }}>
-              <h2 style={{ fontSize: "1.1rem", marginBottom: "12px", color: "var(--text)" }}>Areas for Improvement</h2>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-2)", marginBottom: "12px" }}>Based on the questions you missed, we recommend reviewing these exact topics in the Aptitude Guide:</p>
-              <ul style={{ paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                {weakAreas.map((topic, i) => (
-                  <li key={i} style={{ fontSize: "0.95rem", color: "var(--text)" }}>
-                    {topic}
-                  </li>
-                ))}
-              </ul>
-              <div style={{ marginTop: "16px" }}>
-                <a href={`/tcs/aptitude`} className="btn btn-secondary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>
-                  Go to Aptitude Guide →
-                </a>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "32px" }}>
+            <h2 style={{ fontSize: "1.6rem", marginBottom: "24px", color: "var(--text)", borderBottom: "2px solid var(--border)", paddingBottom: "12px" }}>Coding Performance</h2>
+            
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", marginBottom: "40px" }}>
+              <div style={{ flex: 1, minWidth: "150px", background: "var(--surface-2)", padding: "24px", borderRadius: "8px", textAlign: "center" }}>
+                <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: codingPassedEasy === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedEasy} / 5</div>
+                <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>{track === "hackwithinfy" ? "Problem 1 Passed" : "Easy Passed"}</div>
               </div>
-            </div>
-          )}
-
-          <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%" }}>
-            <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Coding Results (Private Tests)</h2>
-            <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedEasy === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedEasy} / 5</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>{track === "hackwithinfy" ? "Problem 1 Passed" : "Easy Passed"}</div>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedMedium === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedMedium} / 5</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>{track === "hackwithinfy" ? "Problem 2 Passed" : "Medium Passed"}</div>
+              <div style={{ flex: 1, minWidth: "150px", background: "var(--surface-2)", padding: "24px", borderRadius: "8px", textAlign: "center" }}>
+                <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: codingPassedMedium === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedMedium} / 5</div>
+                <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>{track === "hackwithinfy" ? "Problem 2 Passed" : "Medium Passed"}</div>
               </div>
               {track === "hackwithinfy" && (
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedHard === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedHard} / 5</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Problem 3 Passed</div>
-              </div>
+                <div style={{ flex: 1, minWidth: "150px", background: "var(--surface-2)", padding: "24px", borderRadius: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: codingPassedHard === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedHard} / 5</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Problem 3 Passed</div>
+                </div>
               )}
             </div>
             
-            <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>Coding Problems Reference</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <h3 style={{ fontSize: "1.3rem", marginBottom: "20px", color: "var(--text)" }}>Coding Problems Reference</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               {codingQEasy && (
-                <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
-                  <div style={{ fontWeight: "bold", marginBottom: "8px" }}>{track === "hackwithinfy" ? "Problem 1" : "Easy Problem"}: {codingQEasy.title}</div>
-                  <div style={{ fontSize: "0.9rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "12px" }}>{codingQEasy.desc}</div>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text)", background: "var(--bg-1)", padding: "8px", borderRadius: "4px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
-                    <strong>Submitted Code:</strong>
-                    <pre style={{ margin: 0, marginTop: "8px" }}>{codingFinalCodeEasy || "No code submitted."}</pre>
+                <div style={{ padding: "24px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.2rem" }}>{track === "hackwithinfy" ? "Problem 1" : "Easy Problem"}: {codingQEasy.title}</div>
+                  <div style={{ fontSize: "1rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "20px" }}>{codingQEasy.desc}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text)", background: "#1e1e1e", padding: "16px", borderRadius: "8px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong style={{ color: "var(--text-3)" }}>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "12px", color: "#d4d4d4" }}>{codingFinalCodeEasy || "No code submitted."}</pre>
                   </div>
                 </div>
               )}
               {codingQMedium && (
-                <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
-                  <div style={{ fontWeight: "bold", marginBottom: "8px" }}>{track === "hackwithinfy" ? "Problem 2" : "Medium Problem"}: {codingQMedium.title}</div>
-                  <div style={{ fontSize: "0.9rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "12px" }}>{codingQMedium.desc}</div>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text)", background: "var(--bg-1)", padding: "8px", borderRadius: "4px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
-                    <strong>Submitted Code:</strong>
-                    <pre style={{ margin: 0, marginTop: "8px" }}>{codingFinalCodeMedium || "No code submitted."}</pre>
+                <div style={{ padding: "24px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.2rem" }}>{track === "hackwithinfy" ? "Problem 2" : "Medium Problem"}: {codingQMedium.title}</div>
+                  <div style={{ fontSize: "1rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "20px" }}>{codingQMedium.desc}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text)", background: "#1e1e1e", padding: "16px", borderRadius: "8px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong style={{ color: "var(--text-3)" }}>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "12px", color: "#d4d4d4" }}>{codingFinalCodeMedium || "No code submitted."}</pre>
                   </div>
                 </div>
               )}
               {track === "hackwithinfy" && codingQHard && (
-                <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
-                  <div style={{ fontWeight: "bold", marginBottom: "8px" }}>Problem 3: {codingQHard.title}</div>
-                  <div style={{ fontSize: "0.9rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "12px" }}>{codingQHard.desc}</div>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text)", background: "var(--bg-1)", padding: "8px", borderRadius: "4px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
-                    <strong>Submitted Code:</strong>
-                    <pre style={{ margin: 0, marginTop: "8px" }}>{codingFinalCodeHard || "No code submitted."}</pre>
+                <div style={{ padding: "24px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.2rem" }}>Problem 3: {codingQHard.title}</div>
+                  <div style={{ fontSize: "1rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "20px" }}>{codingQHard.desc}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text)", background: "#1e1e1e", padding: "16px", borderRadius: "8px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong style={{ color: "var(--text-3)" }}>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "12px", color: "#d4d4d4" }}>{codingFinalCodeHard || "No code submitted."}</pre>
                   </div>
                 </div>
               )}
             </div>
           </div>
           
-          
-          {missedQuestions.length > 0 && (
-            <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%", textAlign: "left" }}>
-              <h2 style={{ fontSize: "1.2rem", marginBottom: "16px", color: "var(--error, #ef4444)" }}>Questions You Missed & Explanations</h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                {missedQuestions.slice((missedPage - 1) * 5, missedPage * 5).map((mq, i, arr) => {
-                  const showHeading = i === 0 || mq.section !== arr[i - 1].section;
-                  return (
-                  <div key={i + (missedPage - 1) * 5}>
-                    {showHeading && (
-                      <h3 style={{ fontSize: "1.1rem", color: "var(--text)", paddingBottom: "8px", marginBottom: "16px", borderBottom: "1px solid var(--border)" }}>
-                        {mq.section} Ability
-                      </h3>
-                    )}
-                    <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)" }}>
-                      <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "1.05rem" }}>{(missedPage - 1) * 5 + i + 1}. {mq.question}</div>
-                      <div style={{ fontSize: "0.85rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "12px" }}>Topic to Study: {mq.topic}</div>
-                      
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
-                      <div style={{ padding: "10px", background: "rgba(239, 68, 68, 0.1)", borderRadius: "6px", border: "1px solid rgba(239, 68, 68, 0.2)" }}>
-                        <div style={{ fontSize: "0.8rem", color: "var(--error, #ef4444)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>Your Answer</div>
-                        <div style={{ color: "var(--text)" }}>{mq.userAnsText}</div>
-                      </div>
-                      <div style={{ padding: "10px", background: "rgba(16, 185, 129, 0.1)", borderRadius: "6px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
-                        <div style={{ fontSize: "0.8rem", color: "var(--success, #10b981)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>Correct Answer</div>
-                        <div style={{ color: "var(--text)" }}>{mq.correctAnsText}</div>
-                      </div>
-                    </div>
-                    
-                    <div style={{ fontSize: "0.95rem", color: "var(--text-2)", background: "var(--bg-1)", padding: "12px", borderRadius: "6px" }}>
-                      <strong>Explanation:</strong> {mq.exp}
-                    </div>
-                  </div>
-                  </div>
-                )})}
-              </div>
-              {missedQuestions.length > 5 && (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
-                  <button className="btn btn-secondary" onClick={() => setMissedPage(p => Math.max(1, p - 1))} disabled={missedPage === 1}>← Previous</button>
-                  <span style={{ fontSize: "0.9rem", color: "var(--text-3)" }}>Page {missedPage} of {Math.ceil(missedQuestions.length / 5)}</span>
-                  <button className="btn btn-secondary" onClick={() => setMissedPage(p => Math.min(Math.ceil(missedQuestions.length / 5), p + 1))} disabled={missedPage === Math.ceil(missedQuestions.length / 5)}>Next →</button>
-                </div>
-              )}
-            </div>
-          )}
-
-          <button className="btn btn-primary" onClick={() => window.location.reload()}>Return Home</button>
+        </div>
+        
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <button className="btn btn-primary" onClick={() => window.location.reload()} style={{ padding: "14px 40px", fontSize: "1.1rem" }}>Return Home</button>
         </div>
       </div>
     );

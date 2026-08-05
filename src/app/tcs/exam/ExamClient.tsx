@@ -41,6 +41,11 @@ export default function ExamClient({ questions, track }: Props) {
   
   const [showCalc, setShowCalc] = useState(false);
   const [confirmingSubmit, setConfirmingSubmit] = useState(false);
+  const [missedPage, setMissedPage] = useState(1);
+  
+  const [codingFinalCodeEasy, setCodingFinalCodeEasy] = useState("");
+  const [codingFinalCodeMedium, setCodingFinalCodeMedium] = useState("");
+  const [codingFinalCodeHard, setCodingFinalCodeHard] = useState("");
   
   const [codingQEasy, setCodingQEasy] = useState<Question | null>(null);
   const [codingQMedium, setCodingQMedium] = useState<Question | null>(null);
@@ -80,6 +85,10 @@ export default function ExamClient({ questions, track }: Props) {
 
   const advancePhase = () => {
     if (phaseIdx < phases.length - 1) {
+      if (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") setCodingFinalCodeEasy(code);
+      if (currentPhase.id === "coding-medium" || currentPhase.id === "coding-2") setCodingFinalCodeMedium(code);
+      if (currentPhase.id === "coding-3") setCodingFinalCodeHard(code);
+      
       const nextPhase = phases[phaseIdx + 1];
       setPhaseIdx(idx => idx + 1);
       
@@ -581,7 +590,7 @@ export default function ExamClient({ questions, track }: Props) {
 
           <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%" }}>
             <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Coding Results (Private Tests)</h2>
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedEasy === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedEasy} / 5</div>
                 <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>{track === "hackwithinfy" ? "Problem 1 Passed" : "Easy Passed"}</div>
@@ -597,6 +606,40 @@ export default function ExamClient({ questions, track }: Props) {
               </div>
               )}
             </div>
+            
+            <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>Coding Problems Reference</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {codingQEasy && (
+                <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "8px" }}>{track === "hackwithinfy" ? "Problem 1" : "Easy Problem"}: {codingQEasy.title}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "12px" }}>{codingQEasy.desc}</div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--text)", background: "var(--bg-1)", padding: "8px", borderRadius: "4px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "8px" }}>{codingFinalCodeEasy || "No code submitted."}</pre>
+                  </div>
+                </div>
+              )}
+              {codingQMedium && (
+                <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "8px" }}>{track === "hackwithinfy" ? "Problem 2" : "Medium Problem"}: {codingQMedium.title}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "12px" }}>{codingQMedium.desc}</div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--text)", background: "var(--bg-1)", padding: "8px", borderRadius: "4px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "8px" }}>{codingFinalCodeMedium || "No code submitted."}</pre>
+                  </div>
+                </div>
+              )}
+              {track === "hackwithinfy" && codingQHard && (
+                <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "8px" }}>Problem 3: {codingQHard.title}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "12px" }}>{codingQHard.desc}</div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--text)", background: "var(--bg-1)", padding: "8px", borderRadius: "4px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "8px" }}>{codingFinalCodeHard || "No code submitted."}</pre>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           
           
@@ -604,9 +647,9 @@ export default function ExamClient({ questions, track }: Props) {
             <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%", textAlign: "left" }}>
               <h2 style={{ fontSize: "1.2rem", marginBottom: "16px", color: "var(--error, #ef4444)" }}>Questions You Missed & Explanations</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                {missedQuestions.map((mq, i) => (
-                  <div key={i} style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)" }}>
-                    <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "1.05rem" }}>{i + 1}. {mq.question}</div>
+                {missedQuestions.slice((missedPage - 1) * 5, missedPage * 5).map((mq, i) => (
+                  <div key={i + (missedPage - 1) * 5} style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                    <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "1.05rem" }}>{(missedPage - 1) * 5 + i + 1}. {mq.question}</div>
                     <div style={{ fontSize: "0.85rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "12px" }}>Topic to Study: {mq.topic}</div>
                     
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
@@ -626,6 +669,13 @@ export default function ExamClient({ questions, track }: Props) {
                   </div>
                 ))}
               </div>
+              {missedQuestions.length > 5 && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
+                  <button className="btn btn-secondary" onClick={() => setMissedPage(p => Math.max(1, p - 1))} disabled={missedPage === 1}>← Previous</button>
+                  <span style={{ fontSize: "0.9rem", color: "var(--text-3)" }}>Page {missedPage} of {Math.ceil(missedQuestions.length / 5)}</span>
+                  <button className="btn btn-secondary" onClick={() => setMissedPage(p => Math.min(Math.ceil(missedQuestions.length / 5), p + 1))} disabled={missedPage === Math.ceil(missedQuestions.length / 5)}>Next →</button>
+                </div>
+              )}
             </div>
           )}
 

@@ -521,6 +521,7 @@ export default function ExamClient({ questions, track }: Props) {
             }
             
             missed.push({
+              section: p.section === "AdvQuant" ? "Advanced Quantitative & Reasoning" : p.section,
               question: q.q,
               topic,
               userAnsText,
@@ -538,7 +539,7 @@ export default function ExamClient({ questions, track }: Props) {
 
     return (
       <div className="container section">
-        <div className={styles.startCard}>
+        <div className={styles.startCard} style={{ maxWidth: "800px", width: "100%" }}>
           <h1 className={styles.startTitle}>Exam Completed! 🎉</h1>
           <p className={styles.startSub}>Great job making it to the end.</p>
           
@@ -647,12 +648,20 @@ export default function ExamClient({ questions, track }: Props) {
             <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%", textAlign: "left" }}>
               <h2 style={{ fontSize: "1.2rem", marginBottom: "16px", color: "var(--error, #ef4444)" }}>Questions You Missed & Explanations</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                {missedQuestions.slice((missedPage - 1) * 5, missedPage * 5).map((mq, i) => (
-                  <div key={i + (missedPage - 1) * 5} style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)" }}>
-                    <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "1.05rem" }}>{(missedPage - 1) * 5 + i + 1}. {mq.question}</div>
-                    <div style={{ fontSize: "0.85rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "12px" }}>Topic to Study: {mq.topic}</div>
-                    
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
+                {missedQuestions.slice((missedPage - 1) * 5, missedPage * 5).map((mq, i, arr) => {
+                  const showHeading = i === 0 || mq.section !== arr[i - 1].section;
+                  return (
+                  <div key={i + (missedPage - 1) * 5}>
+                    {showHeading && (
+                      <h3 style={{ fontSize: "1.1rem", color: "var(--text)", paddingBottom: "8px", marginBottom: "16px", borderBottom: "1px solid var(--border)" }}>
+                        {mq.section} Ability
+                      </h3>
+                    )}
+                    <div style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                      <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "1.05rem" }}>{(missedPage - 1) * 5 + i + 1}. {mq.question}</div>
+                      <div style={{ fontSize: "0.85rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "12px" }}>Topic to Study: {mq.topic}</div>
+                      
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
                       <div style={{ padding: "10px", background: "rgba(239, 68, 68, 0.1)", borderRadius: "6px", border: "1px solid rgba(239, 68, 68, 0.2)" }}>
                         <div style={{ fontSize: "0.8rem", color: "var(--error, #ef4444)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>Your Answer</div>
                         <div style={{ color: "var(--text)" }}>{mq.userAnsText}</div>
@@ -667,7 +676,8 @@ export default function ExamClient({ questions, track }: Props) {
                       <strong>Explanation:</strong> {mq.exp}
                     </div>
                   </div>
-                ))}
+                  </div>
+                )})}
               </div>
               {missedQuestions.length > 5 && (
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>

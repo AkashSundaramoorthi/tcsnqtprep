@@ -177,19 +177,57 @@ export default function ExamClient({ questions, track }: Props) {
 
   const startExam = () => {
     analytics.trackEvent("exam_started");
-    const mapped = questions.map(q => {
-      if (q.isTyped || q.verbalType) return { ...q };
-      const optObjs = q.opts.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
-      const shuffledOpts = shuffleArray(optObjs);
-      return {
-        ...q,
-        opts: shuffledOpts.map(o => o.text),
-        answer: shuffledOpts.findIndex(o => o.isCorrect)
-      };
+    
+    // Group questions into a pool and randomly sample based on phases
+    const finalExamQuestions: ExamQuestion[] = [];
+    
+    // Process each phase and extract random questions
+    phases.forEach(p => {
+      if (p.section) {
+        // Filter questions matching the section and vType
+        let pool = questions.filter(q => q.section === p.section && (!p.vType || q.verbalType === p.vType));
+        // Shuffle the pool
+        pool = shuffleArray(pool);
+        
+        // Take the required count, or all if count is undefined/greater
+        const count = p.count || pool.length;
+        const selected = pool.slice(0, count);
+        
+        selected.forEach(q => {
+          if (q.isTyped || q.verbalType) {
+            finalExamQuestions.push({ ...q });
+          } else {
+            // Shuffle options
+            const optObjs = q.opts.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
+            const shuffledOpts = shuffleArray(optObjs);
+            finalExamQuestions.push({
+              ...q,
+              opts: shuffledOpts.map(o => o.text),
+              answer: shuffledOpts.findIndex(o => o.isCorrect)
+            });
+          }
+        });
+      }
     });
     
-    setShuffledExam(mapped);
-    setAnswers(Array(mapped.length).fill(null));
+    // If no phases had sections (e.g. Infosys), fallback to the old way for safety
+    if (finalExamQuestions.length === 0) {
+      const mapped = questions.map(q => {
+        if (q.isTyped || q.verbalType) return { ...q };
+        const optObjs = q.opts.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
+        const shuffledOpts = shuffleArray(optObjs);
+        return {
+          ...q,
+          opts: shuffledOpts.map(o => o.text),
+          answer: shuffledOpts.findIndex(o => o.isCorrect)
+        };
+      });
+      setShuffledExam(mapped);
+      setAnswers(Array(mapped.length).fill(null));
+    } else {
+      setShuffledExam(finalExamQuestions);
+      setAnswers(Array(finalExamQuestions.length).fill(null));
+    }
     
     const easyPool = QUESTIONS.filter(q => q.level === 'Easy');
     const medPool = QUESTIONS.filter(q => q.level === 'Medium');
@@ -419,6 +457,76 @@ export default function ExamClient({ questions, track }: Props) {
 
     const weakAreas = track !== "hackwithinfy" ? analyzeWeakAreas() : [];
 
+    const getMissedQuestions = () => {
+      const missed: any[] = [];
+      phases.forEach(p => {
+        if (!p.section) return;
+        const indices = sectionIndices[p.id];
+        if (!indices) return;
+        for (let i = indices.start; i < indices.end; i++) {
+          const q = shuffledExam[i];
+          let correct = false;
+          let userAnsText = "Not answered";
+          let correctAnsText = "";
+          
+          if (q.isTyped || q.verbalType === "sentence") {
+             const ans = (answers[i] as string || "").trim();
+             const right = (q.typedAnswer || q.answer.toString()).trim();
+             if (ans.toLowerCase() === right.toLowerCase()) correct = true;
+             userAnsText = ans || "Not answered";
+             correctAnsText = right;
+          } else {
+             if (answers[i] === q.answer) correct = true;
+             if (answers[i] !== null && answers[i] !== undefined) {
+               const idx = answers[i] as number;
+               userAnsText = q.opts[idx] || "Unknown";
+             }
+             correctAnsText = q.opts[q.answer] || "Unknown";
+          }
+          
+          if (!correct && q.q && p.id !== "verbal-email" && p.id !== "verbal-passage") {
+            // Get topic based on section rules from weakAreas
+            let topic = "General";
+            const text = q.q.toLowerCase();
+            if (p.section === "Numerical") {
+               if (text.includes("profit") || text.includes("loss") || text.includes("discount") || text.includes("marked price")) topic = "Profit, Loss & Discount";
+               else if (text.includes("ratio") || text.includes("proportion") || text.includes("age")) topic = "Ratio, Proportion & Age Problems";
+               else if (text.includes("percent") || text.includes("increase") || text.includes("decrease")) topic = "Percentages";
+               else if (text.includes("work") || text.includes("pipe") || text.includes("days") || text.includes("efficiency")) topic = "Time & Work";
+               else if (text.includes("speed") || text.includes("train") || text.includes("distance") || text.includes("boat")) topic = "Speed, Distance & Time";
+               else if (text.includes("average") || text.includes("mixture") || text.includes("alloy")) topic = "Averages, Mixtures & Alligation";
+               else topic = "Number System";
+            } else if (p.section === "Reasoning" || p.section === "AdvQuant") {
+               if (text.includes("blood") || text.includes("brother") || text.includes("sister") || text.includes("mother")) topic = "Blood Relations";
+               else if (text.includes("direction") || text.includes("north") || text.includes("south")) topic = "Directions & Distances";
+               else if (text.includes("syllogism") || text.includes("statement") || text.includes("conclusion")) topic = "Syllogism";
+               else if (text.includes("code") || text.includes("decode") || text.includes("language")) topic = "Coding-Decoding";
+               else if (text.includes("series") || text.includes("next in") || text.includes("pattern")) topic = "Number & Letter Series";
+               else if (text.includes("sit") || text.includes("table") || text.includes("row")) topic = "Seating Arrangements";
+               else topic = "Data Sufficiency & Logical Puzzles";
+            } else if (p.section === "Verbal") {
+               if (text.includes("error") || text.includes("correct") || text.includes("grammar")) topic = "Error Spotting & Sentence Correction";
+               else if (text.includes("synonym") || text.includes("antonym") || text.includes("meaning")) topic = "Vocabulary";
+               else if (text.includes("order") || text.includes("jumble") || text.includes("sequence")) topic = "Para Jumbles";
+               else topic = "Cloze Test / Reading Comprehension";
+            }
+            
+            missed.push({
+              question: q.q,
+              topic,
+              userAnsText,
+              correctAnsText,
+              exp: q.exp || "No detailed explanation available."
+            });
+          }
+        }
+      });
+      return missed;
+    };
+    
+    const missedQuestions = track !== "hackwithinfy" ? getMissedQuestions() : [];
+
+
     return (
       <div className="container section">
         <div className={styles.startCard}>
@@ -491,6 +599,36 @@ export default function ExamClient({ questions, track }: Props) {
             </div>
           </div>
           
+          
+          {missedQuestions.length > 0 && (
+            <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%", textAlign: "left" }}>
+              <h2 style={{ fontSize: "1.2rem", marginBottom: "16px", color: "var(--error, #ef4444)" }}>Questions You Missed & Explanations</h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                {missedQuestions.map((mq, i) => (
+                  <div key={i} style={{ padding: "16px", background: "var(--surface)", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                    <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "1.05rem" }}>{i + 1}. {mq.question}</div>
+                    <div style={{ fontSize: "0.85rem", color: "var(--primary)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "12px" }}>Topic to Study: {mq.topic}</div>
+                    
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
+                      <div style={{ padding: "10px", background: "rgba(239, 68, 68, 0.1)", borderRadius: "6px", border: "1px solid rgba(239, 68, 68, 0.2)" }}>
+                        <div style={{ fontSize: "0.8rem", color: "var(--error, #ef4444)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>Your Answer</div>
+                        <div style={{ color: "var(--text)" }}>{mq.userAnsText}</div>
+                      </div>
+                      <div style={{ padding: "10px", background: "rgba(16, 185, 129, 0.1)", borderRadius: "6px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
+                        <div style={{ fontSize: "0.8rem", color: "var(--success, #10b981)", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>Correct Answer</div>
+                        <div style={{ color: "var(--text)" }}>{mq.correctAnsText}</div>
+                      </div>
+                    </div>
+                    
+                    <div style={{ fontSize: "0.95rem", color: "var(--text-2)", background: "var(--bg-1)", padding: "12px", borderRadius: "6px" }}>
+                      <strong>Explanation:</strong> {mq.exp}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <button className="btn btn-primary" onClick={() => window.location.reload()}>Return Home</button>
         </div>
       </div>

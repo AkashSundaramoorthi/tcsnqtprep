@@ -19,10 +19,10 @@ export default function Footer() {
         <div className={styles.links}>
           <div className={styles.col}>
             <h4>Practice</h4>
-            <Link href="/coding">Coding IDE</Link>
-            <Link href="/aptitude">Aptitude Guide</Link>
-            <Link href="/exam">Mock Exam</Link>
-            <Link href="/pyq">PYQ Bank</Link>
+            <Link href="/tcs/coding">Coding IDE</Link>
+            <Link href="/tcs/aptitude">Aptitude Guide</Link>
+            <Link href="/tcs/exam">Mock Exam</Link>
+            <Link href="/tcs/pyq">PYQ Bank</Link>
           </div>
           <div className={styles.col}>
             <h4>Info</h4>

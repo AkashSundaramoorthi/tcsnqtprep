@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     "Practice 50 TCS NQT coding problems (Easy, Medium, Hard) with an in-browser JavaScript runner. Track your progress, run test cases, and mark problems as solved.",
   keywords: ["TCS NQT coding", "TCS NQT programming", "TCS NQT coding problems", "TCS iON coding"],
   alternates: {
-    canonical: "/coding",
+    canonical: "/tcs/coding",
   },
   openGraph: {
-    url: "/coding",
+    url: "/tcs/coding",
     title: "TCS NQT Coding Practice — 50 Problems",
     description: "50 TCS NQT coding problems with in-browser runner.",
   },
@@ -33,7 +33,7 @@ export default function CodingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
       />
-      <CodingClient questions={QUESTIONS} />
+      <CodingClient questions={QUESTIONS.filter(q => q.track === "tcs-nqt" || !q.track)} />
     </>
   );
 }

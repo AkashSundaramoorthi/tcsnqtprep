@@ -16,11 +16,11 @@ const NAVBAR_H = 60;
 
 
 
-interface Props { questions: Question[]; }
+interface Props { questions: Question[]; track?: string; }
 type TestResult = { ok: boolean; input: string; expected: string; got: string; hidden?: boolean };
 type PanelTab = "tests" | "output";
 
-export default function CodingClient({ questions }: Props) {
+export default function CodingClient({ questions, track = "tcs" }: Props) {
   const [done, setDone] = useState<Record<string, boolean>>({});
   const [solutions, setSolutions] = useState<Record<string, { lang: Lang; code: string }>>({});
   const [filter, setFilter] = useState<"all" | Difficulty>("all");
@@ -237,13 +237,13 @@ export default function CodingClient({ questions }: Props) {
   };
 
   const solvedCount = questions.filter((q) => done[q.id]).length;
-  const LEVEL_ORDER: Record<Difficulty, number> = { Easy: 0, Medium: 1, Hard: 2 };
+  const LEVEL_ORDER: Record<Difficulty, number> = { Easy: 0, Medium: 1, Hard: 2, Complex: 3 };
 
   const visible = questions
     .filter((q) => filter === "all" || q.level === filter)
     .filter((q) => nqtTagFilter === "all" || q.nqtTag === nqtTagFilter)
     .sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || questions.indexOf(a) - questions.indexOf(b));
-  const FILTERS: Array<"all" | Difficulty> = ["all", "Easy", "Medium", "Hard"];
+  const FILTERS: Array<"all" | Difficulty> = track === "infosys" ? ["all", "Easy", "Medium", "Hard", "Complex"] : ["all", "Easy", "Medium", "Hard"];
   const ALL_TAGS = Array.from(new Set(questions.map((q) => q.nqtTag).filter(Boolean))) as string[];
   const currentIndex = selected ? visible.findIndex((q) => q.id === selected.id) : -1;
   const prevQ = currentIndex > 0 ? visible[currentIndex - 1] : null;

@@ -36,3 +36,9 @@ This file serves as the automatic context for Antigravity (agy). Whenever you st
 - **Coding Practice:** Completed a comprehensive rewrite of all 50 coding hints in `src/lib/questions.ts`, strictly adhering to the [Concept, Algorithm, Code] 3-step hint format.
 - **TypeScript:** Typed the `html2pdf.js` integration by fully defining the `Html2PdfOptions` interface and fixing implicit `any` errors in the Aptitude client.
 - **Analytics IP Filtering:** Implemented an `IGNORED_IP` environment variable check in `src/app/api/analytics/track/route.ts` to silently drop internal traffic, and added a `clean_my_ip.mjs` script to purge existing IP-associated events from the Postgres database.
+- **Multi-Company Routing Architecture:** Migrated the app from a single TCS-only structure to a multi-track routing system (`/tcs/*` and `/infosys/*`). Data models (`questions.ts`, `aptitude.ts`, `exam.ts`, `pyq_data.json`) were updated with a `track` property. The Navbar is dynamically track-aware via a built-in toggle switch, and shared UI clients (`ExamClient.tsx`, `CodingClient.tsx`, `AptitudeClient.tsx`, `PYQClient.tsx`) now gracefully handle empty states when filtering by track.
+
+## 6. Infosys Integration
+- **Coding Practice:** Added 73 Infosys-specific coding problems extracted from the provided sample PDFs (including a 'Complex' difficulty tier which is filtered out in TCS view).
+- **Exam System:** Adapted `ExamClient` to dynamically bypass MCQs and present a 3-question coding assessment (Easy, Medium, Hard/Complex) when operating under the `hackwithinfy` track.
+- **Routing:** Removed Aptitude section for Infosys track. Created dedicated `/tcs/about` and `/infosys/about` pages reflecting the respective exam patterns (TCS Foundation+Advanced vs Infosys pure coding).

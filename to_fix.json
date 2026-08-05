@@ -1,0 +1,416 @@
+[
+  {
+    "level": "Easy",
+    "title": "Problem 1",
+    "desc": "You have an array A of integers with n elements. There \nare q queries to process and each query consists of four \nintegers: l, r, x, and y. \n For the subarray of A ranging from index l to r, you need to \nassign a sequence of integers for each subsequent element. \nThe sequence should start from x and increase by y. This means: \n\u2022\nA[l] will be assigned the value of x. \n\u2022\nA[l+1] will be assigned the value of x + y. \n\u2022\nA[l+2] will be assigned the value of x + 2*y. \n\u2022\nContinuing this pattern, A[l+i] will be assigned the \nvalue of x + i*y, where i ranges from 0 to (r - l). \nFind the sum of all integers in A after processing all queries. \nSince answer can be large, return it modulo 109+7. \nInput Format \n1.\nThe first line contains an integer, n, denoting the \nnumber of elements in A. \n2.\nEach line i of the n subsequent lines (where 0 \u2264 i < n) \ncontains an integer describing A[i]. \n3.\nThe next line contains an integer, q, denoting the \nnumber of rows in queries. \n4.\nEach line i of the q subsequent lines (where 0 \u2264 i < q) \ncontains 4 space separated integers each describing \nthe row queries[i]. \n5.\nThe 4 space separated integers denote the value of l, r, \nx and y for the i-th query. \nConstraints \n\u2022\n1 <= \ud835\udc8f <= 10!\n\u2022\n0 <= \ud835\udc68[\ud835\udc8a] <= 10\"\n\u2022\n1 \u2264 \ud835\udc92 \u2264 10!\n\u2022\n0 <= \ud835\udc92\ud835\udc96\ud835\udc86\ud835\udc93\ud835\udc8a\ud835\udc86\ud835\udc94[\ud835\udc8a][\ud835\udc8b] <= 10!\n          Sample Input 1 \n5 \n5 \n5 \n0 \n3 \n0 \n5 \n0 2 1 2 \n0 1 6 5 \n2 3 8 0 \n2 4 9 6 \n3 4 8 9 \n          Sample output 1 \n51 \nExplanation-1 \nHere, n = 5 \nA = [5, 5, 0, 3, 0] \nq = 5 \nqueries = [[0, 2, 1, 2], [0, 1, 6, 5],",
+    "index": 0
+  },
+  {
+    "level": "Medium",
+    "title": "Problem 2",
+    "desc": "You are given three integers X,Y and Z and two \narrays A and B both of length N. You are also given an \ninteger sum which is initially equal to 0. \nYou have perform N operations and in each ith operation you \nmust do only one of the following : \n1. \nSubtract B[i] from sum. \n2. \nDecrease both of X and Y by 1, then add A[i] * X * Y * \nZ to sum. \n3. \nDecrease both of Y and Z by 1, then add A[i] * X * Y * \nZ to sum. \nHowever, after each operation, X,Y and Z must all remain greater \nthan or equal to 0. \nFind the maximum sum you can obtain after performing all \noperations. Since answer can be large, return it modulo 109+7. \nInput Format \n1. \nThe first line contains an integer, N, denoting the number of \noperations. \n2. \nThe next line contains an integer, X. \n3. \nThe next line contains an integer,Y. \n4. \nThe  next line contains an integer, Z. \n5. \nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 N) \ncontains an integer describing A[i]. \n6. \nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 N) \ncontains an integer describing B[i]. \nConstraints \n\u2022 \n1 <= \ud835\udc41 <= 10# \n\u2022 \n1 <= \ud835\udc7f <= 10# \n\u2022 \n1 <= \ud835\udc80 <= 10# \n\u2022 \n1 <= \ud835\udc81 <= 10# \n\u2022 \n1 <= \ud835\udc68[\ud835\udc8a] <= 10$ \n\u2022 \n1 <= \ud835\udc69[\ud835\udc8a] <= 10\" \nSample Input-1: \n2 \n1 \n2 \n2 \n0 \n0 \n10 \n5 \n \n \n \nSample output-1: \n0 \n \nExplanation-1: \nHere, N = 2, X = 1, Y = 2, Z = 2 \nA = [0, 0] \nB = [10, 5] \n \nIt is given that in starting, sum = 0 \n \noperation 1: \nApply type 2 operation (i.e. Decrease both of X and Y by 1, then \nadd A[1]*X*Y*Z to sum) \nX = 0, Y = 1, Z = 2 \nsum = sum + ",
+    "index": 1
+  },
+  {
+    "level": "Hard",
+    "title": "Problem 3",
+    "desc": "You are given a tree with n nodes rooted at node 1. You are also \ngiven an array color representing the colour of each node in the \ntree. \nA set of nodes is beautiful if it satisfies the following conditions: \n\u2022 \nAll nodes in the set have different colors. \n\u2022 \nFor any pair of nodes (u, v), either u is the ancestor of v or v is \nthe ancestor of u within the tree. \nYou're given q queries where each query provides an \ninteger s representing a node in the tree. \nThe answer to each query is the maximum size of a beautiful \nset that can be formed by selecting nodes from the subtree \nrooted at node s. \nFind the sum of answers to all queries. Since answer can be \nlarge, return it modulo 109+7. \nNotes: \n\u2022 \nThe parent of node 1 is 0. \nInput Format \n\u2022 \nThe first line contains an integer, N, denoting the number of \noperations. \n\u2022 \nThe next line contains an integer, X. \n\u2022 \nThe next line contains an integer,Y. \n\u2022 \nThe  next line contains an integer, Z. \n\u2022 \nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 N) \ncontains an integer describing A[i]. \n\u2022 \nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 N) \ncontains an integer describing B[i]. \nConstraints \n\u2022 \n1 <= \ud835\udc41 <= 10# \n\u2022 \n1 <= \ud835\udc7f <= 10# \n\u2022 \n1 <= \ud835\udc80 <= 10# \n\u2022 \n1 <= \ud835\udc81 <= 10# \n\u2022 \n1 <= \ud835\udc68[\ud835\udc8a] <= 10$ \n\u2022 \n1 <= \ud835\udc69[\ud835\udc8a] <= 10\" \nSample Input-1: \n   5 \n    0 \n    1 \n    2 \n    1 \n    3 \n    4 \n    3 \n    4 \n    3 \n    5 \n    3 \n    4 \n    3 \n    3 \n \nSample output-1: \n5 \nSample Explanation - 1: \nHere, n = 5 \np = [0, 1, 2, 1, 3] \ncolor = [4, 3, 4, 3,",
+    "index": 2
+  },
+  {
+    "level": "Easy",
+    "title": "Problem 1",
+    "desc": "You\u2019re given an array A of n integers and q queries.\nEach query can be one of the following two types:\n\u2022\t Type 1 Query: (1, l, r) - Replace A[i] with \n(i-l+1)*A[l] for each index i, where l <= i <= r.\n\u2022\t Type 2 Query: (2, l, r) - Calculate the sum of the \nelements in A from index l to index r.\nFind the sum of answers to all type 2 queries. Since \nanswer can be large, return it modulo 109+7.\nSample Input 1\n7\n1\n4\n5\n1\n6\n7\n8\n5\n1 1 6\n1 1 5\n2 5 5\n2 3 4\n2 3 3\nSample Output 1\n60\nSample Output Description 1\nHere, n = 7\nA = [1, 4, 5, 1, 6, 7, 8]\nq = 5\nqueries = [[1, 1, 6], [1, 1, 5], [2, 5, 5], [2, 3, 4], [2, 3, 3]]\nfor query 1 -> (1, 1, 6)\nApplying the operation on subarray from index 1 to \n6, A becomes, A = [1, 4, 8, 12, 16, 20, 24]\nfor query 2 -> (1, 1, 5)\nApplying the operation on subarray from index 1 to \n5, A becomes, A = [1, 4, 8, 12, 16, 20, 24]\nfor query 3 -> (2, 5, 5)\ncalculate sum of array from index 5 to 5 -> sum = \nA[5] = 20\nfor query 4 -> (2, 3, 4)\ncalculate sum of array from index 3 to 4 -> sum = \nA[3]+A[4] = 28\nfor query 5 -> (2, 3, 3)\ncalculate sum of array from index 3 to 3 -> sum = \nA[3] = 12\nHence, answer is 20+28+12 = 60\nSample Input 2\n7\n3\n7\n4\n2\n5\n3\n7\n5\n1 0 4\n2 0 1\n1 3 6\n2 3 3\n2 0 5\nSample Output 2\n111\nSample Output Description 2\nHere, n = 7\nA = [3, 7, 4, 2, 5, 3, 7]\nq = 5\nqueries = [[1, 0, 4], [2, 0, 1], [1, 3, 6], [2, 3, 3], [2, 0, 5]]\nfor query 1 -> (1, 0, 4)\nApplying the operation on subarray from index 0 to \n4, A becomes, A = [3, 6, 9, 12, 15, 3, 7]\nfor query ",
+    "index": 3
+  },
+  {
+    "level": "Easy",
+    "title": "Problem 2",
+    "desc": "You are given an array A of length N and an \ninteger\u00a0k.\nIt is given that a subarray from l to r is considered \ngood, if the number of distinct elements in that \nsubarray doesn\u2019t exceed k. Additionally, an empty \nsubarray is also a good subarray and its sum is \nconsidered to be zero.\nFind the maximum sum of a good subarray.\nSample Input 1\n11\n2\n1\n2\n2\n3\n2\n3\n5\n1\n2\n1\n1\nSample Output 1\n12\nSample Output Description 1\nHere, N = 11, k = 2\nA = [1, 2, 2, 3, 2, 3, 5, 1, 2, 1, 1]\nWe can select the subarray = [2, 2, 3, 2, 3]\nIt is a good subarray because it contains at most k \ndistinct elements.\nIts sum = 2+2+3+2+3 = 12\nSo, our answer is 12.\nSample Input 2\n3\n1\n-1\n-2\n-3\nExternal Document \u00a9 2025 Infosys Limited \nSample Output 2\n0\nSample Output Description 2\nHere, N = 3, k = 1\nA = [-1, -2, -3]\nIt is optimal to choose empty subarray.\nSo, our answer is 0.\nSample Input 3\n5\n5\n-1\n1\n3\n2\n-1\nSample Output 3\n6\nSample Output Description 3\nHere, N = 5, k = 5\nA = [-1, 1, 3, 2, -1]\nIt is optimal to choose the subarray = [1, 3, 2].\nIts sum = 1+3+2 = 6.\nHence, our answer is 6.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nThe next line contains an integer, k, denoting the \nlimit on the distinct elements.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains an integer describing A[i].\nConstraints\n1 <= N <= 10^5\n1 <= k <= n\n-10^5 <= A[i] <= 10^5\nSample Test Cases\nCase 1\nInput:\n11\n2\n1\n2\n2\n3\n2\n3\n5\n1\n2\n1\n1\nExternal Document \u00a9 2025 Infosys Limited \nOutput:",
+    "index": 4
+  },
+  {
+    "level": "Easy",
+    "title": "Problem 3",
+    "desc": "You have an oil tank with a capacity of C litres that \ncan be bought and sold by N people. The people \nare standing in a queue are served sequentially in \nthe order of array A.\nSome of them want to sell a litre of oil and some of \nthem want to buy a litre of oil and A describes this. \nHere, A[i] = 1 denotes that the person wants to sell \na litre of oil and A[i] = -1 denotes that the person \nwants to buy a litre of oil.\nWhen a person wants to sell a litre of oil but the \ntank is full, they cannot sell it and become upset. \nSimilarly, when a person wants to buy a litre of \noil but the tank is empty, they cannot buy it and \nbecome upset. Both these cases cause disturbances.\nYou can minimize the disturbance by filling the tank \ninitially with a certain X litres of oil.\nFind the minimum initial amount of oil X that results \nin the least number of disturbances.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nThe next line contains an integer, C, denoting the \ncapacity of the tank.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains an integer describing A[i].\nConstraints\n1 <= N <= 10^5\n1 <= C <= 10^5\n-1 <= A[i] <= 1\nSample Test Cases\nCase 1\nInput:\n3\n3\n-1\n1\n1\nExternal Document \u00a9 2025 Infosys Limited \nOutput:\n1\nExplanation:\nGiven N = 3, C = 3, A = [-1, 1, 1].\nTo avoid disturbance for Person 1, we need at least \n1 liter in the tank initially.\nAfter Person 1 buys 1 liter, the tank will be empty.\nPerson 2 sells 1 liter, so the tan",
+    "index": 5
+  },
+  {
+    "level": "Easy",
+    "title": "Problem 4",
+    "desc": "General Ali has devised a strategic game to reduce \nan enemy army of N soldiers to just 1 soldier using a \nminimal number of moves.\nThe game allows the following three types of \nmoves:\n1.\tReduce the enemy army by 1 soldier.\n2.\tReduce the enemy army by half of its current \nsoldiers, rounding down to the nearest integer.\n3.\tReduce the enemy army by two-thirds of its \ncurrent soldiers, rounding down to the nearest \ninteger.\nEach move must ensure that the resulting number \nof soldiers is an integer.\nFind the minimum number of moves required to \nreduce enemy army to just 1 soldier.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of enemy soldiers.\nConstraints\n1 <= N <= 10^9\nSample Test Cases\nCase 1\nInput:\n5\nOutput:\n3\nExplanation:\nGiven N = 5.\nMove 1: Reduce by 1 soldier (5 -> 4)\nMove 2: Reduce by half (4 -> 2)\nMove 3: Reduce by half (2 -> 1)\nHence, the answer for this case is equal to 3.\nCase 2\nInput:\n1\nOutput:\n0\nExplanation:\nGiven N = 1.\nThere is only 1 soldier already, so no moves are \nrequired to reduce the enemy soldiers to 1.\nTherefore, the minimum number of moves needed \nis 0.\nCase 3\nInput:\n6\nOutput:\n2\nExplanation:\nGiven N = 6.\nMove 1: Reduce by half (6 -> 3)\nMove 2: Reduce by half (3 -> 1)\nHence, the answer for this case is equal to 2.\nExternal Document \u00a9 2025 Infosys Limited",
+    "index": 6
+  },
+  {
+    "level": "Easy",
+    "title": "Problem 5",
+    "desc": "General Ali has initiated an invasion in the shape \nof an N\u00d7M grid behind enemy lines given by a 2D \narray Q.\nThe grid consists of cells represented by the \nfollowing characters:\n1.\t\u2018*\u2019: Represents a block cell that cannot be visited.\n2.\t\u2018A\u2019: Represents a cell that has been invaded by \nGeneral Ali\u2019s army.\n3.\t\u2018E\u2019: Represents a cell that contains the enemy\u2019s \narmy.\nGeneral Ali\u2019s invasion progresses as follows: At each \nsecond, any cell marked \u2018E\u2019 that shares a side with a \ncell marked \u2018A\u2019 is invaded by General Ali\u2019s army.\nFind the minimum time it will take for General Ali\u2019s \narmy to invade all enemy cells (\u2018E\u2019) in the grid. If it\u2019s \nnot possible to invade all enemy cells, return \u22121.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in Q.\nThe next line contains an integer, M, denoting the \ngiven integer.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains a string describing Q[i].\nConstraints\n1 <= N <= 10^3\n1 <= M <= 10^3\n1 <= len(Q[i]) <= 10^5\nSample Test Cases\nCase 1\nInput:\n2\n2\nAE\nEE\nOutput:\n2\nExplanation:\nGiven N = 2, M = 2, Q = [[\u201cAE\u201d], [\u201cEE\u201d]].\nAfter 1 second the enemy\u2019s country will be like Q = \n[[\u201cAA\u201d], [\u201cAE\u201d]].\nAfter 2 seconds the enemy\u2019s country will be like Q = \n[[\u201cAA\u201d], [\u201cAA\u201d]].\nHence, the answer for this case is equal to 2.\nCase 2\nInput:\n3\n2\nAE\n*E\nEE\nOutput:\n4\t Explanation:\nGiven N = 3, M = 2, Q = [[\u201cAE\u201d], [\u201c*E\u201d], [\u201cEE\u201d]].\nAfter 1 second the enemy\u2019s country will be like Q = \n[[\u201cAA\u201d], [\u201cAE\u201d], [\u201cEE\u201d]].\nAfter 2 seconds th",
+    "index": 7
+  },
+  {
+    "level": "Medium",
+    "title": "Problem 6",
+    "desc": "A company ABC has N employees.\nFor some reason, the company\u2019s building is a bit \nweird.\n\u2022\t\nIt has one office on each floor and in each \noffice works one employee.\n\u2022\t\nEach employee i works on the ith floor and \nhas skill Ai.\n\u2022\t\nEach employee can belong to at most one \nteam.\n\u2022\t\nEach team should have employees working \nin consecutive floors from i to j. In other words, \nthe teams should be divided in such a way that no \nemployee of one team can walk into the project \nspace of another team.\nABC uses a metric which is called the expert \nnumber which is calculated as the sum of all the \nabsent expert values from each team of employees. \nThe absent expert value of each team is the first skill \nstarting from 0 which is not present in the team.\nIt is given that a bigger expert number is a better \nexpert number. Hence, you need to divide the \nemployees into teams such that the company\u2019s \nexpert number is as large as possible. \nFind the maximum expert number that can be \nobtained.\nSample Input 1\n4\n0\n2\n1\n1\nSample Output 1\n3\nSample Output Description 1\nHere, N = 4\nA = [0, 2, 1, 1]\nWe can divide the employees in the following teams \n-> [0, 2, 1], [1]\nexpert value of team [0, 2, 1] = 3\nexpert value of team [1] = 0\nSo, expert number = 3+0 = 3\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n3.\nHence, the maximum value of expert number is 3.\nSample Input 2\n5\n0\n1\n2\n1\n0\nSample Output 2\n5\nSample Output Description 2\nHere, N = 5\nA = [0, 1, 2",
+    "index": 8
+  },
+  {
+    "level": "Medium",
+    "title": "Problem 7",
+    "desc": "You are given a graph with n nodes. Initially, the \ngraph is disconnected, meaning it contains zero \nedges.\nEach node has a value written on it such that the ith \nnode has a value i.\nWe say that a range [l, r] is covered in a set s, if for \neach i from l to r, i appears in s.\nNow, let\u2019s define beauty(s), as the minimum \nnumber of covered ranges, such that each element \nof s belongs to at least one of these ranges. For \nexample: beauty([1, 2, 4, 5, 8, 11]) = 4 (covered \nranges are [1, 2], [4, 5], [8] and [11]).\nYou have to process q queries that are either of the \nfollowing types:\n\u2022\t Type 1 - (1, i, j): Add an edge between i and j.\n\u2022\t Type 2 - (2, u, 0): Find the number of covered \nranges in the connected component of u.\nFind the sum of answers to all type 2 queries.\nSample Input 1\n2\n1\n3\n2 1 0\nSample Output 1\n1\nSample Output Description 1\nHere, n = 2, q = 1, t = 3\nqueries = [[2, 1, 0]]\nfor query1 -> As there are no edges in the graph, \nthe connected component of 1 contain only node 1.\nonly one covered range required i.e. [1, 1]\nHence, answer for this query is 1.\nSo, the answer is 1.\nSample Input 2\n2\n3\n3\n2 1 0\nExternal Document \u00a9 2025 Infosys Limited \n1 1 2\n2 1 0\nSample Output 2\n2\nSample Output Description 2\nHere, n = 2, q = 3, t = 3\nqueries = [[2, 1, 0], [1, 1, 2], [2, 1, 0]]\nfor query1 -> (2, 1, 0)\nconnected component of 1 = {1}\nonly one covered range required i.e. [1, 1]\nHence, answer for this query is 1.\nfor query2 -> (1, 1, 2)\nAdd an edge between 1 and 2.\nfor query3 -> (2,",
+    "index": 9
+  },
+  {
+    "level": "Medium",
+    "title": "Problem 8",
+    "desc": "A group of N people are seated around a circular \ntable to play a game.\nThe game involves jumping from one chair to \nanother. Each person sitting on chair i can jump A[i] \nchairs to either the right or left in one jump where 0 \n< i < N+1.\nBob, sitting on chair X, needs to reach chair Y, where \nthe escape door is located.\nFind the minimum number of jumps required to \nreach chair Y from chair X. If this is impossible using \nthe given jump distances, then return -1.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of people playing the game.\nThe next line contains an integer, X, denoting the \nchair on which Bob is seated.\nThe next line contains an integer, Y, denoting the \nchair which Bob wants to reach.\nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 \nN) contains an integer describing A[i] is the number \nof chairs the person sitting in chair number i can \njump either right or left.\nConstraints\n1 <= N <= 10^5\n1 <= X <= N\n1 <= Y <= N\n1 <= A[i] <= 10^5\nSample Test Cases\nCase 1\nInput:\n5\n5\n1\n1\n2\n3\n2\n4\nOutput:\n1\nCase 2\nInput:\n5\n2\n4\n5\n4\n3\n2\n1\nOutput:\n3\nCase 3\nInput:\n6\n2\n3\n2\n2\n2\n2\n2\n2\nOutput:\n-1\nExternal Document \u00a9 2025 Infosys Limited",
+    "index": 10
+  },
+  {
+    "level": "Medium",
+    "title": "Problem 9",
+    "desc": "You are given two boxes where one contains an \ninfinite number of blue balls and the other contains \nan infinite number of red balls. We can construct \na chain of balls by choosing one of the boxes and \ntaking out a ball from it and inserting it at the end \nof the chain.\nA chain is called good if after each time we insert a \nnew ball, the number of blue balls doesn\u2019t exceed \nthe number of red balls by more than K. In other \nwords, if after adding the ith ball we have B[i] blue \nballs and R[i] red balls then it must satisfy B[i] \u2264 R[i] \n+ K.\nA chain is called great if it is a good chain and if we \ntake the reversed chain the following conditions \nsatisfy:\n\u2022\t Every blue ball in the reversed chain is matched \nwith a red ball in the original chain.\n\u2022\t Every red ball in the reversed chain is matched \nwith a blue ball in the original chain.\nYou are given two integers B and R. Let the \nprobability of choosing the box with the blue balls \nbe (B / 106) and (R / 106) be the probability of \nchoosing the box with red balls.\nFind the probability of creating a great chain of \nlength N. Since the answer can be large, return it \nmodulo 109 + 7.\nInput Format\nThe first line contains an integer, N, denoting the \nlength of the chain.\nThe next line contains an integer, K, denoting the \nvalue K in B[i] \u2264 R[i] + K.\nThe next line contains an integer, B, denoting the \nprobability of choosing the box with blue balls.\nThe next line contains an integer, R, denoting the \nprobability of choosing the box w",
+    "index": 11
+  },
+  {
+    "level": "Medium",
+    "title": "Problem 10",
+    "desc": "You are given an array A of size N.\nYou can partition A into multiple subarrays such \nthat each element belongs to exactly one subarray \nand each subarray has a length of at least K.\nThe beauty of a subarray is the maximum bitwise \nXOR of the values of a subset in that subarray. The \namazingness of a partitioned array is the sum of \nbeauties of its subarrays.\nFind the maximum possible amazingness of A.\nNote:\n\u2022\t A subarray is a contiguous part of the array.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nThe next line contains an integer, K, denoting the \ngiven integer.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains an integer describing A[i].\nConstraints\n1 <= N <= 10^5\n1 <= K <= 10^5\n1 <= A[i] <= 10^5\nSample Test Cases\nCase 1\nInput:\n2\n2\n2\n1\nOutput:\n3\nExplanation:\nGiven N = 2, K = 2, A = [2, 1].\nWe take the entire A as one subarray as [2, 1] with \nmaximum amazingness equal to 3.\nHence, the answer for this case is equal to 3.\nExternal Document \u00a9 2025 Infosys Limited \nCase 2\nInput:\n4\n1\n1\n5\n3\n3\nOutput:\n12\nExplanation:\nGiven N = 4, K = 1, A = [1, 5, 3, 3].\nWe can take 4 subarrays from A as [1], [5], [3], [3] \nwhose maximum amazingness is equal to 1 + 5 + 3 \n+ 3 = 12.\nHence, the answer for this case is equal to 12.\nCase 3\nInput:\n7\n1\n16\n3\n3\n5\n19\n19\n5\nOutput:\n70\nExplanation:\nGiven N = 7, K = 1, A = [16, 3, 3, 5, 19, 19, 5].\nThe maximum possible amazingness for this case is \nequal to 70.",
+    "index": 12
+  },
+  {
+    "level": "Hard",
+    "title": "Problem 11",
+    "desc": "You are given a permutation p of length n and an \ninteger m. You now need to construct a directed \ngraph from the given permutation.\nIt is given that an edge exists between i and j if ai \n< aj and abs(i - j) <= k, where abs(x) is the absolute \nvalue of x.\nFind the minimum value of k such that the longest \npath of the resulting graph is greater than or equal \nto m.\nNotes:\n\u2022\t The length of the path is equal to the number of \nnodes in that path.\nSample Input 1\n5\n2\n1\n3\n2\n5\n4\nSample Output 1\n1\nSample Output Description 1\nHere, n = 5, m = 2\np = [1, 3, 2, 5, 4]\nIf k >= 1 then, directed edge 1 -> 2 exists, so, we can \ntake the path 1 -> 2.\nHence, the minimum value of k required is 1.\nSo, answer is 1.\nSample Input 2\n5\n3\n1\n3\n2\n5\n4\nExternal Document \u00a9 2025 Infosys Limited \nSample Output 2\n2\nSample Output Description 2\nHere, n = 5, m = 3\np = [1 ,3, 2, 5, 4]\nIf k >= 2, then we can take the path 1 -> 2 -> 3.\nHence, the minimum value of k required is 2.\nSo, the answer is 2.\nSample Input 3\n5\n1\n1\n2\n3\n4\n5\nSample Output 3\n0\nSample Output Description 3\nHere, n = 5, m = 1\np = [1, 2, 3, 4, 5]\nAny node (without any edges) has a path of length \n1, so the minimum value k is 0.\nSo, answer is 0.\nInput Format\nThe first line contains an integer, n, denoting the \nnumber of elements in p.\nThe next line contains an integer, m, denoting the \nlength of the path.\nEach line i of the n subsequent lines (where 0 \u2264 i < \nn) contains an integer describing p[i].\nConstraints\n1 <= n <= 10^5\n1 <= m <= n\n1 <= p[i] <= n\nS",
+    "index": 13
+  },
+  {
+    "level": "Hard",
+    "title": "Problem 12",
+    "desc": "Bob is playing a game called \u201cSome Help\u201d.\nIn this game, there are N soldiers, where N is an \neven number. There are also N treasure chests, each \nwith a bonus value given by the array Bonus. Here, \nBonus[i] denotes the bonus value for the ith chest.\nThe power of each soldier is described by an array \nA of size N. For each i, the power of the ith soldier \nis an integer between 1 and N/2, and each number \nbetween 1 and N/2 occurs exactly twice in A.\nThe game has N rounds and each round proceeds \nas follows:\n1.\tFor each ith player, Bob finds the first player \non their right whose power is a multiple of the \npower of the ith player. Let\u2019s call this player R.\n2.\tIf no such player R is found, Bob does nothing.\n3.\tIf such a player R is found, Bob can choose a chest \nin the range [i, R] that gives the maximum bonus. \nLet\u2019s call the bonus of this chest as X.\n4.\tThe total XP is initially zero and for each round it \nis increased by X.\nFind the total XP that Bob can obtain from all N \nrounds.\nNote:\n\u2022\t Each treasure chest can be used any number of \ntimes.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 \nN) contains an integer describing A[i].\nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 \nN) contains an integer describing Bonus[i].\nConstraints\n1 <= N <= 10^5\n1 <= A[i] <= 10^5\n1 <= Bonus[i] <= 10^5\nExternal Document \u00a9 2025 Infosys Limited \nSample Test Cases\nCase 1\nInput:\n4\n1\n1\n2\n2\n4\n8\n2\n1",
+    "index": 14
+  },
+  {
+    "level": "Hard",
+    "title": "Problem 13",
+    "desc": "You are given an array A of length N.\nYou have two functions defined as follows:\n\u2022\t frequency(left, right, value): Returns the number \nof elements in the range [left, right] that are \nequal to value.\n\u2022\t distinct(left, right): Returns the number of distinct \nelements in the range [left, right].\nFind the number of pairs (i, j) that satisfy the \nfollowing condition:\n\u2022\t frequency(1 , i , A[i]) + frequency(j , N , A[j]) \u2264 \n.[distinct(1 , i) / 2] + [distinct(j , N) / 2].\nSince the answer can be very large, return it modulo \n109+7.\nNote:\n\u2022\t Here \u230aX\u230b represents the greatest integer less \nthan or equal to X.\n\u2022\t 1 \u2264 i < j \u2264 N\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains an integer describing A[i].\nConstraints\n1 <= N <= 10^5\n1 <= A[i] <= 10^9\nSample Test Cases\nCase 1\nInput:\n5\n2\n2\n3\n1\n5\nOutput:\n2\nExplanation:\nGiven N = 5, A = [2, 2, 3, 1, 5].\nWe can select two pairs (1, 2) and (3,4) which satisfy \nthe given conditions.\nHence, the answer for this case is equal to 2.\nCase 2\nInput:\n5\n5\n5\n5\n5\n5\nOutput:\n0\nExplanation:\nGiven N = 5, A = [2, 2, 3, 1, 5].\nThere exists no pair which satisfy the given \nconditions.\nHence, the answer for this case is equal to 0.\nCase 3\nInput:\n5\n1\n2\n3\n4\n5\nOutput:\n5\nExplanation:\nGiven N = 5, A = [1, 2, 3, 4, 5].\nThere are 5 pairs which satisfy the following \nconditions are (1, 2), (1, 3), (1, 4), (1, 5), (2, 3).\nHence, the answer for this case is equal to 5.\n",
+    "index": 15
+  },
+  {
+    "level": "Hard",
+    "title": "Problem 14",
+    "desc": "You are given a tree which consists of N nodes. You \nalso will be given two distinct nodes A and B.\nYou are also given an array P where the parent of \nnode U is given by P[U].\nWe define beauty of a node (U, V) as the number of \nnodes that belong to both:\n\u2022\t The subtree of U when the tree is rooted at A.\n\u2022\t The subtree of U when the tree is rooted at B.\nYou are given a 2D array Queries which consists of \nQ queries. For each query you are given two nodes \nU and V (U can be equal to V) and the answer to the \nquery is the beauty of (U, V).\nLet K be equal to the answer to the last query \n(initially 0), then U and V changes as follows after \neach query:\n\u2022\t U = (U + K) mod N + 1.\n\u2022\t V = (V + K) mod N + 1.\nFind the sum of answer to all queries. Since the \nanswer can be large, return it modulo 109+7.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in P.\nThe next line contains an integer, A, denoting the \ngiven distinct node\nThe next line contains an integer, B, denoting the \ngiven distinct node.\nEach line i of the N subsequent lines (where 1 \u2264 i \u2264 \nN) contains an integer describing P[i].\nThe next line contains an integer, Q, denoting the \nnumber of rows in Queries.\nThe next line contains an integer, Col, denoting the \nnumber of columns in Queries.\nEach line i of the Q subsequent lines (where 0 \u2264 i \n< Q) contains Col space separated integers each \ndescribing the row Queries[i].\nConstraints\n1 <= N <= 10^5\n1 <= A <= N\n1 <= B <= N\n0 <= P[i] <= N\n1 <= Q",
+    "index": 16
+  },
+  {
+    "level": "Easy",
+    "title": "FOOD STAMPS",
+    "desc": "You want to buy food from a store. You have a\nscoring system that uses a unit called taste points\n.\nEach time you buy a type of food, you can measure\nits tastiness by the number of taste points you get\nfrom that food.\nYou have N types of food. You can buy any type\nany number of times, as long as the total number\nof meals does not exceed M.\nHowever, you don't want to grow tired of a food if\nyou buy it too often. Therefore, you will get v[i] \u2212\nd[i] \u00d7 (ti \u2212 1) taste points when you buy the i-th\ntype of food for the ti-th time.\nFind the maximum number of taste points you can\nachieve.\nSample Test Cases\nCase 1\nInput:\n1\n1\n5\n2\nOutput:\n5\nExplanation:\nYou can only buy the first food once and get 5 taste\npoints.\nCase 2\nInput:\n2\n2\n5\n7\n2\n4\nOutput:\n12\nInput Format\nThe first line contains an integer, n, denoting the\nnumber of types of food you can buy.\nThe next line contains an integer, m, denoting\nthe maximum number of meals you can buy.\nEach line i of the n subsequent lines (where 0 \u2264 i\n< n) contains an integer describing v[i].\nEach line i of the n subsequent lines (where 0 \u2264 i\n< n) contains an integer describing d[i].\nConstraints\n1 <= n <= 10^5\n1 <= m <= 10^9\n1 <= v[i] <= 10^9\n1 <= d[i] <= 10^9\nExplanation:\nYou can buy 1 meal of the first type and 1 meal of\nthe second type of food. The answer therefore will\nbe 5+7 = 12\nCase 3\nInput:\n3\n5\n5\n7\n9\n2\n4\n6\nOutput:\n27\nExplanation:\nyou can buy the 2 meals of the first type and 2\nmeals of the second type and 1 meal of the third\ntype and get 27 tast",
+    "index": 17
+  },
+  {
+    "level": "Hard",
+    "title": "LOCK",
+    "desc": "You are given N locks in a row (1-indexed). Each lock\ni has a value L[i]. There is also one key under each\nlock, and key j has value L[j].\nYou may assign some keys to some locks under the\nfollowing rules:\n1. You may assign key j to lock i only if: j < i. (Each\nkey can only be used on a lock to its right.)\n2. Assignments where the key and lock have the\nsame value are forbidden: L[j] \u2260 L[i] (So the\neffective value is never zero.)\n3. Assigning key j to lock i gives: E = |L[j] \u2212 L[i]|\n4. Each lock can be assigned at most once, and each\nkey can be used at most once.\n5. Let even be the number of assignments with even\neffective value, and odd be the number of\nassignments with odd effective value. A set of\nassignments is valid only if: even \u2265 odd. This\ncondition applies to the final chosen set.\nSample Test Cases\nCase 1\nInput:\n6\n41\n54\n15\n4\n54\n4\nOutput:\n26\n& PARITY\n(Only the smallest several are shown above \u2014 full set\nwas enumerated in the solver.)\n2. Check cheapest possibilities\nThe absolute cheapest edges are the two 11-cost\nedges (both odd).\nAny selection consisting of a single odd (e.g. cost =\n11) is invalid because even = 0 < odd = 1.\nTwo odd edges (11 + 11 = 22) would have odd = 2,\neven = 0 \u2192 still invalid.\nTo satisfy parity, we need at least one even\nassignment in the final set (or an equal number of\neven\nand odd with evens \u2265 odds).\nThe smallest even-cost edge is 26 (1 \u2192 3). Any\ncheaper combination that satisfies parity would\nhave to sum to < 26 and include at least one even \u2014\nb",
+    "index": 18
+  },
+  {
+    "level": "Medium",
+    "title": "A peak element is an element that is strictly grea...",
+    "desc": "A peak element is an element that is strictly greater than its neighbors. \nGiven a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple \npeaks, return the index to any of the peaks. \nYou may imagine that nums[-1] = nums[n] = -\u221e. In other words, an element is always considered to be strictly \ngreater than a neighbor that is outside the array. \nYou must write an algorithm that runs in O(log n) time. \n  \nExample 1: \nInput: nums = [1,2,3,1] \nOutput:",
+    "index": 19
+  },
+  {
+    "level": "Medium",
+    "title": "Given a 0-indexed string s, permute s to get a new...",
+    "desc": "Given a 0-indexed string s, permute s to get a new string t such that: \n\u2022 \nAll consonants remain in their original places. More formally, if there is an index i with 0 <= i < s.length \nsuch that s[i] is a consonant, then t[i] = s[i]. \n\u2022 \nThe vowels must be sorted in the nondecreasing order of their ASCII values. More formally, for pairs of \nindices i, j with 0 <= i < j < s.length such that s[i] and s[j] are vowels, then t[i] must not have a higher ASCII value \nthan t[j]. \nReturn the resulting st",
+    "index": 20
+  },
+  {
+    "level": "Medium",
+    "title": "Given a string s, find the length of the longest s...",
+    "desc": "Given a string s, find the length of the longest substring without duplicate characters. \n \nExample 1: \nInput: s = \"abcabcbb\" \nOutput: 3 \nExplanation: The answer is \"abc\", with the length of 3. \nExample 2: \nInput: s = \"bbbbb\" \nOutput: 1 \nExplanation: The answer is \"b\", with the length of 1. \nExample 3: \nInput: s = \"pwwkew\" \nOutput: 3 \nExplanation: The answer is \"wke\", with the length of 3. \nNotice that the answer must be a substring, \"pwke\" is a subsequence and not a substring. \n  \n \nConstraints",
+    "index": 21
+  },
+  {
+    "level": "Medium",
+    "title": "Given an integer array nums, find a subarray that ...",
+    "desc": "Given an integer array nums, find a subarray that has the largest product, and return the product. \nThe test cases are generated so that the answer will fit in a 32-bit integer. \nExample 1: \n \nInput: nums = [2,3,-2,4] \nOutput: 6 \nExplanation: [2,3] has the largest product 6. \nExample 2: \n \nInput: nums = [-2,0,-1] \nOutput: 0 \nExplanation: The result cannot be 2, because [-2,-1] is not a subarray. \n  \n \nConstraints: \n \n1 <= nums.length <= 2 * 104 \n-10 <= nums[i] <= 10 \nThe product of any subarray ",
+    "index": 22
+  },
+  {
+    "level": "Medium",
+    "title": "Given an integer array nums, find the subarray wit...",
+    "desc": "Given an integer array nums, find the subarray with the largest sum, and return its sum. \n \nExample 1: \n \nInput: nums = [-2,1,-3,4,-1,2,1,-5,4] \nOutput: 6 \nExplanation: The subarray [4,-1,2,1] has the largest sum 6. \nExample 2: \n \nInput: nums = [1] \nOutput: 1 \nExplanation: The subarray [1] has the largest sum 1. \n \nExample 3: \nInput: nums = [5,4,-1,7,8] \nOutput: 23 \nExplanation: The subarray [5,4,-1,7,8] has the largest sum 23.  \n \nFollow up: If you have figured out the O(n) solution, try coding",
+    "index": 23
+  },
+  {
+    "level": "Medium",
+    "title": "You are given an array of strings tokens that repr...",
+    "desc": "You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation. \n \nEvaluate the expression. Return an integer that represents the value of the expression. \n \nNote that: \n \nThe valid operators are '+', '-', '*', and '/'. \nEach operand may be an integer or another expression. \nThe division between two integers always truncates toward zero. \nThere will not be any division by zero. \nThe input represents a valid arithmetic expression in a reverse polish",
+    "index": 24
+  },
+  {
+    "level": "Medium",
+    "title": "Given an array of integers temperatures represents...",
+    "desc": "Given an array of integers temperatures represents the daily temperatures, return an array answer such that \nanswer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no \nfuture day for which this is possible, keep answer[i] == 0 instead.  \n \nExample 1: \n \nInput: temperatures = [73,74,75,71,69,72,76,73] \nOutput: [1,1,4,2,1,1,0,0] \nExample 2: \n \nInput: temperatures = [30,40,50,60] \nOutput: [1,1,1,0] \nExample 3: \n \nInput: temperatures = [30,60,90] ",
+    "index": 25
+  },
+  {
+    "level": "Medium",
+    "title": "Given a string s containing just the characters '(...",
+    "desc": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. \nAn input string is valid if: \n \nOpen brackets must be closed by the same type of brackets. \nOpen brackets must be closed in the correct order. \nEvery close bracket has a corresponding open bracket of the same type. \n  \n \nExample 1: \nInput: s = \"()\" \nOutput: true \n \nExample 2: \nInput: s = \"()[]{}\" \nOutput: true \n \nExample 3: \nInput: s = \"(]\" \nOutput: false \n \nExample 4: \nInput",
+    "index": 26
+  },
+  {
+    "level": "Medium",
+    "title": "Once upon a time in a small village, a wise king w...",
+    "desc": "Once upon a time in a small village, a wise king wanted to attend as many village festivals as possible in one \nday. Each festival had a start and end time, and the king could only attend one at a time. His advisor suggested \npicking only the festivals that ended the earliest, so he could fit more in. The king followed this advice, selecting \nthe next festival that started after the last one ended. By the end of the day, he had enjoyed the most \ncelebrations possible without any overlaps. The vi",
+    "index": 27
+  },
+  {
+    "level": "Medium",
+    "title": "In the bustling kingdom of AlgoLand, there lived a...",
+    "desc": "In the bustling kingdom of AlgoLand, there lived a clever merchant named Riya who ran a workshop \noffering special services. Every day, clients came to her with unique jobs \u2014 each with a deadline and a reward \n(profit) for completing it. However, each job took exactly one full day, and Riya could only handle one job per \nday. She quickly realized that if she wasn\u2019t careful, she\u2019d miss out on valuable profits by picking the wrong jobs. \nOne evening, she sat down and looked at all the job requests",
+    "index": 28
+  },
+  {
+    "level": "Medium",
+    "title": "In the quiet village of Splitville, there was a wi...",
+    "desc": "In the quiet village of Splitville, there was a wise elder named Mira who had a magical pouch full of coins, \neach with different values. One day, she challenged the village children: \u201cPick the fewest number of coins from \nthis pouch such that their total value is greater than the value of all the coins left behind.\u201d The children were \npuzzled \u2014 grabbing more coins meant winning, but they had to be smart. \nOne clever child sorted the coins from largest to smallest and picked them one by one, kee",
+    "index": 29
+  },
+  {
+    "level": "Medium",
+    "title": "In the hilly kingdom of Altaria, each village was ...",
+    "desc": "In the hilly kingdom of Altaria, each village was built on a tower of different height. The king wanted to even \nout the landscape as much as possible, so that no tower looked too tall or too short compared to others. To do \nthis, he ordered the builders to either raise or lower every tower\u2019s height by exactly K meters \u2014 no exceptions! \nBut there was a rule: no tower could be made shorter than zero. The royal architect, Mira, studied the towers \ncarefully. She realized that by strategically incr",
+    "index": 30
+  },
+  {
+    "level": "Medium",
+    "title": "In the land of Lexiconia, the royal scribe was tas...",
+    "desc": "In the land of Lexiconia, the royal scribe was tasked with writing a magical scroll using a string of letters. But \nthe scroll had one sacred rule: no two identical letters could be written side by side, or the spell would fail. The \nscribe was handed strings like \"aaabc\" and \"aaabb\" and had to rearrange them so that no two adjacent \ncharacters were the same. \nHe carefully counted how many times each letter appeared. If any letter appeared more than half the \nlength of the string (rounded up), h",
+    "index": 31
+  },
+  {
+    "level": "Medium",
+    "title": "In the merchant city of Greedonia, a young trader ...",
+    "desc": "In the merchant city of Greedonia, a young trader named Elric was setting off on a journey with a \nmagical knapsack. This bag could carry only a limited weight, but there was a twist \u2014 Elric could break any \nitem and take a fraction of it if needed. Each item in his inventory had a value and a weight. \nHis goal? Maximize the value of what he could carry without exceeding the knapsack\u2019s capacity. So Elric \nsorted all his items by their value-to-weight ratio, starting with the most valuable per ki",
+    "index": 32
+  },
+  {
+    "level": "Medium",
+    "title": "Every house with only one incoming and no outgoing...",
+    "desc": "Every house with only one incoming and no outgoing pipe gets a tap. \nThe Rebel council has proposed a network of pipes where connections are denoted by three input values: \nai, bi, di denoting the pipe of diameter di from house ai to house bi. \nFind a more efficient way for the construction of this network of pipes. Minimize the diameter of pipes \nwherever possible. \nNote: The generated output will have the following format. The first line will contain t, denoting the total \nnumber of pairs of t",
+    "index": 33
+  },
+  {
+    "level": "Medium",
+    "title": "In the kingdom of Arraya, there lived a wizard who...",
+    "desc": "In the kingdom of Arraya, there lived a wizard who loved symmetry \u2014 especially in the form of non-\nincreasing sequences. One day, he stumbled upon a magical scroll with numbers that danced out of order. \nThe scroll read: {3, 1, 2, 1}. This bothered him, as the numbers weren't steadily decreasing or staying the \nsame. \nTo restore harmony, the wizard could use his magic to either increase or decrease any number, but he \nwanted to use the least amount of magic possible. So he cast spells to gently ",
+    "index": 34
+  },
+  {
+    "level": "Medium",
+    "title": "In the twin cities of Numeria, two teams \u2014 Team A ...",
+    "desc": "In the twin cities of Numeria, two teams \u2014 Team A and Team B \u2014 were preparing for a grand \npartner dance. Each dancer in Team A had to be paired with a dancer from Team B. But there was a \nrule: the more different their dance styles (represented by numbers), the more awkward the dance \u2014 \nand the higher the cost in energy. \nThe elders wanted the total awkwardness (the sum of absolute differences in style between all pairs) to be \nas low as possible. A wise mathematician stepped in and gave a clev",
+    "index": 35
+  },
+  {
+    "level": "Medium",
+    "title": "In the city of Timetron, schedules were sacred. Ev...",
+    "desc": "In the city of Timetron, schedules were sacred. Every citizen had a list of time intervals when they \nneeded access to the magical gates of transit. But chaos broke out \u2014 people\u2019s time slots overlapped, and \narguments erupted over who reserved what. \nThe wise Scheduler stepped in. She laid out all the intervals on a grand timeline and sorted them by their \nstart times. One by one, she merged overlapping time slots into larger blocks, ensuring no overlap \nremained \u2014 but no time was lost either. \n",
+    "index": 36
+  },
+  {
+    "level": "Medium",
+    "title": "On a rainy Saturday afternoon, best friends Aarav ...",
+    "desc": "On a rainy Saturday afternoon, best friends Aarav and Meera were holed up inside, the thunder rumbling \nin the distance. With no power and their usual gadgets dead, they turned to an old pastime\u2014brain games.\"I \nhave a challenge,\" Aarav said, grinning as he grabbed a notebook. \"Let\u2019s play a game: find the longest \npalindromic substring from a random sentence., now our  task is to find the longest substring which is a \npalindrome. If there are multiple answers, then return the first appearing subs",
+    "index": 37
+  },
+  {
+    "level": "Medium",
+    "title": "In the quiet village of Sumridge, two curious frie...",
+    "desc": "In the quiet village of Sumridge, two curious friends, Arya and Rohan, were known for their love of \npuzzles and challenges. One sunny afternoon, while rummaging through Arya\u2019s attic, they found an old \nwooden box filled with ancient coins of different values 1, 2, 5.. units. \nAttached to the box was a note: \n\u201cTo claim the treasure of Sumridge, find all the ways to make the number N using these coins.\u201d \nOur task is to help them and the total Number of  combinations are possible using these coins",
+    "index": 38
+  },
+  {
+    "level": "Medium",
+    "title": "In the enchanted land of Arithmia, two young adven...",
+    "desc": "In the enchanted land of Arithmia, two young adventurers, Mira and Taran, discovered a hidden map \nwhile exploring the ruins of an old wizard\u2019s tower. The map led to the legendary Vault of Efficiency, said to \nhold the secrets of making anything with the least effort\u2014and the least gold. At the vault\u2019s entrance, they \nfound a glowing tablet with an inscription: \n\u201cOnly those who can find the path with least gold coins  to treasure may enter\u201d  \nOur task is to help the friends to solve the puzzle an",
+    "index": 39
+  },
+  {
+    "level": "Medium",
+    "title": "Given a string s, the task is to find the minimum ...",
+    "desc": "Given a string s, the task is to find the minimum number of cuts needed for palindrome partitioning of \nthe given string. A partitioning of the string is a palindrome partitioning if every sub-string of the partition is \na palindrome. \nExamples:  \nInput: s = \u201cfrfeek\u201d  \nOutput: 2  \nExplanation: We need to make minimum 2 cuts, i.e., \u201cfrf | ee | k\u201d. \n \nInput: s= \u201caaaa\u201d  \nOutput: 0  \nExplanation: The string is already a palindrome. \n \nInput: s = \u201cababbbabbababa\u201d  \nOutput: 3 \nExplanation: We need to ",
+    "index": 40
+  },
+  {
+    "level": "Medium",
+    "title": "Given a string s of length n, the task is to count...",
+    "desc": "Given a string s of length n, the task is to count number of palindromic subsequence (need not \nnecessarily be distinct) present in the string s. \nExample: \nInput: s = \u201cabcd\u201d \nOutput: 4 \nExplanation: Palindromic subsequence are : \u201ca\u201d ,\u201db\u201d, \u201cc\u201d ,\u201dd\u201d \n \nInput: s = \u201caab\u201d \nOutput: 4 \nExplanation: palindromic subsequence are :\u201da\u201d, \u201ca\u201d, \u201cb\u201d, \u201caa\u201d \n \nInput: s = \u201canna\u201d \nOutput:9  \nExplanation: palindromic subsequence are :\u201ca\u201d ,\u201dn\u201d ,\u201dn\u201d ,\u201da\u201d ,\u201dnn\u201d ,\u201daa\u201d ,\u201dana\u201d ,\u201dana\u201d ,\u201danna\u201d",
+    "index": 41
+  },
+  {
+    "level": "Medium",
+    "title": "Given two strings s1 and s2, the task is to find t...",
+    "desc": "Given two strings s1 and s2, the task is to find the length of the shortest string that has both s1 and s2 as \nsubsequences. \nExamples:  \nInput: s1 = \u201cgeek\u201d, s2 = \u201ceke\u201d \nOutput: 5 \nExplanation: String \u201cgeeke\u201d has both string \u201cgeek\u201d and \u201ceke\u201d as subsequences. \nInput: s1 = \u201cAGGTAB\u201d, s2 = \u201cGXTXAYB\u201d \nOutput: 9 \nExplanation: String \u201cAGXGTXAYB\u201d has both string \u201cAGGTAB\u201d and \u201cGXTXAYB\u201d as subsequences.",
+    "index": 42
+  },
+  {
+    "level": "Medium",
+    "title": "In the Super village of Coding, two curious friend...",
+    "desc": "In the Super village of Coding, two curious friends, riya and ronak, were known for their love of puzzles \nand challenges.here is the challenge for them  an  array of positive integers arr[] and a value sum, determine \nif there is a subset of arr[] with sum equal to given sum.  \nExamples: \nInput: arr[] = [3, 34, 4, 12, 5, 2], sum = 9 \nOutput: true  \nExplanation: Here there exists a subset with target sum = 9, 4+3+2 = 9. \nInput: arr[] = [3, 34, 4, 12, 5, 2], sum = 30 \nOutput: false \nExplanation: ",
+    "index": 43
+  },
+  {
+    "level": "Medium",
+    "title": "In the bustling village of NutriVille, Chef Nia wa...",
+    "desc": "In the bustling village of NutriVille, Chef Nia was famous for preparing perfectly balanced meals. One day, \nshe received a royal request: \n\u201cPrepare a meal divided into two plates, each with the same total nutritional value, using only the \ningredients from this basket.\u201d \nShe wondered:\u201cCan I divide these into two groups so that each group adds up to the same total nutrient \nvalue?\u201d  \nChef Nia opened the basket and found ingredients with different nutrient points: \n[3, 1, 5, 9, 12]---(12+3),(1+5+",
+    "index": 44
+  },
+  {
+    "level": "Medium",
+    "title": "In the valley of Numatia, a young adventurer named...",
+    "desc": "In the valley of Numatia, a young adventurer named Lina set out to climb the Mountain of Numbers. The \nmountain wasn't made of rocks\u2014it was made of stepping stones, each marked with a number. Some were \ntall, some small, all laid out in a straight path. \nBut there was a rule: \nLina could only step forward, and only onto a stone with a higher number than the one she was currently on. \nShe couldn\u2019t go back or jump sideways. Her goal was to climb using the longest increasing path possible. \nOne day",
+    "index": 45
+  },
+  {
+    "level": "Medium",
+    "title": "Maximum Product Subset Problem",
+    "desc": "Maximum Product Subset Problem \nGiven an integer array nums[], find the maximum product that can be achieved from any non-empty \nsubset of the array. \nA subset of an array is a set that can be formed by removing zero or more elements without changing \nthe order of remaining elements. The product of a subset is the multiplication of all its elements. \nInput Format: \n\u2022 \nThe first line contains an integer N \u2014 the number of elements in the array. \n\u2022 \nThe second line contains N space-separated intege",
+    "index": 46
+  },
+  {
+    "level": "Medium",
+    "title": "Print All Triplets That Form a Geometric Progressi...",
+    "desc": "Print All Triplets That Form a Geometric Progression \nProblem Statement: \nGiven a sorted array of distinct positive integers, print all triplets in the array that form a Geometric \nProgression (GP) with an integral common ratio. \n \nA triplet (a,b,c) is said to form a geometric progression if there exists a positive integer r such that \nb=a\u22c5r and c=b\u22c5r. \n \n \nInput Format: \n\u2022 \nThe first line contains an integer N \u2014 the number of elements in the array. \n\u2022 \nThe second line contains N space-separated",
+    "index": 47
+  },
+  {
+    "level": "Medium",
+    "title": "Minimum Waiting Time Problem Statement:",
+    "desc": "Minimum Waiting Time Problem Statement: \nGiven an array where each element indicates the time required by a customer at a ticket counter, \nand only one customer can be served at a time in sequence, determine the minimum total waiting \ntime achievable by scheduling the customers optimally \nInput Format: \nA single line of space-separated integers, where each integer denotes the time required by a \ncustomer. \nOutput Format: \nA single integer representing the minimum total waiting time. Case#1 \nInpu",
+    "index": 48
+  },
+  {
+    "level": "Medium",
+    "title": "Job Sequencing with Deadlines",
+    "desc": "Job Sequencing with Deadlines \nProblem Statement: \nYou are given n jobs. Each job has the following properties: \n\u2022 \nA unique ID \n  \n\u2022 \nA deadline (by when it should be completed) \n\u2022 \nA profit (earned only if the job is finished before or on its deadline) \nEach job takes exactly 1 unit of time to complete. Your task is to schedule the jobs to maximize total \nprofit, ensuring no two jobs overlap and each job finishes within its deadline. \nInput Format: \n\u2022 \nAn integer n representing the number of j",
+    "index": 49
+  },
+  {
+    "level": "Medium",
+    "title": "Candy Distribution",
+    "desc": "Candy Distribution \nProblem Statement: \nThere are n children standing in a line, each with a rating value. Each child must receive at least one \ncandy. Additionally, any child with a higher rating than their immediate neighbor must receive more \ncandies than that neighbor. The objective is to distribute candies to minimize the total number given. \n \nInput: \nAn array ratings of length n where ratings[i] represents the rating of the i-th child. \n \nOutput: \nAn integer representing the minimum total",
+    "index": 50
+  },
+  {
+    "level": "Medium",
+    "title": "Rearrange Tasks to Avoid Consecutive Duplicates",
+    "desc": "Rearrange Tasks to Avoid Consecutive Duplicates \nProblem Statement: \nGiven a string representing a queue of tasks where each character is a lowercase letter denoting a \ntask type, reorder the tasks so that no two identical tasks are scheduled consecutively. If no such \narrangement exists, return an empty string. \n \nInput: \nA string tasks containing lowercase English letters. \n \nOutput: \nA reordered string with no two adjacent characters the same, or an empty string \"\" if rearrangement \nis imposs",
+    "index": 51
+  },
+  {
+    "level": "Medium",
+    "title": "Rod Cutting Problem Problem Statement:",
+    "desc": "Rod Cutting Problem Problem Statement: \nGiven a rod of length n and an array of prices where the price at index i represents the selling price of \na rod of length i+1, determine the maximum revenue obtainable by cutting the rod into smaller \npieces and selling them. \nInput Format : \n  \nlength[]: an array representing possible rod lengths [1, 2, ..., n] price[]: an array where price[i] is the \nprice for rod length length[i] n: the total length of the rod to be cut \nOutput: \nThe maximum profit ach",
+    "index": 52
+  },
+  {
+    "level": "Medium",
+    "title": "Find All Binary Strings from a Wildcard Pattern Pr...",
+    "desc": "Find All Binary Strings from a Wildcard Pattern Problem Statement : \nGiven a binary string pattern containing some wildcard characters ?, generate all possible binary \nstrings by replacing each ? with either 0 or 1. \nInput: \nA string consisting of characters 0, 1, and ?. \nOutput: \nA list of all binary strings formed by substituting every ? with 0 or 1. \nCase#1: Input: \n1?11?00?1? \nOutput (all possible strings): 1011000010 \n1011000011 \n1011000110 \n1011000111 \n1011100010 \n1011100011 \n1011100110 \n1",
+    "index": 53
+  },
+  {
+    "level": "Medium",
+    "title": "Longest Palindromic Subsequence Problem Statement:",
+    "desc": "Longest Palindromic Subsequence Problem Statement: \nGiven a string s, find the length of the longest subsequence of s that is a palindrome. A subsequence \nis a sequence that can be derived from the original string by deleting some or no characters without \nchanging the order of the remaining characters. \nThis differs from the longest palindromic substring problem where the characters must be \ncontiguous. Here, characters can be taken from anywhere in the string as long as their relative order \ni",
+    "index": 54
+  },
+  {
+    "level": "Medium",
+    "title": "Largest Plus of 1\u2019s in a Binary Matrix",
+    "desc": "Largest Plus of 1\u2019s in a Binary Matrix \nProblem Statement: \n \nGiven a square binary matrix consisting of 0's and 1's, find the size of the largest plus sign formed \nonly by 1's. \n \nA plus sign is defined as a center cell with arms extending up, down, left, and right \u2014 all consisting of \ncontinuous 1's \u2014 of equal length. The size of the plus is the total number of cells it covers, including \nthe center and the arms. \n \nFor example, a plus with arm length 2 looks like this (where 1 represents a ce",
+    "index": 55
+  },
+  {
+    "level": "Medium",
+    "title": "Arrival and Departure Time in DFS",
+    "desc": "Arrival and Departure Time in DFS \nProblem Statement: Given a directed graph with V vertices (numbered from 0 to V-1) and a list of E \nedges, you are to perform a Depth-First Search (DFS) traversal of the graph starting from vertex 0. \nDuring the traversal, record the arrival time and departure time of each vertex. \n\u2022 \nThe arrival time of a vertex is the time when it is visited (entered) for the first time during \nDFS. \n\u2022 \nThe departure time of a vertex is the time when DFS finishes exploring al",
+    "index": 56
+  },
+  {
+    "level": "Medium",
+    "title": "Chess Knight Minimum Steps Problem Statement:",
+    "desc": "Chess Knight Minimum Steps Problem Statement: \nGiven a N x N chessboard and the starting and ending positions of a knight, find the minimum \nnumber of steps the knight must take to reach the destination from the source. \nA knight moves in an \"L\" shape: it can move two squares in one direction and then one square \nperpendicular to that direction. \nYou need to determine the shortest path from the source to the destination using Breadth-First \nSearch (BFS), which is ideal for finding shortest paths",
+    "index": 57
+  },
+  {
+    "level": "Medium",
+    "title": "Construct the Longest Palindrome by Reordering or ...",
+    "desc": "Construct the Longest Palindrome by Reordering or Deleting Characters Problem Statement: \nGiven a string S, construct the longest possible palindromic string that can be made by \nshuffling or deleting any characters from S. \nYou may reorder the characters and delete any number of them. The goal is to build the \nlongest palindrome possible from the given characters. \nIf there are multiple answers with the same length, print any one of them. \nInput Format: \n\u2022 \nA single string S of uppercase Englis",
+    "index": 58
+  },
+  {
+    "level": "Medium",
+    "title": "Problem: Minimizing Total Guest Unhappiness Proble...",
+    "desc": "Problem: Minimizing Total Guest Unhappiness Problem Statement: \nYou are managing a hotel and need to serve N guests. Each guest has a happiness value C\u1d62, which is \nthe time at which they prefer to be served. \nHowever, you can serve only one guest at a time, and each guest takes exactly one unit of time to be \nserved. The serving times start from x = 1 and increase incrementally (1, 2, 3, ..., N). \n  \nThe unhappiness of serving a guest at time x is defined as: Unhappiness=\u2223Ci\u2212x\u2223 \nYour task is to ",
+    "index": 59
+  },
+  {
+    "level": "Medium",
+    "title": "Folding a Blanket Problem Statement:",
+    "desc": "Folding a Blanket Problem Statement: \nAlex has a rectangular blanket with dimensions H \u00d7 W (H = height, W = width). Alex wants to pack it \ninto a box that can only fit a blanket of size H1 \u00d7 W1. \n  \nTo do this, Alex folds the blanket in a series of steps. Each fold must be exactly parallel to one of the \nedges (either horizontally or vertically), and the resulting dimensions after each fold must remain \nwhole numbers. \nYour task is to find the minimum number of folds required to reduce the blank",
+    "index": 60
+  },
+  {
+    "level": "Medium",
+    "title": "Lexicographically Smallest Array After One Swap",
+    "desc": "Lexicographically Smallest Array After One Swap \nYou are given an array A of size N and an integer K. You are allowed to swap at most one pair of \nelements such that the distance between their indices is at most K (i.e., |i - j| \u2264 K). \n  \nYour task is to return the lexicographically smallest array possible after such a swap (or no swap, if \nthe array is already optimal). \nDefinition: An array X is lexicographically smaller than array Y if at the first index i where they differ, \nX[i] < Y[i]. \nIn",
+    "index": 61
+  },
+  {
+    "level": "Medium",
+    "title": "Prevent Multiple Subsequences Problem Statement:",
+    "desc": "Prevent Multiple Subsequences Problem Statement: \nAlice has a string S of length N, and Bob gives her another string C of length M. \nBob challenges Alice to modify her string S such that the string C appears at most once as a \nsubsequence in S. \nTo help her do this, Bob gives an array A of size N, where A[i] is the cost to delete the character S[i]. \nAlice wants to achieve the goal with the minimum possible total cost. \n \nFind the minimum total cost to delete characters from S such that C appear",
+    "index": 62
+  },
+  {
+    "level": "Medium",
+    "title": "Largest Common Arrival Order Subsequence Across Mu...",
+    "desc": "Largest Common Arrival Order Subsequence Across Multiple Days \nProblem Statement: Given N people and K days, each day is represented by an array of N numbers \nindicating the order in which people arrived at the theatre. The task is to determine the size of the \nlargest group of people who arrive in the same relative order on all K days. \nInput Format: \n\u2022 \nThe first line contains two integers N and K separated by a space \u2014 the number of people \nand the number of days. \n\u2022 \nThe next K lines each co",
+    "index": 63
+  },
+  {
+    "level": "Medium",
+    "title": "Maximum Number of Valid Triplets Formed From an Ar...",
+    "desc": "Maximum Number of Valid Triplets Formed From an Array Under Limit M \nProblem Statement: \nGiven an array of size N and an integer limit M, determine the maximum number of triplets that can \nbe formed under these conditions: \n\u2022 \nEach element in the triplet is less than or equal to M. \n\u2022 \nA triplet is valid if it satisfies either of the following: \no \nAll three numbers in the triplet are the same. \no \nThe three numbers are consecutive integers (e.g., 3, 4, 5). \n\u2022 \nEach element in the array can belo",
+    "index": 64
+  },
+  {
+    "level": "Medium",
+    "title": "If the feedback score appears more than once, prin...",
+    "desc": "If the feedback score appears more than once, print the position (index) of the second \noccurrence. \nParameters: \nN: INTEGER \nThe first input line contains an integer N, the number of feedback scores. 1 \u2264 N \u2264 10 \nscore: INTEGERS ARRAY \nThe second input line contains N space-separated integers, each representing a feedback score. 0 \u2264 \nscore\u2264 100 \nX: INTEGER \nThe third input line contains an integer X, which is the feedback score you need to find the second \noccurrence of. \n  \n0 \u2264 X \u2264 100 \n \n \nOut",
+    "index": 65
+  },
+  {
+    "level": "Medium",
+    "title": "00",
+    "desc": "00 \n \n \n \nQ20. \nYou are a data analyst at a startup that helps small business owners flip electronics (buy and resell for \nprofit). A client comes to you with historical price data of a popular smartphone over the past few \ndays. The client wants to buy one unit of the smartphone on one day and sell it on a later day to \nmaximize their profit. \nYou have to write a program that determines the maximum profit that can be earned by making at \nmost one transaction (buy one and sell one product). \nCon",
+    "index": 66
+  },
+  {
+    "level": "Medium",
+    "title": "Parameters: V :: INTEGER The first line contains a...",
+    "desc": "Parameters: V :: INTEGER The first line contains an integer, V, denoting the target total treasure \nvalue. V :: 1 -> 10^5 \nN :: INTEGER The next line contains an integer, N, denoting the number of unique treasures. N \n:: 1 -> 10^5 \nT :: INTEGER ARRAY Each line i of the N subsequent lines (where 0 \\le i < N) contains an integer \ndescribing the value of the i^{th} treasure. T[i] :: 1 -> 10^5 \nCase#: 1 Input: 18 3 7 9 10 Output: 2 Explanation: V = 18 Treasures available: [7, 9, 10] To reach 18 \nval",
+    "index": 67
+  },
+  {
+    "level": "Medium",
+    "title": "Collect treasure with 3 value (2nd time) = 3 value...",
+    "desc": "Collect treasure with 3 value (2nd time) = 3 value. Total = 6 value. Total treasures collected: 2. \nQuestion 4: Project Task Completion \nYou are working on a critical project and need to accumulate a total of P progress points to \n  \ncomplete it. There are N distinct tasks available, and each task Ti provides a certain amount of \nprogress points upon completion. \nYou want to determine the minimum number of tasks you have to complete such that you reach or \nexceed the target progress points P. To",
+    "index": 68
+  }
+]

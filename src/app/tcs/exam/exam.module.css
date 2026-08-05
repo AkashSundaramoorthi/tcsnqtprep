@@ -72,7 +72,7 @@
 .examPage { min-height: calc(100vh - 60px); }
 
 .examBar {
-  background: rgba(12,11,10,0.95);
+  background: var(--bg);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -693,4 +693,27 @@
 .dotAnswered {
   background: var(--success, #10b981);
   border-color: var(--success, #10b981);
+}
+
+.popupConfirm {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  min-width: 180px;
+}
+
+.popupActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
 }

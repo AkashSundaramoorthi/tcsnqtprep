@@ -10,10 +10,10 @@ export const metadata: Metadata = {
     "TCS NQT 2023 questions", "TCS NQT 2024 questions", "TCS iON NQT PYQ",
   ],
   alternates: {
-    canonical: "/pyq",
+    canonical: "/tcs/pyq",
   },
   openGraph: {
-    url: "/pyq",
+    url: "/tcs/pyq",
     title: "TCS NQT Previous Year Questions (PYQ)",
     description: "Complete PYQ bank with worked solutions for all TCS NQT sections.",
   },
@@ -31,14 +31,19 @@ const STRUCTURED_DATA = {
   }
 };
 
+import pyqData from "@/data/pyq_data.json";
+import { Section } from "./PYQClient";
+
 export default function PYQPage() {
+  const data = pyqData as Section[];
+  const filtered = data.filter(item => (item as any).track === "tcs-nqt" || !(item as any).track);
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
       />
-      <PYQClient />
+      <PYQClient data={filtered} />
     </>
   );
 }

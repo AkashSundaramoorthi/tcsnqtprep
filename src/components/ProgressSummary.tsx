@@ -54,7 +54,7 @@ export default function ProgressSummary() {
     return (
       <div className={styles.emptyState}>
         <p>No progress yet.</p>
-        <Link href="/aptitude" className="btn btn-primary">Start your prep →</Link>
+        <Link href="/tcs/aptitude" className="btn btn-primary">Start your prep →</Link>
       </div>
     );
   }

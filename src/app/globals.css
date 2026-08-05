@@ -105,6 +105,7 @@ html.transitioning *:not(.cm-editor):not(.cm-editor *):not(.cm-scroller):not(.cm
 [data-theme='light'] .badge-easy, [data-theme='light'] .diffEasy { color: #16A34A; }
 [data-theme='light'] .badge-medium, [data-theme='light'] .diffMedium { color: #D97706; }
 [data-theme='light'] .badge-hard, [data-theme='light'] .diffHard { color: #DC2626; }
+[data-theme='light'] .badge-complex, [data-theme='light'] .diffComplex { color: #9333EA; }
 [data-theme='light'] .badge-numerical { color: #2563EB; }
 [data-theme='light'] .badge-reasoning { color: #7C3AED; }
 [data-theme='light'] .badge-verbal { color: #D97706; }
@@ -245,6 +246,7 @@ a { color: inherit; text-decoration: none; }
 .badge-easy { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
 .badge-medium { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
 .badge-hard { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.badge-complex { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
 .badge-numerical { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
 .badge-reasoning { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
 .badge-verbal { background: rgba(234, 179, 8, 0.15); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.3); }

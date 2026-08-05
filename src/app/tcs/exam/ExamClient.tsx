@@ -8,33 +8,18 @@ import { QUESTIONS, Question } from "@/lib/questions";
 import { Lang, STARTERS, LANG_LABELS, runJS, runPython, runJudge0, normalize } from "@/lib/runner";
 import dynamic from "next/dynamic";
 import Calculator from "@/components/Calculator";
+import { CalculatorIcon } from "lucide-react";
 import { analytics } from "@/lib/analytics";
 
 const CodeEditor = dynamic(() => import("@/components/CodeEditor"), { ssr: false });
 
-const PHASES = [
-  { id: "start", duration: 0, title: "TCS NQT Mock Exam" },
-  
-  { id: "mcq-numerical", duration: 25 * 60, title: "Numerical Ability", calc: true, section: "Numerical" },
-  { id: "mcq-reasoning", duration: 25 * 60, title: "Reasoning Ability", calc: true, section: "Reasoning" },
-  { id: "mcq-advquant", duration: 25 * 60, title: "Advanced Quant & Reasoning", calc: true, section: "AdvQuant" },
-  
-  { id: "verbal-instruct-sentence", duration: 25, title: "Instructions: Sentence Completion", calc: false },
-  { id: "verbal-sentence", duration: 25, title: "Sentence Completion", calc: false, section: "Verbal", vType: "sentence", perQuestion: true },
-  
-  { id: "verbal-instruct-passage", duration: 15, title: "Instructions: Passage Recall", calc: false },
-  { id: "verbal-passage", duration: 30, title: "Passage Recall", calc: false, section: "Verbal", vType: "passage", perQuestion: true },
-  
-  { id: "verbal-email", duration: 540, title: "Email Writing", calc: false, section: "Verbal", vType: "email" },
-  
-  { id: "coding-easy", duration: 20 * 60, title: "Advanced Coding (Easy)", calc: false },
-  { id: "break", duration: 60, title: "1-Minute Break", calc: false },
-  { id: "coding-medium", duration: 25 * 60, title: "Advanced Coding (Medium)", calc: false },
-  
-  { id: "results", duration: 0, title: "Exam Results" }
-];
+import { EXAM_PHASES } from "@/lib/exam-config";
+import { TrackId } from "@/lib/tracks";
 
-interface Props { questions: ExamQuestion[]; }
+interface Props { 
+  questions: ExamQuestion[]; 
+  track: TrackId;
+}
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -45,7 +30,7 @@ function shuffleArray<T>(array: T[]): T[] {
   return arr;
 }
 
-export default function ExamClient({ questions }: Props) {
+export default function ExamClient({ questions, track }: Props) {
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [shuffledExam, setShuffledExam] = useState<ExamQuestion[]>([]);
@@ -59,6 +44,7 @@ export default function ExamClient({ questions }: Props) {
   
   const [codingQEasy, setCodingQEasy] = useState<Question | null>(null);
   const [codingQMedium, setCodingQMedium] = useState<Question | null>(null);
+  const [codingQHard, setCodingQHard] = useState<Question | null>(null);
   const [lang, setLang] = useState<Lang>("python");
   const [code, setCode] = useState(STARTERS["python"]);
   const [runOutput, setRunOutput] = useState("");
@@ -66,16 +52,18 @@ export default function ExamClient({ questions }: Props) {
   const [running, setRunning] = useState(false);
   const [codingPassedEasy, setCodingPassedEasy] = useState(0);
   const [codingPassedMedium, setCodingPassedMedium] = useState(0);
+  const [codingPassedHard, setCodingPassedHard] = useState(0);
   
   const [passageMode, setPassageMode] = useState<"read" | "write">("read");
   
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const currentPhase = PHASES[phaseIdx];
+  const phases = EXAM_PHASES[track];
+  const currentPhase = phases[phaseIdx];
 
   const sectionIndices = useMemo(() => {
     const indices: Record<string, { start: number; end: number }> = {};
-    PHASES.forEach(p => {
+    phases.forEach(p => {
       if (!p.section) return;
       let start = -1, end = 0;
       shuffledExam.forEach((q, i) => {
@@ -88,11 +76,11 @@ export default function ExamClient({ questions }: Props) {
       indices[p.id] = start === -1 ? { start: 0, end: 0 } : { start, end };
     });
     return indices;
-  }, [shuffledExam]);
+  }, [shuffledExam, phases]);
 
   const advancePhase = () => {
-    if (phaseIdx < PHASES.length - 1) {
-      const nextPhase = PHASES[phaseIdx + 1];
+    if (phaseIdx < phases.length - 1) {
+      const nextPhase = phases[phaseIdx + 1];
       setPhaseIdx(idx => idx + 1);
       
       let nextDuration = nextPhase.duration;
@@ -124,7 +112,7 @@ export default function ExamClient({ questions }: Props) {
   }, []);
 
   useEffect(() => {
-    if (phaseIdx === 0 || phaseIdx === PHASES.length - 1) return;
+    if (phaseIdx === 0 || phaseIdx === phases.length - 1) return;
     
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
@@ -205,11 +193,29 @@ export default function ExamClient({ questions }: Props) {
     
     const easyPool = QUESTIONS.filter(q => q.level === 'Easy');
     const medPool = QUESTIONS.filter(q => q.level === 'Medium');
-    setCodingQEasy(easyPool[Math.floor(Math.random() * easyPool.length)]);
-    setCodingQMedium(medPool[Math.floor(Math.random() * medPool.length)]);
+    const hardPool = QUESTIONS.filter(q => q.level === 'Hard');
+    
+    if (track === "hackwithinfy") {
+      let p1 = QUESTIONS.filter(q => q.track === "hackwithinfy" && q.level === 'Easy');
+      let p2 = QUESTIONS.filter(q => q.track === "hackwithinfy" && q.level === 'Medium');
+      let p3 = QUESTIONS.filter(q => q.track === "hackwithinfy" && (q.level === 'Hard' || q.level === 'Complex'));
+      if (p1.length === 0) p1 = easyPool; // Fallback to TCS questions until populated
+      if (p2.length === 0) p2 = medPool; // Fallback to TCS questions until populated
+      if (p3.length === 0) p3 = hardPool;
+      setCodingQEasy(p1[Math.floor(Math.random() * p1.length)]);
+      setCodingQMedium(p2[Math.floor(Math.random() * p2.length)]);
+      setCodingQHard(p3[Math.floor(Math.random() * p3.length)]);
+    } else {
+      let p1 = QUESTIONS.filter(q => q.track === "tcs-nqt" && q.level === 'Easy');
+      let p2 = QUESTIONS.filter(q => q.track === "tcs-nqt" && q.level === 'Medium');
+      if (p1.length === 0) p1 = easyPool;
+      if (p2.length === 0) p2 = medPool;
+      setCodingQEasy(p1[Math.floor(Math.random() * p1.length)]);
+      setCodingQMedium(p2[Math.floor(Math.random() * p2.length)]);
+    }
     
     setPhaseIdx(1);
-    setTimeLeft(PHASES[1].duration);
+    setTimeLeft(phases[1].duration);
     setCurrent(0);
   };
 
@@ -219,7 +225,7 @@ export default function ExamClient({ questions }: Props) {
     return `${m}:${sec}`;
   };
 
-  const currentCodingQ = currentPhase.id === "coding-easy" ? codingQEasy : codingQMedium;
+  const currentCodingQ = (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") ? codingQEasy : (currentPhase.id === "coding-3" ? codingQHard : codingQMedium);
 
   const handleRunCode = async () => {
     if (!currentCodingQ) return;
@@ -292,7 +298,8 @@ export default function ExamClient({ questions }: Props) {
         logs = "Some test cases have failed (either public or private test cases) ❌";
       }
       
-      if (currentPhase.id === "coding-easy") setCodingPassedEasy(passedPrivate);
+      if (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") setCodingPassedEasy(passedPrivate);
+      else if (currentPhase.id === "coding-3") setCodingPassedHard(passedPrivate);
       else setCodingPassedMedium(passedPrivate);
       
       setRunOutput(logs);
@@ -308,29 +315,39 @@ export default function ExamClient({ questions }: Props) {
     return (
       <div className="container section">
         <div className={styles.startCard}>
-          <h1 className={styles.startTitle}>TCS NQT Full Mock Exam</h1>
+          <h1 className={styles.startTitle}>{track === "hackwithinfy" ? "HackWithInfy Mock Round" : "TCS NQT Full Mock Exam"}</h1>
           <p className={styles.startSub}>
             Complete the assessment in one sitting. The timer cannot be paused.
           </p>
           <div className={styles.startTips}>
             <ul style={{ textAlign: "left", lineHeight: "1.6", margin: "10px 0 10px 20px", color: "var(--text-2)" }}>
-              <li><strong>Numerical Ability:</strong> 20 questions (25 mins)</li>
-              <li><strong>Reasoning Ability:</strong> 20 questions (25 mins)</li>
-              <li><strong>Adv Quant & Reasoning:</strong> 14 questions (25 mins)</li>
-              <li><strong>Verbal Ability:</strong> 25 questions (26 mins, strict per-question timers)</li>
-              <li><strong>Coding:</strong> 2 questions (Easy/Medium, auto-saving test cases)</li>
+              {track === "hackwithinfy" ? (
+                <>
+                  <li><strong>Problem 1:</strong> Easy DSA (1 hour)</li>
+                  <li><strong>Problem 2:</strong> Medium DSA (1 hour)</li>
+                  <li><strong>Problem 3:</strong> Hard/Complex DSA (1 hour)</li>
+                </>
+              ) : (
+                <>
+                  <li><strong>Numerical Ability:</strong> 20 questions (25 mins)</li>
+                  <li><strong>Reasoning Ability:</strong> 20 questions (25 mins)</li>
+                  <li><strong>Adv Quant & Reasoning:</strong> 14 questions (25 mins)</li>
+                  <li><strong>Verbal Ability:</strong> 25 questions (26 mins, strict per-question timers)</li>
+                  <li><strong>Coding:</strong> 2 questions (Easy/Medium, auto-saving test cases)</li>
+                </>
+              )}
             </ul>
             <p style={{ marginTop: "10px" }}>💡 Note: Sections are locked sequentially. You cannot return to previous sections once submitted.</p>
           </div>
           <button className="btn btn-primary" style={{ fontSize: "1rem", padding: "13px 36px" }} onClick={startExam}>
-            Start Full Exam →
+            {track === "hackwithinfy" ? "Start Round →" : "Start Full Exam →"}
           </button>
         </div>
       </div>
     );
   }
 
-  if (phaseIdx === PHASES.length - 1) {
+  if (phaseIdx === phases.length - 1) {
     const calcScore = (id: string) => {
       const indices = sectionIndices[id];
       if (!indices) return { score: 0, total: 0 };
@@ -339,7 +356,7 @@ export default function ExamClient({ questions }: Props) {
         const q = shuffledExam[i];
         if (q.isTyped || q.verbalType === "sentence") {
            const ans = (answers[i] as string || "").toLowerCase().trim();
-           const correct = q.answer.toString().toLowerCase().trim();
+           const correct = (q.typedAnswer || q.answer.toString()).toLowerCase().trim();
            if (ans === correct) score++;
         } else {
            if (answers[i] === q.answer) score++;
@@ -353,48 +370,124 @@ export default function ExamClient({ questions }: Props) {
     const adv = calcScore("mcq-advquant");
     const verb = calcScore("verbal-sentence");
 
+    const analyzeWeakAreas = () => {
+      const weakTopics = new Set<string>();
+      phases.forEach(p => {
+        if (!p.section) return;
+        const indices = sectionIndices[p.id];
+        if (!indices) return;
+        for (let i = indices.start; i < indices.end; i++) {
+          const q = shuffledExam[i];
+          let correct = false;
+          if (q.isTyped || q.verbalType === "sentence") {
+             const ans = (answers[i] as string || "").toLowerCase().trim();
+             const right = (q.typedAnswer || q.answer.toString()).toLowerCase().trim();
+             if (ans === right) correct = true;
+          } else {
+             if (answers[i] === q.answer) correct = true;
+          }
+          
+          if (!correct && q.q) {
+            const text = q.q.toLowerCase();
+            if (p.section === "Numerical") {
+               if (text.includes("profit") || text.includes("loss") || text.includes("discount") || text.includes("marked price")) weakTopics.add("Profit, Loss & Discount");
+               else if (text.includes("ratio") || text.includes("proportion") || text.includes("age")) weakTopics.add("Ratio, Proportion & Age Problems");
+               else if (text.includes("percent") || text.includes("increase") || text.includes("decrease")) weakTopics.add("Percentages");
+               else if (text.includes("work") || text.includes("pipe") || text.includes("days") || text.includes("efficiency")) weakTopics.add("Time & Work");
+               else if (text.includes("speed") || text.includes("train") || text.includes("distance") || text.includes("boat")) weakTopics.add("Speed, Distance & Time");
+               else if (text.includes("average") || text.includes("mixture") || text.includes("alloy")) weakTopics.add("Averages, Mixtures & Alligation");
+               else weakTopics.add("Number System");
+            } else if (p.section === "Reasoning" || p.section === "AdvQuant") {
+               if (text.includes("blood") || text.includes("brother") || text.includes("sister") || text.includes("mother")) weakTopics.add("Blood Relations");
+               else if (text.includes("direction") || text.includes("north") || text.includes("south")) weakTopics.add("Directions & Distances");
+               else if (text.includes("syllogism") || text.includes("statement") || text.includes("conclusion")) weakTopics.add("Syllogism");
+               else if (text.includes("code") || text.includes("decode") || text.includes("language")) weakTopics.add("Coding-Decoding");
+               else if (text.includes("series") || text.includes("next in") || text.includes("pattern")) weakTopics.add("Number & Letter Series");
+               else if (text.includes("sit") || text.includes("table") || text.includes("row")) weakTopics.add("Seating Arrangements");
+               else weakTopics.add("Data Sufficiency & Logical Puzzles");
+            } else if (p.section === "Verbal") {
+               if (text.includes("error") || text.includes("correct") || text.includes("grammar")) weakTopics.add("Error Spotting & Sentence Correction");
+               else if (text.includes("synonym") || text.includes("antonym") || text.includes("meaning")) weakTopics.add("Vocabulary");
+               else if (text.includes("order") || text.includes("jumble") || text.includes("sequence")) weakTopics.add("Para Jumbles");
+               else weakTopics.add("Cloze Test / Reading Comprehension");
+            }
+          }
+        }
+      });
+      return Array.from(weakTopics).slice(0, 5);
+    };
+
+    const weakAreas = track !== "hackwithinfy" ? analyzeWeakAreas() : [];
+
     return (
       <div className="container section">
         <div className={styles.startCard}>
           <h1 className={styles.startTitle}>Exam Completed! 🎉</h1>
           <p className={styles.startSub}>Great job making it to the end.</p>
           
-          <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "20px 0 10px 0", width: "100%" }}>
-            <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Aptitude & Verbal Scores</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "20px", textAlign: "center" }}>
-              <div>
-                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{num.score} / {num.total}</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Numerical</div>
+          {track !== "hackwithinfy" && (
+            <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "20px 0 10px 0", width: "100%" }}>
+              <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Aptitude & Verbal Scores</h2>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "20px", textAlign: "center" }}>
+                <div>
+                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{num.score} / {num.total}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Numerical</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{reas.score} / {reas.total}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Reasoning</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{adv.score} / {adv.total}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Adv. Quant</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{verb.score} / {verb.total}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Sentence Comp.</div>
+                </div>
               </div>
-              <div>
-                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{reas.score} / {reas.total}</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Reasoning</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{adv.score} / {adv.total}</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Adv. Quant</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--primary)" }}>{verb.score} / {verb.total}</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Sentence Comp.</div>
+              <p style={{ marginTop: "16px", fontSize: "0.85rem", color: "var(--text-3)", textAlign: "center", fontStyle: "italic" }}>
+                * Passage Recall and Email Writing require manual subjective grading.
+              </p>
+            </div>
+          )}
+
+          {weakAreas.length > 0 && (
+            <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%", borderLeft: "4px solid var(--orange)" }}>
+              <h2 style={{ fontSize: "1.1rem", marginBottom: "12px", color: "var(--text)" }}>Areas for Improvement</h2>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-2)", marginBottom: "12px" }}>Based on the questions you missed, we recommend reviewing these exact topics in the Aptitude Guide:</p>
+              <ul style={{ paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                {weakAreas.map((topic, i) => (
+                  <li key={i} style={{ fontSize: "0.95rem", color: "var(--text)" }}>
+                    {topic}
+                  </li>
+                ))}
+              </ul>
+              <div style={{ marginTop: "16px" }}>
+                <a href={`/tcs/aptitude`} className="btn btn-secondary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>
+                  Go to Aptitude Guide →
+                </a>
               </div>
             </div>
-            <p style={{ marginTop: "16px", fontSize: "0.85rem", color: "var(--text-3)", textAlign: "center", fontStyle: "italic" }}>
-              * Passage Recall and Email Writing require manual subjective grading.
-            </p>
-          </div>
+          )}
 
           <div style={{ background: "var(--surface-2)", padding: "20px", borderRadius: "8px", margin: "10px 0 20px 0", width: "100%" }}>
             <h2 style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text)" }}>Coding Results (Private Tests)</h2>
             <div style={{ display: "flex", justifyContent: "space-around" }}>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedEasy === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedEasy} / 5</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Easy Passed</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>{track === "hackwithinfy" ? "Problem 1 Passed" : "Easy Passed"}</div>
               </div>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedMedium === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedMedium} / 5</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Medium Passed</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>{track === "hackwithinfy" ? "Problem 2 Passed" : "Medium Passed"}</div>
               </div>
+              {track === "hackwithinfy" && (
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "2rem", fontWeight: "bold", color: codingPassedHard === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedHard} / 5</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-3)", textTransform: "uppercase" }}>Problem 3 Passed</div>
+              </div>
+              )}
             </div>
           </div>
           
@@ -423,32 +516,30 @@ export default function ExamClient({ questions }: Props) {
           <div style={{ display: "flex", gap: "8px" }}>
             {currentPhase.calc && (
               <button className={`btn btn-secondary ${styles.examActionBtn}`} onClick={() => setShowCalc(true)}>
-                🖩 <span className={styles.hideMobile}>Calculator</span>
+                <CalculatorIcon size={16} style={{ marginRight: '4px', verticalAlign: 'text-bottom' }} />
+                <span className={styles.hideMobile}>Calculator</span>
               </button>
             )}
-            {!currentPhase.perQuestion && (
+            <div style={{ position: "relative" }}>
               <button className={`btn btn-primary ${styles.examActionBtn}`} onClick={() => setConfirmingSubmit(true)}>
                 Submit<span className={styles.hideMobile}> Section</span>
               </button>
-            )}
+              {confirmingSubmit && (
+                <div className={styles.popupConfirm}>
+                  <div style={{ fontSize: "0.85rem", color: "var(--text)", fontWeight: 500, textAlign: "center" }}>Submit section?</div>
+                  <div className={styles.popupActions} style={{ justifyContent: "center", marginTop: "4px" }}>
+                    <button className="btn btn-ghost" style={{ padding: "4px 12px", fontSize: "0.8rem", minHeight: "32px" }} onClick={() => setConfirmingSubmit(false)}>No</button>
+                    <button className="btn btn-primary" style={{ padding: "4px 12px", fontSize: "0.8rem", minHeight: "32px" }} onClick={() => advancePhase()}>Yes</button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
       
       <div className={`container ${styles.examLayout}`} style={{ display: showSidebar ? "grid" : "block" }}>
         <div className={styles.examMainCol} style={{ height: currentPhase.id.startsWith("coding-") ? "calc(100vh - 120px)" : "auto" }}>
-          
-          {confirmingSubmit && !currentPhase.perQuestion && (
-            <div style={{ background: "var(--surface-2)", border: "1px solid var(--border)", padding: "20px", borderRadius: "8px", display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div style={{ color: "var(--text)", fontWeight: 500 }}>
-                Are you sure you want to submit {currentPhase.title}? You cannot return.
-              </div>
-              <div style={{ display: "flex", gap: "12px" }}>
-                <button className="btn btn-primary" onClick={() => advancePhase()}>Confirm Submit</button>
-                <button className="btn btn-ghost" onClick={() => setConfirmingSubmit(false)}>Cancel</button>
-              </div>
-            </div>
-          )}
 
           {/* INSTRUCTIONS */}
           {currentPhase.id.startsWith("verbal-instruct") && (
@@ -680,9 +771,7 @@ export default function ExamClient({ questions }: Props) {
             <div className={styles.answeredCount} style={{ textAlign: "center", fontSize: "0.85rem", color: "var(--text-3)", marginBottom: "16px" }}>
               {answeredCount} / {sectionLength} answered
             </div>
-            {!currentPhase.perQuestion && (
-              <button className="btn btn-primary" style={{ width: "100%" }} onClick={() => setConfirmingSubmit(true)}>Submit Section</button>
-            )}
+            <button className="btn btn-primary" style={{ width: "100%" }} onClick={() => setConfirmingSubmit(true)}>Submit Section</button>
           </aside>
         )}
       </div>

@@ -5,61 +5,88 @@ import HeroPreview from "@/components/HeroPreview";
 import { Play, Download } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
+  title: "Placement Prep Hub — TCS NQT & Infosys",
   description:
-    "Free TCS NQT preparation platform. Practice 53 coding problems with an in-browser IDE supporting Python, JS, C, C++, Java and C#. Study 27 aptitude topics and take a timed mock exam.",
+    "Free placement preparation platform. Practice coding problems with an in-browser IDE supporting Python, JS, C, C++, Java and C#. Study aptitude topics and take timed mock exams.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
-    description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam.",
+    title: "Placement Prep Hub — TCS NQT & Infosys",
+    description: "Free placement preparation platform with coding IDE, aptitude guides, and mock exams.",
     url: "/",
   },
   twitter: {
-    title: "TCS NQT Prep Hub",
-    description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam.",
+    title: "Placement Prep Hub",
+    description: "Free placement preparation platform with coding IDE, aptitude guides, and mock exams.",
   },
 };
 
 const STATS = [
-  { value: "53", label: "Coding Problems" },
+  { value: "50+", label: "Coding Problems" },
   { value: "6", label: "Languages" },
-  { value: "27", label: "Aptitude Topics" },
-  { value: "120+", label: "Previous Year Qs" },
+  { value: "30+", label: "Aptitude Topics" },
+  { value: "150+", label: "Previous Year Qs" },
 ];
 
-const FEATURES = [
+const FEATURES_TCS = [
   {
-    title: "Coding Practice",
-    desc: "53 problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser — no setup needed.",
-    href: "/coding",
-    badge: "53 Problems · 6 Languages",
-    badgeClass: "badge-easy",
+    title: "TCS Coding Practice",
+    desc: "Problems from Easy to Hard. Write code in Python, JavaScript, C, C++, Java, or C# and run against real test cases right in your browser.",
+    href: "/tcs/coding",
+    badge: "53 Problems",
     num: "01",
   },
   {
-    title: "Aptitude Guide",
-    desc: "27 topics covering Numerical, Verbal, Reasoning, and Advanced sections. Step-by-step method guides with solved practice problems for each topic.",
-    href: "/aptitude",
+    title: "TCS Aptitude Guide",
+    desc: "Topics covering Numerical, Verbal, Reasoning, and Advanced sections. Step-by-step method guides with solved practice problems.",
+    href: "/tcs/aptitude",
     badge: "27 Topics",
-    badgeClass: "badge-numerical",
     num: "02",
   },
   {
-    title: "Mock Exam",
-    desc: "80 questions across Numerical, Reasoning, Verbal, and Advanced — plus 2 live coding problems. Full NQT simulation with timed, sequentially-locked sections and a detailed results screen.",
-    href: "/exam",
-    badge: "80 Qs + Coding · 190 min",
-    badgeClass: "badge-hard",
+    title: "TCS Mock Exam",
+    desc: "Full NQT simulation with timed, sequentially-locked sections across Aptitude and live Coding problems.",
+    href: "/tcs/exam",
+    badge: "80 Qs + Coding",
     num: "03",
   },
   {
-    title: "Previous Year Questions",
-    desc: "Curated PYQs from past TCS NQT exams across all sections — Numerical, Verbal, Reasoning, Coding, and Advanced — with worked solutions.",
-    href: "/pyq",
+    title: "TCS Previous Year Qs",
+    desc: "Curated PYQs from past TCS NQT exams across all sections with worked solutions.",
+    href: "/tcs/pyq",
     badge: "120+ PYQs",
-    badgeClass: "badge-reasoning",
+    num: "04",
+  },
+];
+
+const FEATURES_INFY = [
+  {
+    title: "Infosys Coding Practice",
+    desc: "DSA-focused competitive programming challenges typical of HackWithInfy. Test your algorithms in multiple languages.",
+    href: "/infosys/coding",
+    badge: "DSA Focus",
+    num: "01",
+  },
+  {
+    title: "Infosys Aptitude",
+    desc: "Preparation for Infosys specific puzzle-solving and logical reasoning rounds.",
+    href: "/infosys/aptitude",
+    badge: "Logic & Puzzles",
+    num: "02",
+  },
+  {
+    title: "HackWithInfy Mock",
+    desc: "Simulate the intensive coding rounds seen in HackWithInfy with full automated testing.",
+    href: "/infosys/exam",
+    badge: "3 Problems · 180m",
+    num: "03",
+  },
+  {
+    title: "Infosys PYQs",
+    desc: "Previous year questions from HackWithInfy and standard Infosys placements.",
+    href: "/infosys/pyq",
+    badge: "Past Papers",
     num: "04",
   },
 ];
@@ -73,7 +100,7 @@ const STEPS = [
   {
     step: "02",
     title: "Practice coding daily",
-    body: "Pick a few problems each day. Run them against test cases. The in-browser IDE supports all NQT-allowed languages.",
+    body: "Pick a few problems each day. Run them against test cases. The in-browser IDE supports all allowed languages.",
   },
   {
     step: "03",
@@ -83,16 +110,16 @@ const STEPS = [
   {
     step: "04",
     title: "Simulate with the mock exam",
-    body: "Take the 20-minute mock under real conditions. Review every wrong answer. Repeat until you're consistently above 60%.",
+    body: "Take the mock exams under real conditions. Review every wrong answer. Repeat until you're consistently above 60%.",
   },
 ];
 
 const STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "TCS NQT Prep Hub",
+  name: "Placement Prep Hub",
   url: "https://tcsnqtprep.vercel.app",
-  description: "Free TCS NQT preparation platform with coding IDE, aptitude guides, and mock exam."
+  description: "Free placement preparation platform with coding IDE, aptitude guides, and mock exams."
 };
 
 export default function HomePage() {
@@ -107,18 +134,18 @@ export default function HomePage() {
         <div className={`container ${styles.heroGrid}`}>
           <div className={`${styles.heroLeft} fade-up`}>
             <h1 className={styles.heroTitle}>
-              Crack TCS NQT.<br />
+              Crack your placements.<br />
               <span className="gradient-text">Prepare smart. Score high.</span>
             </h1>
             <p className={`${styles.heroSub} fade-up fade-up-2`}>
-              Coding problems with a real in-browser IDE, aptitude method guides, previous year questions with solutions, and a timed mock exam. Everything you need, nothing you don&apos;t.
+              Coding problems with a real in-browser IDE, aptitude method guides, previous year questions with solutions, and timed mock exams for TCS NQT and Infosys HackWithInfy.
             </p>
             <div className={styles.heroCtas}>
-              <Link href="/coding" className="btn btn-primary">
-                Open Coding IDE
+              <Link href="/tcs/coding" className="btn btn-primary">
+                TCS Prep
               </Link>
-              <Link href="/exam" className="btn btn-ghost">
-                Start Mock Exam →
+              <Link href="/infosys/coding" className="btn btn-ghost">
+                Infosys Prep →
               </Link>
             </div>
           </div>
@@ -145,12 +172,33 @@ export default function HomePage() {
       <section className={styles.features}>
         <div className="container">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>What&apos;s inside</h2>
-            <p className={styles.sectionSub}>Four focused tools, one goal: get you through the NQT.</p>
+            <h2 className={styles.sectionTitle}>TCS NQT Track</h2>
+            <p className={styles.sectionSub}>Everything you need to clear the National Qualifier Test.</p>
           </div>
 
           <div className={styles.featuresGrid}>
-            {FEATURES.map((f, i) => (
+            {FEATURES_TCS.map((f, i) => (
+              <Link key={i} href={f.href} className={styles.featureCard}>
+                <div className={styles.featureNum}>{f.num}</div>
+                <div className={styles.featureBody}>
+                  <div className={styles.featureTop}>
+                    <h3 className={styles.featureTitle}>{f.title}</h3>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-3)' }}>{f.badge}</span>
+                  </div>
+                  <p className={styles.featureDesc}>{f.desc}</p>
+                </div>
+                <span className={styles.featureArrow}>→</span>
+              </Link>
+            ))}
+          </div>
+          
+          <div className={styles.sectionHead} style={{ marginTop: '64px' }}>
+            <h2 className={styles.sectionTitle}>Infosys HackWithInfy Track</h2>
+            <p className={styles.sectionSub}>Master DSA and logical puzzles for Infosys placements.</p>
+          </div>
+
+          <div className={styles.featuresGrid}>
+            {FEATURES_INFY.map((f, i) => (
               <Link key={i} href={f.href} className={styles.featureCard}>
                 <div className={styles.featureNum}>{f.num}</div>
                 <div className={styles.featureBody}>
@@ -173,11 +221,11 @@ export default function HomePage() {
             <div className={styles.planText}>
               <h2 className={styles.planTitle}>Suggested study plan</h2>
               <p className={styles.planSub}>
-                Most students have 2–4 weeks before the NQT. Here&apos;s a
+                Most students have 2–4 weeks before their exams. Here&apos;s a
                 structure that actually works.
               </p>
               <Link href="/about" className={styles.planLink}>
-                Read about the exam structure →
+                Read about the exam structures →
               </Link>
             </div>
 

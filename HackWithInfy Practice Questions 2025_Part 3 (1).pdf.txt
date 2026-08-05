@@ -1,0 +1,585 @@
+Technical Interview Questions
+Coding Assessment
+Technical Interview Questions - Coding Assessment
+1
+EASY
+1.1
+Tree Beauty Problem
+1.1.1
+Question Description
+You are given a tree of n nodes, each node has a value a[i] written on it. The tree is rooted at
+node 1.
+A pair of nodes i, j (where 1 ≤i < j ≤n) is considered GOOD if a[i]×a[j] is a perfect square.
+We define beauty(u) as the number of good pairs of nodes in the subtree of u. Your task is to
+find the sum of beauty(i) for each 1 ≤i ≤n. Return the sum of these values modulo 109 + 7.
+1.1.2
+Function Description
+Name : get_ans
+Parameters:
+- n (INTEGER): The size of the tree
+- par (INTEGER ARRAY): The parent array par[1] = 0
+- a (INTEGER ARRAY): The values written on the nodes
+Return : INTEGER
+- The sum of beauty of each node modulo 10^9 + 7
+1.1.3
+Constraints
+• 1 ≤n ≤105 (Size of the tree)
+• 0 ≤par[i] ≤n (Valid parent indices)
+• par[1] = 0 (Root is node 1, which has no parent)
+• 1 ≤a[i] ≤109 (Node values)
+• All values must be considered for perfect square pairs
+• Result must be modulo 109 + 7
+1
+Technical Interview Questions
+Coding Assessment
+1.1.4
+Input Format
+Line 1: Integer n
+- Size of the tree
+Next n lines: par[0], par[1], ..., par[n-1]
+- Parent array of the rooted tree
+- par[0] is typically 0 (root indicator)
+- par[i] is the parent of node i (1-indexed)
+Next n lines: a[0], a[1], ..., a[n-1]
+- Values written on each node
+- Each value is between 1 and 10^9
+1.1.5
+Output Format
+Single Integer: The sum of beauty values for all nodes modulo 109 + 7
+1.1.6
+Sample Test Case 1
+Input:
+5
+0
+1
+1
+2
+2
+2
+3
+6
+12
+27
+Output:
+6
+Tree Structure:
+1(2)
+/
+\
+2(3)
+3(6)
+/ \
+4(12) 5(27)
+Node Values:
+2
+Technical Interview Questions
+Coding Assessment
+• Node 1: 2
+• Node 2: 3
+• Node 3: 6
+• Node 4: 12
+• Node 5: 27
+Computing Beauty for Each Node:
+• beauty(5) = 0 (Only one node in subtree of 5; no pairs possible)
+• beauty(4) = 0 (Only one node in subtree of 4; no pairs possible)
+• beauty(3) = 0 (Only one node in subtree of 3; no pairs possible)
+• beauty(2) = 3 (Subtree of 2: {2, 4, 5} with values {3, 12, 27})
+– Pair (2, 4): 3 × 12 = 36 = 62 (Perfect square)
+– Pair (2, 5): 3 × 27 = 81 = 92 (Perfect square)
+– Pair (4, 5): 12 × 27 = 324 = 182 (Perfect square)
+• beauty(1) = 3 (Entire tree: {1, 2, 3, 4, 5} with values {2, 3, 6, 12, 27})
+– Good pairs are the same three from subtree of 2
+Sum of beauty values:
+beauty(1) + beauty(2) + beauty(3) + beauty(4) + beauty(5) = 3 + 3 + 0 + 0 + 0 = 6
+Answer: 6
+1.1.7
+Sample Test Case 2
+Input:
+2
+0
+1
+4
+9
+Output:
+1
+Tree Structure:
+3
+Technical Interview Questions
+Coding Assessment
+1(4)
+|
+2(9)
+Computing Beauty for Each Node:
+• beauty(2) = 0 (Only one node in subtree of 2)
+• beauty(1) = 1 (Subtree of 1: {1, 2} with values {4, 9})
+– Pair (1, 2): 4 × 9 = 36 = 62 (Perfect square)
+Sum of beauty values: 1 + 0 = 1
+Answer: 1
+1.1.8
+Sample Test Case 3
+Input:
+3
+0
+1
+1
+2
+8
+18
+Output:
+3
+Tree Structure:
+1(2)
+/ \
+2(8) 3(18)
+Computing Beauty for Each Node:
+• beauty(2) = 0 (Only one node in subtree of 2)
+• beauty(3) = 0 (Only one node in subtree of 3)
+• beauty(1) = 3 (Subtree of 1: {1, 2, 3} with values {2, 8, 18})
+– Pair (1, 2): 2 × 8 = 16 = 42
+– Pair (1, 3): 2 × 18 = 36 = 62
+4
+Technical Interview Questions
+Coding Assessment
+– Pair (2, 3): 8 × 18 = 144 = 122
+Sum of beauty values: 3 + 0 + 0 = 3
+Answer: 3
+2
+MEDIUM
+2.1
+Good Subsequence with GCD Problem
+2.1.1
+Question Description
+You are given an array a of length n and an integer p.
+A non-empty subsequence of a is considered GOOD if the following conditions hold:
+1. The length of the subsequence is strictly less than n.
+2. The greatest common divisor of the elements of the subsequence is exactly p.
+You have to process q queries of the following form:
+i j : replace a[i] with j
+(where 1 ≤i ≤n and 1 ≤j ≤105).
+After each query, you must check if there exists any good subsequence. If it exists, the answer
+to that query is YES.
+Find the number of queries that were answered YES.
+2.1.2
+Function Description
+Name : get_ans
+Parameters:
+- n (INTEGER): The size of the array
+- a (INTEGER ARRAY): The elements of the array
+- p (INTEGER): The required gcd
+- q (INTEGER): The number of queries
+- queries (INTEGER 2D ARRAY): The queries, each with format [i, j]
+Return : INTEGER
+- The number of queries that were answered yes
+2.1.3
+Constraints
+• 1 ≤n ≤105
+• 1 ≤a[i] ≤105
+5
+Technical Interview Questions
+Coding Assessment
+• 1 ≤p ≤105
+• 1 ≤q ≤105
+• 2 ≤columns of queries ≤2
+• 1 ≤queries[i][j] ≤105
+2.1.4
+Input Format
+Line 1: Integer n
+- Number of elements in the array
+Next n lines: a[0], a[1], ..., a[n-1]
+- Elements of the array
+Line n+2: Integer p
+- The required gcd
+Line n+3: Integer q
+- Number of queries
+Line n+4: Integer two
+- Number of columns in queries (always 2)
+Next q lines: queries[0], queries[1], ..., queries[q-1]
+- Each line contains two space-separated integers [i, j]
+- i: 1-indexed position in array
+- j: new value to replace a[i-1]
+2.1.5
+Output Format
+Single Integer: The number of queries answered yes
+2.1.6
+Sample Test Case 1
+Input:
+2
+3
+3
+6
+2
+2
+2 3
+1 6
+Output:
+2
+Initial array: [3, 3], p = 6
+6
+Technical Interview Questions
+Coding Assessment
+Query 1: Replace a[2] with 3
+• Array becomes: [3, 3]
+• Subsequence [3]: gcd = 3 = p
+• Answer: YES
+Query 2: Replace a[1] with 6
+• Array becomes: [6, 3]
+• Subsequence [3]: gcd = 3 = p
+• Answer: YES
+Total YES answers: 2
+2.1.7
+Sample Test Case 2
+Input:
+4
+3
+9
+12
+15
+18
+3
+3
+1 9
+2 6
+4 12
+Output:
+3
+Initial Setup
+n = 4, p = 3, a = [9, 12, 15, 18], q = 3
+All elements are divisible by 3. So initially, c = 4.
+Query 1: (1, 9)
+Replace a[1] = 9 →9 (no change)
+Still divisible by 3.
+Array: [9, 12, 15, 18]
+gcd(9, 12, 15, 18) = 3
+Contributes to answer.
+7
+Technical Interview Questions
+Coding Assessment
+Query 2: (2, 6)
+Replace a[2] = 12 →6 (still divisible by 3).
+Array: [9, 6, 15, 18]
+gcd(9, 6, 15, 18) = 3
+Contributes to answer.
+Query 3: (4, 12)
+Replace a[4] = 18 →12 (still divisible by 3).
+Array: [9, 6, 15, 12]
+gcd = 3
+Contributes to answer.
+Total YES answers = 3
+2.1.8
+Sample Test Case 3
+Input:
+3
+2
+4
+5
+6
+3
+2
+1 3
+2 4
+3 5
+Output:
+1
+Query 1: (1, 3)
+Operation: Replace a[1] = 4 →3
+Now array becomes: a = [3, 5, 6]
+• 3 →not divisible by 2
+• 5 →not divisible
+• 6 →divisible
+Now c = 1.
+The GCD of all divisible elements = 6 (which is a multiple of 2),
+but since not all elements satisfy divisibility,
+the condition in code counts this as not a valid full-array case.
+Does not increase ans
+8
+Technical Interview Questions
+Coding Assessment
+Query 2: (2, 4)
+Operation: Replace a[2] = 5 →4
+Now array becomes: a = [3, 4, 6]
+• 3 →×
+• 4 →✓
+• 6 →✓
+Now c = 2
+Still, one element (3) is not divisible by 2,
+and the gcd(3, 4, 6) = 1̸ = 2.
+Does not increase ans
+Query 3: (3, 5)
+Operation: Replace a[3] = 6 →5
+Now array becomes: a = [3, 4, 5]
+• 3 →×
+• 4 →✓
+• 5 →×
+c = 1
+gcd(3, 4, 5) = 1̸ = 2.
+However, during the process, the code’s logic counts one intermediate case where the segment
+tree GCD equals p.
+Contributes once to answer
+Total YES answers = 1
+3
+HARD
+3.1
+Longest Non-Decreasing Subsequence with XOR Problem
+3.1.1
+Question Description
+You are given an array A of length N and an integer M.
+A subsequence of A is considered GOOD if the following conditions hold:
+1. The elements of the subsequence are non-decreasing.
+2. The bitwise XOR of these elements is at least M.
+Find the length of the longest good subsequence. If it is not possible to choose any subsequence,
+then the answer is 0.
+9
+Technical Interview Questions
+Coding Assessment
+3.1.2
+Function Description
+Name : get_ans
+Parameters:
+- N (INTEGER): The size of the array
+- M (INTEGER): The minimum allowed xor
+- A (INTEGER ARRAY): The elements of the array
+Return : INTEGER
+- The length of the longest good subsequence
+3.1.3
+Constraints
+• 1 ≤N ≤1000
+• 1 ≤M ≤500
+• 1 ≤A[i] ≤N
+3.1.4
+Input Format
+Line 1: Integer N
+- Number of elements in array A
+Line 2: Integer M
+- The minimum allowed XOR value
+Next N lines: A[0], A[1], ..., A[N-1]
+- Elements of the array
+3.1.5
+Output Format
+Single Integer: The length of the longest good subsequence
+3.1.6
+Sample Test Case 1
+Input:
+2
+1
+1
+2
+Output:
+2
+10
+Technical Interview Questions
+Coding Assessment
+Parameters: N = 2, M = 1, A = [1, 2]
+Non-decreasing subsequences:
+• [1]: XOR = 1 ≥1 Length = 1
+• [2]: XOR = 2 ≥1 Length = 1
+• [1, 2]: XOR = 1 ⊕2 = 3 ≥1 Length = 2
+Longest good subsequence: [1, 2] with length 2
+Answer: 2
+3.1.7
+Sample Test Case 2
+Input:
+2
+1
+1
+1
+Output:
+1
+Parameters: N = 2, M = 1, A = [1, 1]
+Non-decreasing subsequences:
+• [1]: XOR = 1 ≥1 Length = 1
+• [1]: XOR = 1 ≥1 Length = 1
+• [1, 1]: XOR = 1 ⊕1 = 0 ≥1 (Not good)
+Longest good subsequence: [1] with length 1
+Answer: 1
+3.1.8
+Sample Test Case 3
+Input:
+4
+3
+11
+Technical Interview Questions
+Coding Assessment
+1
+2
+3
+4
+Output:
+4
+Parameters: N = 4, M = 3, A = [1, 2, 3, 4]
+Non-decreasing subsequences with XOR ≥3:
+Single-element subsequences:
+• [1]: XOR = 1 ≥3 →No
+• [2]: XOR = 2 ≥3 →No
+• [3]: XOR = 3 ≥3 Length = 1
+• [4]: XOR = 4 ≥3 Length = 1
+Two-element subsequences:
+• [1, 2]: XOR = 1 ⊕2 = 3 ≥3 Length = 2
+• [1, 4]: XOR = 1 ⊕4 = 5 ≥3 Length = 2
+• [2, 4]: XOR = 2 ⊕4 = 6 ≥3 Length = 2
+• [3, 4]: XOR = 3 ⊕4 = 7 ≥3 Length = 2
+Three-element subsequences:
+• [1, 2, 4]: XOR = 1 ⊕2 ⊕4 = 7 ≥3 Length = 3
+• [1, 3, 4]: XOR = 1 ⊕3 ⊕4 = 6 ≥3 Length = 3
+• [2, 3, 4]: XOR = 2 ⊕3 ⊕4 = 5 ≥3 Length = 3
+Four-element subsequences:
+• [1, 2, 3, 4]: XOR = 1 ⊕2 ⊕3 ⊕4 = 4 ≥3 Length = 4
+Longest good subsequence: [1, 2, 3, 4] with length 4
+Answer: 4
+12
+Technical Interview Questions
+Coding Assessment
+4
+COMPLEX
+4.1
+Tree Edge Flipping with Pattern Matching Problem
+4.1.1
+Question Description
+You are given a rooted tree with N nodes labeled 0 . . . N −1 (root 0). Each node has a binary
+value Val[i] ∈{0, 1}. The array Parent[i] defines the tree structure (Parent[0] = 0; for i > 0,
+Parent[i] is the parent of node i).
+You may flip a set of parent-child edges such that no two flipped edges share a node (the flipped
+edges form a matching). Flipping an edge toggles both endpoints’ binary values (0 ↔1) and
+costs M coins. Each edge can be flipped at most once.
+For a binary string q, a root-to-leaf path is NATURAL if, after flips, its node values contain
+q as a contiguous substring.
+For each of Q queries (binary strings), you must:
+• Choose any valid flips to MAXIMIZE the number of natural root-to-leaf paths
+• Among all choices with maximum natural paths, pick the one with MINIMUM total
+cost (M× number of flipped edges)
+Find the SUM OF MINIMUM COSTS over all Q queries.
+4.1.2
+Function Description
+Name: get_ans
+Parameters:
+- N (INTEGER): Number of nodes in the tree
+- M (INTEGER): Cost per flipped edge
+- Parent (INTEGER ARRAY): Parent array
+- Val (INTEGER ARRAY): Binary values at each node
+- Q (INTEGER): Number of queries
+- queries (STRING ARRAY): Binary string queries
+Return : INTEGER
+- Sum of minimum costs for all queries
+4.1.3
+Constraints
+• 1 ≤N ≤105
+• 1 ≤M ≤105
+• 0 ≤Parent[i] ≤105
+• 0 ≤Val[i] ≤1
+13
+Technical Interview Questions
+Coding Assessment
+• 1 ≤Q ≤105
+• 1 ≤len(queries[i]) ≤105
+4.1.4
+Input Format
+• The first line contains an integer, N, denoting the number of nodes.
+• The next line contains an integer, M, denoting the cost per edge flip.
+• Each line i of the N subsequent lines (0
+i < N) contains an integer describing Parent[i]
+• Each line i of the N subsequent lines (0
+i < N) contains an integer describing Val[i].
+• The next line contains an integer, Q, denoting the number of queries.
+• Each line i of the Q subsequent lines (0
+i < Q) contains a string describing queries[i].
+4.1.5
+Output Format
+Single Integer: Sum of minimum costs for all queries
+4.1.6
+Sample Test Case 1
+Input:
+6
+3
+0
+0
+0
+1
+1
+2
+1
+0
+1
+1
+2
+10
+011
+Output:
+6
+Explanation:
+• Query 1 →“10”
+– Look at path 0 →1 →4: values 1, 0, 0 — it already contains 1, 0.
+14
+Technical Interview Questions
+Coding Assessment
+– Therefore no flips are required for this query.
+– Cost for this query = 0 flips ×M = 0 × 3 = 0.
+• Query 2 →“011”
+– In the current labeling there is no path containing 0, 1, 1.
+– By flipping values in up to two subtrees, we can create a path that contains 0, 1, 1.
+– The DP determines the minimum number of flips to achieve that pattern is 2
+flips for this query.
+– Cost for this query = 2 flips ×M = 2 × 3 = 6.
+Total Cost = (0 + 6) = 6
+4.1.7
+Sample Test Case 2
+Input:
+4
+3
+0
+0
+1
+1
+0
+0
+0
+2
+10
+11
+Output:
+3
+Explanation:
+• Query 1 →“10”
+– Need a subsequence 1 →0.
+– Current tree values are all 0, so the first 1 is missing.
+– By flipping 1 edge (e.g., the edge to node 1 or node 0 itself), we can create a 1 along
+a path that allows “10” to appear.
+– Cost for this query = 1 flip ×M = 1 × 3 = 3.
+• Query 2 →“11”
+15
+Technical Interview Questions
+Coding Assessment
+– Need a subsequence 1 →1.
+– After previous flips, there may already be a 1 in the path.
+– Optimal strategy in the code finds that no additional flips are needed, because
+the previous configuration already allows “11” to appear.
+– Cost for this query = 0 × 3 = 0.
+Total Cost = 3 + 0 = 3
+4.1.8
+Sample Test Case 3
+Input:
+5
+3
+0
+0
+1
+1
+2
+0
+1
+0
+1
+0
+2
+01
+10
+Output:
+3
+Explanation:
+• Query 1 →“01”
+– It finds that with 1 flip, the pattern “01” can be matched optimally across the tree.
+– Cost for this query = 1 × M = 1 × 3 = 3.
+• Query 2 →“10”
+– The best configuration for “10” requires 0 flips, as some paths already match the
+pattern.
+– Cost for this query = 0 × 3 = 0.
+Total Cost: 3 + 0 = 3
+16

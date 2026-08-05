@@ -24,7 +24,7 @@ interface CodingQuestion {
 
 type Question = MCQQuestion | CodingQuestion;
 
-interface Section {
+export interface Section {
   section: string;
   desc: string;
   questions: Question[];
@@ -49,8 +49,6 @@ function loadBookmarksFromStorage(): Record<string, boolean> {
 function saveBookmarksToStorage(bookmarks: Record<string, boolean>) {
   try { localStorage.setItem(LS_BOOKMARKS_KEY, JSON.stringify(bookmarks)); } catch {}
 }
-
-const SECTIONS = rawData as Section[];
 
 function MCQCard({
   item, idx, displayIdx, sectionIdx, sectionName, revealed, onToggle, bookmarks, onBookmark,
@@ -170,9 +168,9 @@ function CodingCard({
 type Filter = "All" | string;
 type DiffFilter = "All" | "Easy" | "Medium" | "Hard";
 
-export default function PYQClient() {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<Filter>("All");
+export default function PYQClient({ data }: { data?: Section[] }) {
+  const SECTIONS = data || (rawData as Section[]);
+  const [search, setSearch] = useState("");  const [filter, setFilter] = useState<Filter>("All");
   const [diffFilter, setDiffFilter] = useState<DiffFilter>("All");
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});

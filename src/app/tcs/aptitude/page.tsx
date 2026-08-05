@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     "TCS NQT reasoning", "TCS NQT aptitude preparation", "TCS placement aptitude",
   ],
   alternates: {
-    canonical: "/aptitude",
+    canonical: "/tcs/aptitude",
   },
   openGraph: {
-    url: "/aptitude",
+    url: "/tcs/aptitude",
     title: "TCS NQT Aptitude Guide — 30 Topics",
     description: "30 method guides for TCS NQT aptitude sections.",
   },

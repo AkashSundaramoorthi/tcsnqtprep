@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     "TCS NQT exam simulator", "TCS iON NQT mock",
   ],
   alternates: {
-    canonical: "/exam",
+    canonical: "/tcs/exam",
   },
   openGraph: {
-    url: "/exam",
+    url: "/tcs/exam",
     title: "TCS NQT Mock Exam — 80 Questions, 190 Minutes",
     description: "Simulate the real TCS NQT with a 190-minute timed mock exam.",
   },
@@ -39,7 +39,7 @@ export default function ExamPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
       />
-      <ExamClient questions={EXAM_QUESTIONS} />
+      <ExamClient questions={EXAM_QUESTIONS} track="tcs-nqt" />
     </>
   );
 }

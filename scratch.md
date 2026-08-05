@@ -1,0 +1,1 @@
+I have extracted an additional 69 problems (a combination of all problems from the `HackWithInfy Practice Questions` PDFs and a curated batch of 50 problems from the massive `Level up Question` PDF to maintain frontend performance) into `src/lib/questions.ts`. The Infosys track now contains a robust pool of 73 coding problems.

@@ -1,4 +1,7 @@
+import { TrackId } from "./tracks";
+
 export interface Topic {
+  track: TrackId;
   title: string;
   cat: string;
   desc: string;
@@ -10,6 +13,7 @@ export interface Topic {
 
 export const TOPICS: Topic[] = [
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Number System — Unit Digits, Divisibility & HCF/LCM",
     "desc": "Unit digits follow repeating cycles when you raise a number to a power — for example, 7¹ ends in 7, 7² ends in 9, 7³ ends in 3, 7⁴ ends in 1, then it repeats. Divisibility rules let you check if a number divides cleanly without doing long division. HCF is the largest number that divides both, LCM is the smallest number both divide into — and HCF × LCM always equals the product of the two numbers.",
@@ -75,6 +79,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Percentages — Growth, Decrease & Successive Changes",
     "desc": "A percentage is just a fraction out of 100. The trap in NQT questions is successive changes — if something increases by 20% then decreases by 20%, you do NOT get back to the start. You multiply the multipliers: 1.2 × 0.8 = 0.96, so you end up 4% down. Always convert percentages to multipliers before chaining them.",
@@ -135,6 +140,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Profit, Loss & Discount — Marked Price & Trade Problems",
     "desc": "Profit and loss are always calculated on Cost Price unless the question says otherwise. Marked Price is what's written on the tag, Selling Price is what's actually paid after discount. The key relationship: SP = MP × (1 − discount%) = CP × (1 + profit%). Most questions give you two of these and ask for the third.",
@@ -196,6 +202,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Ratio, Proportion & Age Problems",
     "desc": "A ratio just means \"for every X of one thing there are Y of another.\" Age problems use the fact that the difference between two people's ages never changes — if A is 5 years older than B today, A is still 5 years older in 10 years. Set up a variable x for the ratio multiplier, write the future or past ages in terms of x, then solve.",
@@ -248,6 +255,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Speed, Distance & Time — Trains, Boats & Relative Speed",
     "desc": "The core formula is Distance = Speed × Time, and every question is just a rearrangement of this. For trains passing each other or a platform, the distance is the length of the train plus the length of whatever it's passing. For boats, going downstream means adding the stream speed, upstream means subtracting it. Relative speed: if two objects move toward each other, add their speeds; if in the same direction, subtract.",
@@ -308,6 +316,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Time & Work — Pipes, Efficiency & Shared Work",
     "desc": "If a person completes a job in N days, their rate of work is 1/N per day. Add rates when people work together: if A does 1/6 per day and B does 1/12 per day, together they do 1/6 + 1/12 = 3/12 = 1/4 per day, so they finish in 4 days. Pipes work the same way — inlet pipes add to the rate, outlet pipes subtract.",
@@ -362,6 +371,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Averages, Mixtures & Alligation — Replacement & Blending",
     "desc": "Average = Total Sum ÷ Number of items. When one item in a group changes, the change in average × number of items = the change in that item's value. Alligation is a cross-method for mixing two things at different concentrations or prices — draw a cross, put the target in the middle, subtract diagonally to get the ratio of the two ingredients.",
@@ -415,6 +425,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Permutation, Combination & Probability — Counting & Chance",
     "desc": "Permutation is for arrangements where order matters (how many ways to arrange 3 people in a line). Combination is for selections where order doesn't matter (how many ways to choose 3 people from 5). The key formula: nPr = n!/(n−r)!, nCr = n!/(r!(n−r)!). Probability = favourable outcomes ÷ total outcomes — always count the total space carefully first.",
@@ -470,6 +481,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Numerical",
     "title": "Progressions — AP, GP & Special Series Sums",
     "desc": "An Arithmetic Progression adds the same number each time (2, 5, 8, 11...). A Geometric Progression multiplies by the same number each time (2, 6, 18, 54...). For AP: nth term = a + (n−1)d, sum = n/2 × (first + last). For GP: nth term = a×rⁿ⁻¹. NQT often asks you to find a missing term or the sum — identify whether the differences are constant (AP) or the ratios are constant (GP) first.",
@@ -526,6 +538,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Number & Letter Series — Differences, Ratios & Patterns",
     "desc": "Every series question has a hidden rule connecting the terms. Check the differences between consecutive terms first — if they're constant it's AP, if the differences themselves form a pattern look one level deeper. For letter series, convert letters to positions (A=1, B=2...) and look for the same arithmetic patterns. Never guess — always verify the rule works for every term before committing.",
@@ -579,6 +592,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Coding-Decoding — Shifts, Position Sums & Reversals",
     "desc": "In coding-decoding, a word is transformed by a consistent rule and you have to find or apply that rule. Common patterns: shift each letter by a fixed number (A→D means +3), reverse the word, replace each letter with its position number and sum them, or mirror the alphabet (A↔Z, B↔Y). Always decode the example given in the question first to identify the exact rule before applying it to the target word.",
@@ -631,6 +645,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Blood Relations — Family Tree & Pointer Statements",
     "desc": "Draw a family tree as you read — don't try to hold the relationships in your head. Use boxes for people and arrows/lines for relationships. The tricky part is \"pointer\" statements like \"pointing to a photograph, X says...\" — identify who X is first, then trace the relationship from X to the person in the photo. Gender words (son, daughter, mother, father) are your anchors.",
@@ -678,6 +693,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Directions & Distances — Turns, Compass & Shortest Path",
     "desc": "Always start by drawing the path on paper — a small sketch takes 10 seconds and eliminates most errors. Fix North as up. \"Turn right\" from North means you now face East. Track your net displacement in the North-South direction and East-West direction separately. The final distance from the starting point is calculated using Pythagoras on those two net values.",
@@ -725,6 +741,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Seating Arrangements — Linear Rows & Circular Tables",
     "desc": "For linear arrangements, fix a reference point and place people relative to each other using the clues. For circular arrangements, fix one person's seat to eliminate rotational duplicates — then arrange the rest relative to them. List all conditions first, find the most restrictive one (someone who must sit next to or opposite someone else), place them first, and fill in the rest.",
@@ -767,6 +784,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Syllogism — Venn Diagram Logic & Valid Conclusions",
     "desc": "Syllogism gives you two or more statements and asks which conclusions must be true. Draw a Venn diagram for every question — it takes 15 seconds and is almost always faster than pure logic. \"All A are B\" means circle A sits completely inside circle B. \"Some A are B\" means the circles overlap but neither contains the other. \"No A are B\" means the circles don't touch. A conclusion is valid only if it holds true in every possible valid diagram.",
@@ -815,6 +833,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Reasoning",
     "title": "Non-Verbal / Visual Reasoning — Dice & Cubes, Cube Folding & Paper Cutting, Pattern/Figure Series, Embedded Figures, Visual Analogies",
     "desc": "Non-verbal reasoning tests your ability to understand and interpret visual information. Common question types include finding the next figure in a pattern series, determining which unfolded paper matches a folded cube, identifying embedded figures hidden inside a complex drawing, solving dice orientation puzzles by identifying opposite faces, and recognizing the underlying relationship in visual analogies.",
@@ -853,6 +872,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Verbal",
     "title": "Error Spotting & Sentence Correction — Grammar Rules",
     "desc": "The most common errors in NQT are: subject-verb agreement (singular subject needs singular verb), wrong preposition (good *at*, not good *in*), tense consistency, and misuse of articles (a vs an vs the). Read each underlined part independently and ask \"does this follow standard grammar?\" The error is almost always in the verb or preposition, rarely in the noun.",
@@ -907,6 +927,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Verbal",
     "title": "Vocabulary — Synonyms, Antonyms & Root-Word Shortcuts",
     "desc": "For synonyms pick the word closest in meaning; for antonyms pick the opposite. If you don't know the word, use root words — \"bene\" means good (beneficial, benevolent), \"mal\" means bad (malicious, malfunction), \"loqui\" means to speak (loquacious = talkative). Eliminate options that are clearly wrong first, then choose between what's left. Tone matters: if the original word is negative, the synonym must also be negative.",
@@ -957,6 +978,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Advanced",
     "title": "Algebra — Linear Systems, Quadratics & Word Equations",
     "desc": "Linear equations have one solution; simultaneous equations need two equations to solve for two unknowns — add or subtract the equations to eliminate one variable. For quadratics (ax²+bx+c=0), try factoring first: find two numbers that multiply to ac and add to b. Word problems become algebra by assigning a variable to the unknown and translating each sentence into an equation literally.",
@@ -1004,6 +1026,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Advanced",
     "title": "Geometry & Mensuration — 2D Areas, 3D Volumes & Theorems",
     "desc": "Mensuration is about measuring shapes. For 2D: area of triangle = ½×base×height, circle = πr². For 3D: volume of cylinder = πr²h, cone = ⅓πr²h, sphere = 4/3πr³. The Pythagorean theorem (a²+b²=c²) applies to any right triangle. The most common NQT trick is giving you a combined shape — break it into standard shapes, calculate each part separately, then add or subtract.",
@@ -1050,6 +1073,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Advanced",
     "title": "Data Sufficiency & Logical Puzzles — Floor, Box & Constraint Problems",
     "desc": "Data sufficiency asks \"is the information given enough to answer the question?\" — you don't need to find the answer, just decide if you could. For floor/box puzzles, make a grid with people as rows and attributes as columns, then fill in what's certain from each clue. Work from the most restrictive clues first. Never assume anything not stated — only use what the question explicitly tells you.",
@@ -1091,6 +1115,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "title": "Clocks & Calendars — Angles, Overlap & Day Calculations",
     "cat": "Reasoning",
     "desc": "The minute and hour hands overlap every 65 and 5/11 minutes — they do NOT overlap every hour on the hour. To find overlaps, set up the equation: minute hand position = hour hand position, using the 6° and 0.5° per minute rates. For calendar problems, remember that a century year (1900, 2100) is NOT a leap year unless divisible by 400 — so 2000 was a leap year but 1900 was not.",
@@ -1141,6 +1166,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "title": "Simple & Compound Interest — SI, CI & Instalment Problems",
     "cat": "Numerical",
     "desc": "For instalments, the key is that each instalment pays off both the current interest and part of the principal. Work backwards from the last instalment — it has the least interest accumulated. The formula for equal instalments on CI is structured like a geometric series. For SI instalments, the interest on each remaining amount is simple and additive — list each payment's interest separately and sum them.",
@@ -1192,6 +1218,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "title": "Data Interpretation — Tables, Bar Charts & Pie Charts",
     "cat": "Numerical",
     "desc": "Read the title and units of the chart before anything else — most errors come from misreading the scale or units. For percentage questions on pie charts, remember the whole circle = 100% = 360°. For bar charts, approximate values confidently rather than trying to read exact decimals. For tables, calculate only what the question asks — don't compute everything in the table hoping it helps.",
@@ -1242,6 +1269,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Verbal",
     "title": "Para Jumbles — Sentence Ordering & Connectors",
     "desc": "Connector words are your fastest clue: \"however\", \"therefore\", \"moreover\", \"despite this\" all signal that the sentence is continuing or contrasting something said just before it. A sentence starting with \"This\", \"These\", or \"Such\" must follow the sentence that introduced that thing. The concluding sentence usually makes a judgment, gives a result, or offers a recommendation — it feels like an ending.",
@@ -1282,6 +1310,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Verbal",
     "title": "Reading Comprehension — Inference & Main Idea",
     "desc": "An inference is something that must be true based on the passage — not something that could be true or that you personally believe. The main idea is what the passage is fundamentally about, not what it mentions in passing. Wrong answer traps in NQT RC are: too broad (goes beyond the passage), too narrow (only covers one detail), and opposite (contradicts the passage). Eliminate these and the right answer becomes obvious.",
@@ -1323,6 +1352,7 @@ export const TOPICS: Topic[] = [
     ]
   },
   {
+    "track": "tcs-nqt",
     "cat": "Verbal",
     "title": "Cloze Test — Context-Based Fill in the Blanks",
     "desc": "A cloze test is a paragraph with blanks — each blank has 4 options and you choose the one that fits grammatically and contextually. Read the full paragraph first for overall meaning. For each blank, check: does the word fit the grammar (noun/verb/adjective)? Does it fit the tone (positive/negative/neutral)? Does it connect logically to the sentence before and after? If two options both seem right grammatically, the tone and context will separate them.",

@@ -613,6 +613,12 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+.diffComplex {
+  background: transparent;
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
 /* ─── Step-by-step reveal ────────────────────────────────── */
 .stepBlock {
   display: flex;

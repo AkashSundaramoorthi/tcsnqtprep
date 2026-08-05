@@ -26,9 +26,10 @@ const CAT_BADGE: Record<string, string> = {
   Advanced:  "badge-advanced",
 };
 const DIFF_CLASS: Record<string, string> = {
-  Easy:   s.diffEasy,
-  Medium: s.diffMedium,
-  Hard:   s.diffHard,
+  Easy:    s.diffEasy,
+  Medium:  s.diffMedium,
+  Hard:    s.diffHard,
+  Complex: s.diffComplex,
 };
 
 const parseSteps = (text: string) =>
@@ -55,10 +56,26 @@ function downloadFormulaSheet() {
 export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }) {
   const [done, setDone]               = useState<Record<string, boolean>>({});
   const [filter, setFilter]           = useState<Cat>("All");
-  const [active, setActive]           = useState<Topic>(topics[0]);
+  const [active, setActive]           = useState<Topic | null>(topics[0] || null);
   const [probIdx, setProbIdx]         = useState(0);
   const [mobilePanel, setMobilePanel] = useState<"list" | "content">("list");
   const [probSteps, setProbSteps]     = useState<Record<string, number>>({});
+
+  if (topics.length === 0) {
+    return (
+      <div className={s.shell}>
+        <div className={s.topBar}>
+          <div>
+            <h1 className={s.pageTitle}>Aptitude Guide</h1>
+            <p className={s.pageSub}>0 topics</p>
+          </div>
+        </div>
+        <div className={s.layout} style={{ justifyContent: "center", padding: "40px", color: "var(--text-3)" }}>
+          No topics available for this track yet.
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     analytics.trackEvent("aptitude_page_opened");
@@ -94,10 +111,10 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
 
   const visibleTopics = topics.filter(t => filter === "All" || t.cat === filter);
   const masteredCount = topics.filter(t => done[slugify(t.title)]).length;
-  const isMastered    = done[slugify(active.title)];
-  const curProblem    = active.problems[probIdx];
-  const probKey       = `${slugify(active.title)}-${probIdx}`;
-  const probSolSteps  = parseSteps(curProblem.sol);
+  const isMastered    = active ? done[slugify(active.title)] : false;
+  const curProblem    = active ? active.problems[probIdx] : ({} as any);
+  const probKey       = active ? `${slugify(active.title)}-${probIdx}` : "";
+  const probSolSteps  = curProblem ? parseSteps(curProblem.sol) : [];
   const probRevCount  = probSteps[probKey] ?? -1;
 
   const isFullySolved = useCallback((topicTitle: string, idx: number) => {
@@ -142,7 +159,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
         <button
           className={`${s.toggleBtn} ${mobilePanel === "content" ? s.toggleActive : ""}`}
           onClick={() => setMobilePanel("content")}
-        >{active.title.split("—")[0].trim()}</button>
+        >{active ? active.title.split("—")[0].trim() : "Content"}</button>
       </div>
 
       
@@ -168,11 +185,11 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
                       {cat} Topics
                     </div>
                     {topics.map(t => (
-                      <button
-                        key={t.title}
-                        className={`${s.topicRow} ${active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
-                        onClick={() => openTopic(t)}
-                      >
+                        <button
+                          key={t.title}
+                          className={`${s.topicRow} ${active && active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
+                          onClick={() => openTopic(t)}
+                        >
                         <span className={s.topicDot} style={{ background: done[slugify(t.title)] ? "var(--green)" : CAT_COLOR[t.cat] }} />
                         <div className={s.topicRowText}>
                           <span className={s.topicRowTitle}>{t.title.split("—")[0].trim()}</span>
@@ -188,7 +205,7 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
               visibleTopics.map(t => (
                 <button
                   key={t.title}
-                  className={`${s.topicRow} ${active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
+                  className={`${s.topicRow} ${active && active.title === t.title ? s.topicRowActive : ""} ${done[slugify(t.title)] ? s.topicRowDone : ""}`}
                   onClick={() => openTopic(t)}
                 >
                   <span className={s.topicDot} style={{ background: done[slugify(t.title)] ? "var(--green)" : CAT_COLOR[t.cat] }} />
@@ -206,7 +223,8 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
         
         <main className={`${s.content} ${mobilePanel === "content" ? s.contentVisible : s.contentHidden}`}>
 
-          
+          {active && (
+            <>
           <div className={s.contentHeader}>
             <div className={s.contentHeaderLeft}>
               <span className={`badge ${CAT_BADGE[active.cat]}`}>{active.cat}</span>
@@ -332,6 +350,8 @@ export default function AptitudeClient({ topics = TOPICS }: { topics?: Topic[] }
               </div>
             </div>
           </section>
+          </>
+          )}
 
         </main>
       </div>

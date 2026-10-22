@@ -379,9 +379,10 @@ export default function ExamClient({ questions, track }: Props) {
             <ul style={{ textAlign: "left", lineHeight: "1.6", margin: "10px 0 10px 20px", color: "var(--text-2)" }}>
               {track === "hackwithinfy" ? (
                 <>
-                  <li><strong>Problem 1:</strong> Easy DSA (1 hour)</li>
-                  <li><strong>Problem 2:</strong> Medium DSA (1 hour)</li>
-                  <li><strong>Problem 3:</strong> Hard/Complex DSA (1 hour)</li>
+                  <li><strong>Problem 1:</strong> Easy DSA (45 mins)</li>
+                  <li><strong>Problem 2:</strong> Medium DSA (45 mins)</li>
+                  <li><strong>Problem 3:</strong> Hard DSA (45 mins)</li>
+                  <li><strong>Problem 4:</strong> Complex DSA (45 mins)</li>
                 </>
               ) : (
                 <>

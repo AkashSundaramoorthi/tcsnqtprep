@@ -26,7 +26,7 @@ const STRUCTURED_DATA = {
   "description": "Curated TCS NQT Previous Year Questions with worked solutions across all sections.",
   "provider": {
     "@type": "Organization",
-    "name": "TCS NQT Prep Hub",
+    "name": "PlacementPrepHub",
     "sameAs": "https://tcsnqtprep.vercel.app"
   }
 };

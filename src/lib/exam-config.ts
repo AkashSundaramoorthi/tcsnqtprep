@@ -29,9 +29,10 @@ export const EXAM_PHASES: Record<TrackId, Phase[]> = {
   ],
   "hackwithinfy": [
     { id: "start", duration: 0, title: "HackWithInfy Mock Round" },
-    { id: "coding-1", duration: 60 * 60, title: "DSA Problem 1 (Easy)", calc: false },
-    { id: "coding-2", duration: 60 * 60, title: "DSA Problem 2 (Medium)", calc: false },
-    { id: "coding-3", duration: 60 * 60, title: "DSA Problem 3 (Hard/Complex)", calc: false },
+    { id: "coding-1", duration: 45 * 60, title: "DSA Problem 1 (Easy)", calc: false },
+    { id: "coding-2", duration: 45 * 60, title: "DSA Problem 2 (Medium)", calc: false },
+    { id: "coding-3", duration: 45 * 60, title: "DSA Problem 3 (Hard)", calc: false },
+    { id: "coding-4", duration: 45 * 60, title: "DSA Problem 4 (Complex)", calc: false },
     { id: "results", duration: 0, title: "Round Results" },
   ],
 };

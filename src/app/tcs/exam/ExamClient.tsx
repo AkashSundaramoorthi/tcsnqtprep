@@ -47,10 +47,12 @@ export default function ExamClient({ questions, track }: Props) {
   const [codingFinalCodeEasy, setCodingFinalCodeEasy] = useState("");
   const [codingFinalCodeMedium, setCodingFinalCodeMedium] = useState("");
   const [codingFinalCodeHard, setCodingFinalCodeHard] = useState("");
+  const [codingFinalCodeComplex, setCodingFinalCodeComplex] = useState("");
   
   const [codingQEasy, setCodingQEasy] = useState<Question | null>(null);
   const [codingQMedium, setCodingQMedium] = useState<Question | null>(null);
   const [codingQHard, setCodingQHard] = useState<Question | null>(null);
+  const [codingQComplex, setCodingQComplex] = useState<Question | null>(null);
   const [lang, setLang] = useState<Lang>("python");
   const [code, setCode] = useState(STARTERS["python"]);
   const [runOutput, setRunOutput] = useState("");
@@ -59,6 +61,7 @@ export default function ExamClient({ questions, track }: Props) {
   const [codingPassedEasy, setCodingPassedEasy] = useState(0);
   const [codingPassedMedium, setCodingPassedMedium] = useState(0);
   const [codingPassedHard, setCodingPassedHard] = useState(0);
+  const [codingPassedComplex, setCodingPassedComplex] = useState(0);
   
   const [passageMode, setPassageMode] = useState<"read" | "write">("read");
   
@@ -89,6 +92,7 @@ export default function ExamClient({ questions, track }: Props) {
       if (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") setCodingFinalCodeEasy(code);
       if (currentPhase.id === "coding-medium" || currentPhase.id === "coding-2") setCodingFinalCodeMedium(code);
       if (currentPhase.id === "coding-3") setCodingFinalCodeHard(code);
+      if (currentPhase.id === "coding-4") setCodingFinalCodeComplex(code);
       
       const nextPhase = phases[phaseIdx + 1];
       setPhaseIdx(idx => idx + 1);
@@ -246,13 +250,16 @@ export default function ExamClient({ questions, track }: Props) {
     if (track === "hackwithinfy") {
       let p1 = QUESTIONS.filter(q => q.track === "hackwithinfy" && q.level === 'Easy');
       let p2 = QUESTIONS.filter(q => q.track === "hackwithinfy" && q.level === 'Medium');
-      let p3 = QUESTIONS.filter(q => q.track === "hackwithinfy" && (q.level === 'Hard' || q.level === 'Complex'));
+      let p3 = QUESTIONS.filter(q => q.track === "hackwithinfy" && q.level === 'Hard');
+      let p4 = QUESTIONS.filter(q => q.track === "hackwithinfy" && q.level === 'Complex');
       if (p1.length === 0) p1 = easyPool; // Fallback to TCS questions until populated
       if (p2.length === 0) p2 = medPool; // Fallback to TCS questions until populated
       if (p3.length === 0) p3 = hardPool;
+      if (p4.length === 0) p4 = hardPool;
       setCodingQEasy(p1[Math.floor(Math.random() * p1.length)]);
       setCodingQMedium(p2[Math.floor(Math.random() * p2.length)]);
       setCodingQHard(p3[Math.floor(Math.random() * p3.length)]);
+      setCodingQComplex(p4[Math.floor(Math.random() * p4.length)]);
     } else {
       let p1 = QUESTIONS.filter(q => q.track === "tcs-nqt" && q.level === 'Easy');
       let p2 = QUESTIONS.filter(q => q.track === "tcs-nqt" && q.level === 'Medium');
@@ -273,7 +280,7 @@ export default function ExamClient({ questions, track }: Props) {
     return `${m}:${sec}`;
   };
 
-  const currentCodingQ = (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") ? codingQEasy : (currentPhase.id === "coding-3" ? codingQHard : codingQMedium);
+  const currentCodingQ = (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") ? codingQEasy : (currentPhase.id === "coding-2" ? codingQMedium : (currentPhase.id === "coding-3" ? codingQHard : codingQComplex));
 
   const handleRunCode = async () => {
     if (!currentCodingQ) return;
@@ -348,6 +355,7 @@ export default function ExamClient({ questions, track }: Props) {
       
       if (currentPhase.id === "coding-easy" || currentPhase.id === "coding-1") setCodingPassedEasy(passedPrivate);
       else if (currentPhase.id === "coding-3") setCodingPassedHard(passedPrivate);
+      else if (currentPhase.id === "coding-4") setCodingPassedComplex(passedPrivate);
       else setCodingPassedMedium(passedPrivate);
       
       setRunOutput(logs);
@@ -701,10 +709,16 @@ export default function ExamClient({ questions, track }: Props) {
                 <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>{track === "hackwithinfy" ? "Problem 2 Passed" : "Medium Passed"}</div>
               </div>
               {track === "hackwithinfy" && (
+                <>
                 <div style={{ flex: 1, minWidth: "150px", background: "var(--surface-2)", padding: "24px", borderRadius: "8px", textAlign: "center" }}>
                   <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: codingPassedHard === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedHard} / 5</div>
                   <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Problem 3 Passed</div>
                 </div>
+                <div style={{ flex: 1, minWidth: "150px", background: "var(--surface-2)", padding: "24px", borderRadius: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: codingPassedComplex === 5 ? "var(--success, #10b981)" : "var(--accent)" }}>{codingPassedComplex} / 5</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text-3)", textTransform: "uppercase", marginTop: "8px" }}>Problem 4 Passed</div>
+                </div>
+                </>
               )}
             </div>
             
@@ -737,6 +751,16 @@ export default function ExamClient({ questions, track }: Props) {
                   <div style={{ fontSize: "0.9rem", color: "var(--text)", background: "#1e1e1e", padding: "16px", borderRadius: "8px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
                     <strong style={{ color: "var(--text-3)" }}>Submitted Code:</strong>
                     <pre style={{ margin: 0, marginTop: "12px", color: "#d4d4d4" }}>{codingFinalCodeHard || "No code submitted."}</pre>
+                  </div>
+                </div>
+              )}
+              {track === "hackwithinfy" && codingQComplex && (
+                <div style={{ padding: "24px", background: "var(--surface-2)", borderRadius: "8px", border: "1px solid var(--border)", textAlign: "left", marginTop: "24px" }}>
+                  <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1.2rem" }}>Problem 4: {codingQComplex.title}</div>
+                  <div style={{ fontSize: "1rem", color: "var(--text-2)", whiteSpace: "pre-line", marginBottom: "20px" }}>{codingQComplex.desc}</div>
+                  <div style={{ fontSize: "0.9rem", color: "var(--text)", background: "#1e1e1e", padding: "16px", borderRadius: "8px", overflowX: "auto", whiteSpace: "pre-wrap" }}>
+                    <strong style={{ color: "var(--text-3)" }}>Submitted Code:</strong>
+                    <pre style={{ margin: 0, marginTop: "12px", color: "#d4d4d4" }}>{codingFinalCodeComplex || "No code submitted."}</pre>
                   </div>
                 </div>
               )}
@@ -934,9 +958,65 @@ export default function ExamClient({ questions, track }: Props) {
             <div className={styles.codingGrid}>
               <div className={styles.codingDesc}>
                 <h3>{currentCodingQ.title}</h3>
-                <p style={{ whiteSpace: "pre-line" }}>{currentCodingQ.desc}</p>
-                <h4 style={{marginTop: "20px", marginBottom: "8px"}}>Format</h4>
-                <p>{currentCodingQ.fmt}</p>
+                <p style={{ whiteSpace: "pre-line", marginBottom: "16px", lineHeight: "1.6" }}>
+                  {currentCodingQ.desc.replace(/([a-zA-Z,.\s])\n([a-zA-Z])/g, '$1 $2')}
+                </p>
+                
+                {currentCodingQ.fmt && (
+                  <>
+                    <h4 style={{marginTop: "20px", marginBottom: "8px"}}>Format</h4>
+                    <p style={{ lineHeight: "1.6" }}>{currentCodingQ.fmt}</p>
+                  </>
+                )}
+
+                <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "24px" }}>
+                  {currentCodingQ.tests.slice(0, 2).map((test, idx) => {
+                    if (test.hidden) return null;
+                    
+                    let inStr = test.in || "";
+                    let outStr = test.out || "";
+                    let explanation = "";
+                    
+                    const splitRegex = /(Sample Output|Sample output|Explanation|Input Format|Constraints|Sample Test Cases|External Document)/i;
+                    
+                    const inMatch = inStr.match(splitRegex);
+                    if (inMatch && inMatch.index !== undefined) {
+                      explanation += inStr.substring(inMatch.index);
+                      inStr = inStr.substring(0, inMatch.index).trim();
+                    }
+
+                    const outMatch = outStr.match(splitRegex);
+                    if (outMatch && outMatch.index !== undefined) {
+                      explanation += (explanation ? "\n" : "") + outStr.substring(outMatch.index);
+                      outStr = outStr.substring(0, outMatch.index).trim();
+                    }
+
+                    // Strip stray "Output:" strings that leaked into the input
+                    inStr = inStr.replace(/\n?\s*Output:\s*.*$/i, '').trim();
+                    
+                    const finalExplanation = currentCodingQ.note ? currentCodingQ.note + (explanation ? "\n" + explanation : "") : explanation;
+                    
+                    return (
+                      <div key={idx}>
+                        <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1rem" }}>Example {idx + 1}:</div>
+                        <div style={{ 
+                          paddingLeft: "16px", 
+                          borderLeft: "2px solid var(--border)", 
+                          fontSize: "0.95rem", 
+                          color: "var(--text-2)",
+                          lineHeight: "1.6",
+                          whiteSpace: "pre-wrap"
+                        }}>
+                          <div><strong style={{color: "var(--text)", fontFamily: "var(--font-mono)"}}>Input:</strong> <span style={{fontFamily: "var(--font-mono)"}}>{inStr}</span></div>
+                          <div><strong style={{color: "var(--text)", fontFamily: "var(--font-mono)"}}>Output:</strong> <span style={{fontFamily: "var(--font-mono)"}}>{outStr}</span></div>
+                          {finalExplanation && (
+                            <div><strong style={{color: "var(--text)"}}>Explanation:</strong> {finalExplanation.trim()}</div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
               <div className={styles.codingEditor}>
                 <div className={styles.editorToolbar}>

@@ -13,8 +13,8 @@ import AnalyticsClient from '@/components/AnalyticsClient';
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcsnqtprep.vercel.app"),
   title: {
-    default: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
-    template: "%s | TCS NQT Prep Hub",
+    default: "PlacementPrepHub — Coding, Aptitude & Mock Exam",
+    template: "%s | PlacementPrepHub",
   },
   description:
     "The complete TCS NQT preparation platform. Practice 50 coding problems with an in-browser runner, revise 30 aptitude topics with method guides, and take a full 80-question mock exam with a live timer.",
@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     "TCS NQT aptitude", "TCS NQT coding", "TCS NQT previous year questions",
     "TCS NQT 2024", "TCS NQT 2025", "TCS placement preparation",
   ],
-  authors: [{ name: "TCS NQT Prep Hub" }],
-  creator: "TCS NQT Prep Hub",
+  authors: [{ name: "PlacementPrepHub" }],
+  creator: "PlacementPrepHub",
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://tcsnqtprep.vercel.app",
-    siteName: "TCS NQT Prep Hub",
-    title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
+    siteName: "PlacementPrepHub",
+    title: "PlacementPrepHub — Coding, Aptitude & Mock Exam",
     description:
       "The complete TCS NQT preparation platform. 50 coding problems, 30 aptitude topics, 80-question mock exam.",
     images: [
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "TCS NQT Prep Hub",
+        alt: "PlacementPrepHub",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TCS NQT Prep Hub — Coding, Aptitude & Mock Exam",
+    title: "PlacementPrepHub — Coding, Aptitude & Mock Exam",
     description:
       "The complete TCS NQT preparation platform. 50 coding problems, 30 aptitude topics, 80-question mock exam.",
     images: ["/og-image.png"],

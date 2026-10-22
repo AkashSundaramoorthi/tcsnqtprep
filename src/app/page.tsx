@@ -79,7 +79,7 @@ const FEATURES_INFY = [
     title: "HackWithInfy Mock",
     desc: "Simulate the intensive coding rounds seen in HackWithInfy with full automated testing.",
     href: "/infosys/exam",
-    badge: "3 Problems · 180m",
+    badge: "4 Problems · 180m",
     num: "03",
   },
   {

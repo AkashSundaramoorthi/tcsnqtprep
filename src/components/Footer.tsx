@@ -7,12 +7,12 @@ export default function Footer() {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <div className={styles.logo}>
-            <span className={styles.logoMark}>NQT</span>
+            <span className={styles.logoMark}>Prep</span>
             <span className={styles.logoSlash}>/</span>
-            <span className={styles.logoWord}>Prep Hub</span>
+            <span className={styles.logoWord}>Hub</span>
           </div>
           <p className={styles.tagline}>
-            Independent TCS NQT preparation platform with practice questions, coding IDE, mock tests and formula sheets.
+            Independent TCS Prep preparation platform with practice questions, coding IDE, mock tests and formula sheets.
           </p>
         </div>
 

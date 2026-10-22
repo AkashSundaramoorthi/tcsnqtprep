@@ -6,7 +6,7 @@ import { TRACKS } from "@/lib/tracks";
 const track = TRACKS["tcs-nqt"];
 
 export const metadata: Metadata = {
-  title: `${track.label} Prep Hub — Coding, Aptitude & Mock Exam`,
+  title: `${track.label} - PlacementPrepHub — Coding, Aptitude & Mock Exam`,
   description: track.description,
   alternates: {
     canonical: "/tcs",

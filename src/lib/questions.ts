@@ -6,6 +6,7 @@ export interface TestCase {
   in: string;
   out: string;
   hidden?: boolean;
+  note?: string;
 }
 
 export interface Question {
@@ -28,7 +29,7 @@ export const QUESTIONS: Question[] = [
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
-      { in: "5 \n5 \n5 \n0 \n3 \n0 \n5 \n0 2 1 2 \n0 1 6 5 \n2 3 8 0 \n2 4 9 6 \n3 4 8 9 \n          Sample output 1 \n51 \nExplanation-1 \nHere, n = 5 \nA = [5, 5, 0, 3, 0] \nq = 5 \nqueries = [[0, 2, 1, 2], [0, 1, 6, 5], [2, 3, 8, \n0], [2, 4, 9, 6], [3, 4, 8, 9]] \nfor query 1: \nl = 0, r = 2, x = 1, y = 2\nA[0] = 1 \nA[1] = 3 \nA[2] = 5 \nSo, A = [1, 3, 5, 3, 0] \nfor query 2: \nl = 0, r = 1, x = 6, y = 5\nA[0] = 6 \nA[1] = 11 \nSo, A = [6, 11, 5, 3, 0] \nfor query 3: \nl = 2, r = 3, x = 8, y = 0\nA[2] = 8 \nA[3] = 8 \nSo, A = [6, 11, 8, 8, 0] \nfor query 4: \nl = 2, r = 4, x = 9, y = 6\nA = [6, 11, 9, 15, 21] \nfor query 5: \nl = 3, r = 4, x = 8, y = 9\nA = [6, 11, 9, 8, 17] \nHence, answer is 6+11+9+8+17 = 51 \nSample Input 2 \n5 \n3 \n9 \n2 \n5 \n4 \n5 \n1 2 6 3 \n1 2 2 8 \n1 2 5 5 \n1 3 1 8 \n1 2 2 9", out: "51" },
+      { in: "5 \n5 \n5 \n0 \n3 \n0 \n5 \n0 2 1 2 \n0 1 6 5 \n2 3 8 0 \n2 4 9 6 \n3 4 8 9 \n\nExplanation: \nHere, n = 5 \nA = [5, 5, 0, 3, 0] \nq = 5 \nqueries = [[0, 2, 1, 2], [0, 1, 6, 5], [2, 3, 8, \n0], [2, 4, 9, 6], [3, 4, 8, 9]] \nfor query 1: \nl = 0, r = 2, x = 1, y = 2\nA[0] = 1 \nA[1] = 3 \nA[2] = 5 \nSo, A = [1, 3, 5, 3, 0] \nfor query 2: \nl = 0, r = 1, x = 6, y = 5\nA[0] = 6 \nA[1] = 11 \nSo, A = [6, 11, 5, 3, 0] \nfor query 3: \nl = 2, r = 3, x = 8, y = 0\nA[2] = 8 \nA[3] = 8 \nSo, A = [6, 11, 8, 8, 0] \nfor query 4: \nl = 2, r = 4, x = 9, y = 6\nA = [6, 11, 9, 15, 21] \nfor query 5: \nl = 3, r = 4, x = 8, y = 9\nA = [6, 11, 9, 8, 17] \nHence, answer is 6+11+9+8+17 = 51 \nSample Input 2 \n5 \n3 \n9 \n2 \n5 \n4 \n5 \n1 2 6 3 \n1 2 2 8 \n1 2 5 5 \n1 3 1 8 \n1 2 2 9", out: "51" },
       { in: "5 \n0 \n1 \n0 \n0 \n1 \n5 \n1 2 7 7 \n0 1 3 6 \n1 1 1 1 \n3 4 9 1 \n2 3 1 0", out: "37" },
     ]
   },
@@ -56,9 +57,9 @@ export const QUESTIONS: Question[] = [
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
-      { in: "7\n1\n4\n5\n1\n6\n7\n8\n5\n1 1 6\n1 1 5\n2 5 5\n2 3 4\n2 3 3", out: "60\nSample Output Description 1\nHere, n = 7\nA = [1, 4, 5, 1, 6, 7, 8]\nq = 5\nqueries = [[1, 1, 6], [1, 1, 5], [2, 5, 5], [2, 3, 4], [2, 3, 3]]\nfor query 1 -> (1, 1, 6)\nApplying the operation on subarray from index 1 to \n6, A becomes, A = [1, 4, 8, 12, 16, 20, 24]\nfor query 2 -> (1, 1, 5)\nApplying the operation on subarray from index 1 to \n5, A becomes, A = [1, 4, 8, 12, 16, 20, 24]\nfor query 3 -> (2, 5, 5)\ncalculate sum of array from index 5 to 5 -> sum = \nA[5] = 20\nfor query 4 -> (2, 3, 4)\ncalculate sum of array from index 3 to 4 -> sum = \nA[3]+A[4] = 28\nfor query 5 -> (2, 3, 3)\ncalculate sum of array from index 3 to 3 -> sum = \nA[3] = 12\nHence, answer is 20+28+12 = 60" },
-      { in: "7\n3\n7\n4\n2\n5\n3\n7\n5\n1 0 4\n2 0 1\n1 3 6\n2 3 3\n2 0 5", out: "111\nSample Output Description 2\nHere, n = 7\nA = [3, 7, 4, 2, 5, 3, 7]\nq = 5\nqueries = [[1, 0, 4], [2, 0, 1], [1, 3, 6], [2, 3, 3], [2, 0, 5]]\nfor query 1 -> (1, 0, 4)\nApplying the operation on subarray from index 0 to \n4, A becomes, A = [3, 6, 9, 12, 15, 3, 7]\nfor query 2 -> (2, 0, 1)\ncalculate sum of array from index 0 to 1 -> sum = \nA[0]+A[1] = 9\nfor query 3 -> (1, 3, 6)\nApplying the operation on subarray from index 3 to \n6, A becomes, A = [3, 6, 9, 12, 24, 36, 48]\nExternal Document \u00a9 2025 Infosys Limited \nfor query 4 -> (2, 3, 3)\ncalculate sum of array from index 3 to 3 -> sum = \nA[3] = 12\nfor query 5 -> (2, 0, 5)\ncalculate sum of array from index 0 to 5 -> sum = \nA[0]+A[1]+A[2]+A[3]+A[4]+A[5] = 90\nHence, answer is 9+12+90 = 111" },
-      { in: "7\n1\n8\n6\n10\n5\n6\n9\n5\n2 0 3\n1 2 3\n1 0 6\n2 1 4\n2 6 6", out: "46\nSample Output Description 3\nHere, n = 7\nA = [1, 8, 6, 10, 5, 6, 9]\nq = 5\nqueries = [[2, 0, 3], [1, 2, 3], [1, 0, 6], [2, 1, 4], [2, 6, 6]]\nfor query 1 -> (2, 0, 3)\ncalculate sum of array from index 0 to 3 -> sum = \nA[0]+A[1]+A[2]+A[3] = 25\nfor query 2 -> (1, 2, 3)\nApplying the operation on subarray from index 2 to \n3, A becomes, A = [1, 8, 6, 12, 5, 6, 9]\nfor query 3 -> (1, 0, 6)\nApplying the operation on subarray from index 0 to \n6, A becomes, A = [1, 2, 3, 4, 5, 6, 7]\nfor query 4 -> (2, 1, 4)\ncalculate sum of array from index 1 to 4 -> sum = 14\nfor query 5 -> (2, 6, 6)\ncalculate sum of array from index 6 to 6 -> sum = 7\nHence, answer is 25+14+7 = 46\nInput Format\nThe first line contains an integer, n, denoting the \nnumber of elements in A.\nEach line i of the n subsequent lines (where 0 \u2264 i < \nn) contains an integer describing A[i].\nThe next line contains an integer, q, denoting the \nnumber of rows in queries.\nEach line i of the q subsequent lines (where 0 \u2264 \ni < q) contains 3 space separated integers each \ndescribing the row queries[i].\nThe 3 space separated integers denote the value of \neither (1,l,r) or (2,l,r) for the i-th query.\nConstraints\n1 <= n <= 10^5\n1 <= A[i] <= 10^5\n1 <= q <= 10^5\n0 <= queries[i][j] <= 10^5\nSample Test Cases\nCase 1\nInput:\n7\n1\n4\n5\n1\n6\n7\n8\n5\n1 1 6\n1 1 5\n2 5 5\n2 3 4\n2 3 3\nOutput:\n60" },
+      { in: "7\n1\n4\n5\n1\n6\n7\n8\n5\n1 1 6\n1 1 5\n2 5 5\n2 3 4\n2 3 3", out: "60\n\nExplanation: \nHere, n = 7\nA = [1, 4, 5, 1, 6, 7, 8]\nq = 5\nqueries = [[1, 1, 6], [1, 1, 5], [2, 5, 5], [2, 3, 4], [2, 3, 3]]\nfor query 1 -> (1, 1, 6)\nApplying the operation on subarray from index 1 to \n6, A becomes, A = [1, 4, 8, 12, 16, 20, 24]\nfor query 2 -> (1, 1, 5)\nApplying the operation on subarray from index 1 to \n5, A becomes, A = [1, 4, 8, 12, 16, 20, 24]\nfor query 3 -> (2, 5, 5)\ncalculate sum of array from index 5 to 5 -> sum = \nA[5] = 20\nfor query 4 -> (2, 3, 4)\ncalculate sum of array from index 3 to 4 -> sum = \nA[3]+A[4] = 28\nfor query 5 -> (2, 3, 3)\ncalculate sum of array from index 3 to 3 -> sum = \nA[3] = 12\nHence, answer is 20+28+12 = 60" },
+      { in: "7\n3\n7\n4\n2\n5\n3\n7\n5\n1 0 4\n2 0 1\n1 3 6\n2 3 3\n2 0 5", out: "111\n\nExplanation: \nHere, n = 7\nA = [3, 7, 4, 2, 5, 3, 7]\nq = 5\nqueries = [[1, 0, 4], [2, 0, 1], [1, 3, 6], [2, 3, 3], [2, 0, 5]]\nfor query 1 -> (1, 0, 4)\nApplying the operation on subarray from index 0 to \n4, A becomes, A = [3, 6, 9, 12, 15, 3, 7]\nfor query 2 -> (2, 0, 1)\ncalculate sum of array from index 0 to 1 -> sum = \nA[0]+A[1] = 9\nfor query 3 -> (1, 3, 6)\nApplying the operation on subarray from index 3 to \n6, A becomes, A = [3, 6, 9, 12, 24, 36, 48] \nfor query 4 -> (2, 3, 3)\ncalculate sum of array from index 3 to 3 -> sum = \nA[3] = 12\nfor query 5 -> (2, 0, 5)\ncalculate sum of array from index 0 to 5 -> sum = \nA[0]+A[1]+A[2]+A[3]+A[4]+A[5] = 90\nHence, answer is 9+12+90 = 111" },
+      { in: "7\n1\n8\n6\n10\n5\n6\n9\n5\n2 0 3\n1 2 3\n1 0 6\n2 1 4\n2 6 6", out: "46\n\nExplanation: \nHere, n = 7\nA = [1, 8, 6, 10, 5, 6, 9]\nq = 5\nqueries = [[2, 0, 3], [1, 2, 3], [1, 0, 6], [2, 1, 4], [2, 6, 6]]\nfor query 1 -> (2, 0, 3)\ncalculate sum of array from index 0 to 3 -> sum = \nA[0]+A[1]+A[2]+A[3] = 25\nfor query 2 -> (1, 2, 3)\nApplying the operation on subarray from index 2 to \n3, A becomes, A = [1, 8, 6, 12, 5, 6, 9]\nfor query 3 -> (1, 0, 6)\nApplying the operation on subarray from index 0 to \n6, A becomes, A = [1, 2, 3, 4, 5, 6, 7]\nfor query 4 -> (2, 1, 4)\ncalculate sum of array from index 1 to 4 -> sum = 14\nfor query 5 -> (2, 6, 6)\ncalculate sum of array from index 6 to 6 -> sum = 7\nHence, answer is 25+14+7 = 46" },
     ]
   },
   {
@@ -67,9 +68,9 @@ export const QUESTIONS: Question[] = [
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
-      { in: "11\n2\n1\n2\n2\n3\n2\n3\n5\n1\n2\n1\n1", out: "12\nSample Output Description 1\nHere, N = 11, k = 2\nA = [1, 2, 2, 3, 2, 3, 5, 1, 2, 1, 1]\nWe can select the subarray = [2, 2, 3, 2, 3]\nIt is a good subarray because it contains at most k \ndistinct elements.\nIts sum = 2+2+3+2+3 = 12\nSo, our answer is 12." },
-      { in: "3\n1\n-1\n-2\n-3\nExternal Document \u00a9 2025 Infosys Limited", out: "0\nSample Output Description 2\nHere, N = 3, k = 1\nA = [-1, -2, -3]\nIt is optimal to choose empty subarray.\nSo, our answer is 0." },
-      { in: "5\n5\n-1\n1\n3\n2\n-1", out: "6\nSample Output Description 3\nHere, N = 5, k = 5\nA = [-1, 1, 3, 2, -1]\nIt is optimal to choose the subarray = [1, 3, 2].\nIts sum = 1+3+2 = 6.\nHence, our answer is 6.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nThe next line contains an integer, k, denoting the \nlimit on the distinct elements.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains an integer describing A[i].\nConstraints\n1 <= N <= 10^5\n1 <= k <= n\n-10^5 <= A[i] <= 10^5\nSample Test Cases\nCase 1\nInput:\n11\n2\n1\n2\n2\n3\n2\n3\n5\n1\n2\n1\n1\nExternal Document \u00a9 2025 Infosys Limited \nOutput:\n12" },
+      { in: "11\n2\n1\n2\n2\n3\n2\n3\n5\n1\n2\n1\n1", out: "12\n\nExplanation: \nHere, N = 11, k = 2\nA = [1, 2, 2, 3, 2, 3, 5, 1, 2, 1, 1]\nWe can select the subarray = [2, 2, 3, 2, 3]\nIt is a good subarray because it contains at most k \ndistinct elements.\nIts sum = 2+2+3+2+3 = 12\nSo, our answer is 12." },
+      { in: "3\n1\n-1\n-2\n-3", out: "0\n\nExplanation: \nHere, N = 3, k = 1\nA = [-1, -2, -3]\nIt is optimal to choose empty subarray.\nSo, our answer is 0." },
+      { in: "5\n5\n-1\n1\n3\n2\n-1", out: "6\n\nExplanation: \nHere, N = 5, k = 5\nA = [-1, 1, 3, 2, -1]\nIt is optimal to choose the subarray = [1, 3, 2].\nIts sum = 1+3+2 = 6.\nHence, our answer is 6." },
     ]
   },
   {
@@ -105,9 +106,9 @@ export const QUESTIONS: Question[] = [
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
-      { in: "4\n0\n2\n1\n1", out: "3\nSample Output Description 1\nHere, N = 4\nA = [0, 2, 1, 1]\nWe can divide the employees in the following teams \n-> [0, 2, 1], [1]\nexpert value of team [0, 2, 1] = 3\nexpert value of team [1] = 0\nSo, expert number = 3+0 = 3\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n3.\nHence, the maximum value of expert number is 3." },
-      { in: "5\n0\n1\n2\n1\n0", out: "5\nSample Output Description 2\nHere, N = 5\nA = [0, 1, 2, 1, 0]\nWe can divide the employees in the following teams \n-> [0, 1, 2], [1, 0]\nexpert value of team [0, 1, 2] = 3\nexpert value of team [1, 0] = 2\nSo, expert number = 3+2 = 5\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n5.\nHence, the maximum value of expert number is 5." },
-      { in: "10\n0\n1\n0\n1\nExternal Document \u00a9 2025 Infosys Limited \n1\n0\n3\n2\n1\n0", out: "10\nSample Output Description 3\nHere, N = 10\nA = [0, 1, 0, 1, 1, 0, 3, 2, 1, 0]\nWe can divide the employees in the following teams \n-> [0, 1], [0, 1], [1, 0, 3, 2], [1, 0]\nexpert value of team [0, 1] = 2\nexpert value of team [1, 0, 3, 2] = 4\nSo, expert number = 2 + 2 + 4 + 2 = 10\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n10.\nHence, the maximum value of expert number is 10.\nInput Format\nThe first line contains an integer, N, denoting the \nnumber of elements in A.\nEach line i of the N subsequent lines (where 0 \u2264 i < \nN) contains an integer describing A[i].\nConstraints\n1 <= N <= 10^5\n1 <= A[i] <= 10^3\nSample Test Cases\nCase 1\nInput:\n4\n0\n2\n1\n1\nOutput:\n3" },
+      { in: "4\n0\n2\n1\n1", out: "3\n\nExplanation: \nHere, N = 4\nA = [0, 2, 1, 1]\nWe can divide the employees in the following teams \n-> [0, 2, 1], [1]\nexpert value of team [0, 2, 1] = 3\nexpert value of team [1] = 0\nSo, expert number = 3+0 = 3\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n3.\nHence, the maximum value of expert number is 3." },
+      { in: "5\n0\n1\n2\n1\n0", out: "5\n\nExplanation: \nHere, N = 5\nA = [0, 1, 2, 1, 0]\nWe can divide the employees in the following teams \n-> [0, 1, 2], [1, 0]\nexpert value of team [0, 1, 2] = 3\nexpert value of team [1, 0] = 2\nSo, expert number = 3+2 = 5\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n5.\nHence, the maximum value of expert number is 5." },
+      { in: "10\n0\n1\n0\n1 \n1\n0\n3\n2\n1\n0", out: "10\n\nExplanation: \nHere, N = 10\nA = [0, 1, 0, 1, 1, 0, 3, 2, 1, 0]\nWe can divide the employees in the following teams \n-> [0, 1], [0, 1], [1, 0, 3, 2], [1, 0]\nexpert value of team [0, 1] = 2\nexpert value of team [1, 0, 3, 2] = 4\nSo, expert number = 2 + 2 + 4 + 2 = 10\nPlease note that there is no other way to divide the \nemployees such that expert number is greater than \n10.\nHence, the maximum value of expert number is 10." },
     ]
   },
   {
@@ -116,9 +117,9 @@ export const QUESTIONS: Question[] = [
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
-      { in: "2\n1\n3\n2 1 0", out: "1\nSample Output Description 1\nHere, n = 2, q = 1, t = 3\nqueries = [[2, 1, 0]]\nfor query1 -> As there are no edges in the graph, \nthe connected component of 1 contain only node 1.\nonly one covered range required i.e. [1, 1]\nHence, answer for this query is 1.\nSo, the answer is 1." },
-      { in: "2\n3\n3\n2 1 0\nExternal Document \u00a9 2025 Infosys Limited \n1 1 2\n2 1 0", out: "2\nSample Output Description 2\nHere, n = 2, q = 3, t = 3\nqueries = [[2, 1, 0], [1, 1, 2], [2, 1, 0]]\nfor query1 -> (2, 1, 0)\nconnected component of 1 = {1}\nonly one covered range required i.e. [1, 1]\nHence, answer for this query is 1.\nfor query2 -> (1, 1, 2)\nAdd an edge between 1 and 2.\nfor query3 -> (2, 1, 0)\nconnected component of 1 = {1, 2}\nonly one covered range required i.e. [1, 2]\nHence, answer for this query is 1.\nSo, the answer is 1 + 1 = 2." },
-      { in: "10\n3\n3\n1 1 4\n2 1 0\n2 4 0", out: "4\nSample Output Description 3\nHere, n = 10, q = 3, t = 3\nqueries = [[1, 1, 4], [2, 1, 0], [2, 4, 0]]\nfor query1 -> (1, 1, 4)\nAdd an edge between 1 and 4\nfor query2 -> (2, 1, 0)\nconnected component of 1 = {1, 4}\ntwo covered ranges are required i.e. [1, 1] and [4, 4]\nHence, answer for this query is 2.\nfor query3 -> (2, 4, 0)\nconnected component of 4 = {1, 4}\ntwo covered ranges are required i.e. [1, 1] and [4, 4]\nHence, answer for this query is 2.\nSo, the answer is 2 + 2 = 4.\nInput Format\nThe first line contains an integer, n, denoting the \nsize of the graph.\nThe next line contains an integer, q, denoting the \nnumber of rows in queries.\nThe next line contains an integer, t, denoting the \nnumber of columns in queries.\nEach line i of the q subsequent lines (where 0 \u2264 \ni < q) contains t space separated integers each \ndescribing the row queries[i].\nConstraints\n1 <= n <= 10^5\n1 <= q <= 10^5\n3 <= t <= 3\n0 <= queries[i][j] <= n\nSample Test Cases\nCase 1\nInput:\n2\n1\n3\n2 1 0\nOutput:\n1" },
+      { in: "2\n1\n3\n2 1 0", out: "1\n\nExplanation: \nHere, n = 2, q = 1, t = 3\nqueries = [[2, 1, 0]]\nfor query1 -> As there are no edges in the graph, \nthe connected component of 1 contain only node 1.\nonly one covered range required i.e. [1, 1]\nHence, answer for this query is 1.\nSo, the answer is 1." },
+      { in: "2\n3\n3\n2 1 0 \n1 1 2\n2 1 0", out: "2\n\nExplanation: \nHere, n = 2, q = 3, t = 3\nqueries = [[2, 1, 0], [1, 1, 2], [2, 1, 0]]\nfor query1 -> (2, 1, 0)\nconnected component of 1 = {1}\nonly one covered range required i.e. [1, 1]\nHence, answer for this query is 1.\nfor query2 -> (1, 1, 2)\nAdd an edge between 1 and 2.\nfor query3 -> (2, 1, 0)\nconnected component of 1 = {1, 2}\nonly one covered range required i.e. [1, 2]\nHence, answer for this query is 1.\nSo, the answer is 1 + 1 = 2." },
+      { in: "10\n3\n3\n1 1 4\n2 1 0\n2 4 0", out: "4\n\nExplanation: \nHere, n = 10, q = 3, t = 3\nqueries = [[1, 1, 4], [2, 1, 0], [2, 4, 0]]\nfor query1 -> (1, 1, 4)\nAdd an edge between 1 and 4\nfor query2 -> (2, 1, 0)\nconnected component of 1 = {1, 4}\ntwo covered ranges are required i.e. [1, 1] and [4, 4]\nHence, answer for this query is 2.\nfor query3 -> (2, 4, 0)\nconnected component of 4 = {1, 4}\ntwo covered ranges are required i.e. [1, 1] and [4, 4]\nHence, answer for this query is 2.\nSo, the answer is 2 + 2 = 4." },
     ]
   },
   {
@@ -149,18 +150,18 @@ export const QUESTIONS: Question[] = [
     ]
   },
   {
-    track: "hackwithinfy", id: "min-k-for-directed-path-length", level: "Hard", title: "Min K for Directed Path Length",
+    track: "hackwithinfy", id: "min-k-for-directed-path-length", level: "Complex", title: "Min K for Directed Path Length",
     desc: "You are given a permutation p of length n and an \ninteger m. You now need to construct a directed \ngraph from the given permutation.\nIt is given that an edge exists between i and j if ai \n< aj and abs(i - j) <= k, where abs(x) is the absolute \nvalue of x.\nFind the minimum value of k such that the longest \npath of the resulting graph is greater than or equal \nto m.\nNotes:\n\u2022\t The length of the path is equal to the number of \nnodes in that path.",
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
-      { in: "5\n2\n1\n3\n2\n5\n4", out: "1\nSample Output Description 1\nHere, n = 5, m = 2\np = [1, 3, 2, 5, 4]\nIf k >= 1 then, directed edge 1 -> 2 exists, so, we can \ntake the path 1 -> 2.\nHence, the minimum value of k required is 1.\nSo, answer is 1." },
-      { in: "5\n3\n1\n3\n2\n5\n4\nExternal Document \u00a9 2025 Infosys Limited", out: "2\nSample Output Description 2\nHere, n = 5, m = 3\np = [1 ,3, 2, 5, 4]\nIf k >= 2, then we can take the path 1 -> 2 -> 3.\nHence, the minimum value of k required is 2.\nSo, the answer is 2." },
-      { in: "5\n1\n1\n2\n3\n4\n5", out: "0\nSample Output Description 3\nHere, n = 5, m = 1\np = [1, 2, 3, 4, 5]\nAny node (without any edges) has a path of length \n1, so the minimum value k is 0.\nSo, answer is 0.\nInput Format\nThe first line contains an integer, n, denoting the \nnumber of elements in p.\nThe next line contains an integer, m, denoting the \nlength of the path.\nEach line i of the n subsequent lines (where 0 \u2264 i < \nn) contains an integer describing p[i].\nConstraints\n1 <= n <= 10^5\n1 <= m <= n\n1 <= p[i] <= n\nSample Test Cases\nCase 1\nInput:\n5\n2\n1\n3\n2\n5\n4\nOutput:\n1\nExternal Document \u00a9 2025 Infosys Limited" },
+      { in: "5\n2\n1\n3\n2\n5\n4", out: "1\n\nExplanation: \nHere, n = 5, m = 2\np = [1, 3, 2, 5, 4]\nIf k >= 1 then, directed edge 1 -> 2 exists, so, we can \ntake the path 1 -> 2.\nHence, the minimum value of k required is 1.\nSo, answer is 1." },
+      { in: "5\n3\n1\n3\n2\n5\n4", out: "2\n\nExplanation: \nHere, n = 5, m = 3\np = [1 ,3, 2, 5, 4]\nIf k >= 2, then we can take the path 1 -> 2 -> 3.\nHence, the minimum value of k required is 2.\nSo, the answer is 2." },
+      { in: "5\n1\n1\n2\n3\n4\n5", out: "0\n\nExplanation: \nHere, n = 5, m = 1\np = [1, 2, 3, 4, 5]\nAny node (without any edges) has a path of length \n1, so the minimum value k is 0.\nSo, answer is 0." },
     ]
   },
   {
-    track: "hackwithinfy", id: "maximize-xp-from-chests", level: "Hard", title: "Maximize XP from Chests",
+    track: "hackwithinfy", id: "maximize-xp-from-chests", level: "Complex", title: "Maximize XP from Chests",
     desc: "Bob is playing a game called \u201cSome Help\u201d.\nIn this game, there are N soldiers, where N is an \neven number. There are also N treasure chests, each \nwith a bonus value given by the array Bonus. Here, \nBonus[i] denotes the bonus value for the ith chest.\nThe power of each soldier is described by an array \nA of size N. For each i, the power of the ith soldier \nis an integer between 1 and N/2, and each number \nbetween 1 and N/2 occurs exactly twice in A.\nThe game has N rounds and each round proceeds \nas follows:\n1.\tFor each ith player, Bob finds the first player \non their right whose power is a multiple of the \npower of the ith player. Let\u2019s call this player R.\n2.\tIf no such player R is found, Bob does nothing.\n3.\tIf such a player R is found, Bob can choose a chest \nin the range [i, R] that gives the maximum bonus. \nLet\u2019s call the bonus of this chest as X.\n4.\tThe total XP is initially zero and for each round it \nis increased by X.\nFind the total XP that Bob can obtain from all N \nrounds.\nNote:\n\u2022\t Each treasure chest can be used any number of \ntimes.",
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
@@ -178,7 +179,7 @@ export const QUESTIONS: Question[] = [
     ]
   },
   {
-    track: "hackwithinfy", id: "tree-subtree-beauty-queries", level: "Hard", title: "Tree Subtree Beauty Queries",
+    track: "hackwithinfy", id: "tree-subtree-beauty-queries", level: "Complex", title: "Tree Subtree Beauty Queries",
     desc: "You are given a tree which consists of N nodes. You \nalso will be given two distinct nodes A and B.\nYou are also given an array P where the parent of \nnode U is given by P[U].\nWe define beauty of a node (U, V) as the number of \nnodes that belong to both:\n\u2022\t The subtree of U when the tree is rooted at A.\n\u2022\t The subtree of U when the tree is rooted at B.\nYou are given a 2D array Queries which consists of \nQ queries. For each query you are given two nodes \nU and V (U can be equal to V) and the answer to the \nquery is the beauty of (U, V).\nLet K be equal to the answer to the last query \n(initially 0), then U and V changes as follows after \neach query:\n\u2022\t U = (U + K) mod N + 1.\n\u2022\t V = (V + K) mod N + 1.\nFind the sum of answer to all queries. Since the \nanswer can be large, return it modulo 109+7.",
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
@@ -188,7 +189,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     track: "hackwithinfy", id: "maximum-taste-points", level: "Medium", title: "Maximum Taste Points",
-    desc: "You want to buy food from a store. You have a\nscoring system that uses a unit called taste points\n.\nEach time you buy a type of food, you can measure\nits tastiness by the number of taste points you get\nfrom that food.\nYou have N types of food. You can buy any type\nany number of times, as long as the total number\nof meals does not exceed M.\nHowever, you don't want to grow tired of a food if\nyou buy it too often. Therefore, you will get v[i] \u2212\nd[i] \u00d7 (ti \u2212 1) taste points when you buy the i-th\ntype of food for the ti-th time.\nFind the maximum number of taste points you can\nachieve.\nSample Test Cases\nCase 1",
+    desc: "You want to buy food from a store. You have a\nscoring system that uses a unit called taste points\n.\nEach time you buy a type of food, you can measure\nits tastiness by the number of taste points you get\nfrom that food.\nYou have N types of food. You can buy any type\nany number of times, as long as the total number\nof meals does not exceed M.\nHowever, you don't want to grow tired of a food if\nyou buy it too often. Therefore, you will get v[i] \u2212\nd[i] \u00d7 (ti \u2212 1) taste points when you buy the i-th\ntype of food for the ti-th time.\nFind the maximum number of taste points you can\nachieve.",
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
@@ -197,7 +198,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     track: "hackwithinfy", id: "match-keys-to-locks-parity", level: "Hard", title: "Match Keys to Locks Parity",
-    desc: "You are given N locks in a row (1-indexed). Each lock\ni has a value L[i]. There is also one key under each\nlock, and key j has value L[j].\nYou may assign some keys to some locks under the\nfollowing rules:\n1. You may assign key j to lock i only if: j < i. (Each\nkey can only be used on a lock to its right.)\n2. Assignments where the key and lock have the\nsame value are forbidden: L[j] \u2260 L[i] (So the\neffective value is never zero.)\n3. Assigning key j to lock i gives: E = |L[j] \u2212 L[i]|\n4. Each lock can be assigned at most once, and each\nkey can be used at most once.\n5. Let even be the number of assignments with even\neffective value, and odd be the number of\nassignments with odd effective value. A set of\nassignments is valid only if: even \u2265 odd. This\ncondition applies to the final chosen set.\nSample Test Cases\nCase 1",
+    desc: "You are given N locks in a row (1-indexed). Each lock\ni has a value L[i]. There is also one key under each\nlock, and key j has value L[j].\nYou may assign some keys to some locks under the\nfollowing rules:\n1. You may assign key j to lock i only if: j < i. (Each\nkey can only be used on a lock to its right.)\n2. Assignments where the key and lock have the\nsame value are forbidden: L[j] \u2260 L[i] (So the\neffective value is never zero.)\n3. Assigning key j to lock i gives: E = |L[j] \u2212 L[i]|\n4. Each lock can be assigned at most once, and each\nkey can be used at most once.\n5. Let even be the number of assignments with even\neffective value, and odd be the number of\nassignments with odd effective value. A set of\nassignments is valid only if: even \u2265 odd. This\ncondition applies to the final chosen set.",
     fmt: "",
     hints: ["Read the problem carefully.", "Think of edge cases.", "Optimize your approach."],
     tests: [
@@ -292,6 +293,7 @@ export const QUESTIONS: Question[] = [
     hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
     tests: [
       { in: "deadline[] = [4, 1, 1, 1], profit[] = [20, 10, 40, 30]", out: "[2, 60]" },
+      { in: "4 \nA 2 100 \nB 1 19 \nC 2 27 \nD 1 25", out: "A C \u2192 Total Profit = 127" }
     ]
   },
   {
@@ -474,15 +476,7 @@ export const QUESTIONS: Question[] = [
       { in: "3 2 1 2 6", out: "17" },
     ]
   },
-  {
-    track: "hackwithinfy", id: "job-sequencing-with-deadlines", level: "Medium", title: "Job Sequencing with Deadlines",
-    desc: "Job Sequencing with Deadlines \nProblem Statement: \nYou are given n jobs. Each job has the following properties: \n\u2022 \nA unique ID \n  \n\u2022 \nA deadline (by when it should be completed) \n\u2022 \nA profit (earned only if the job is finished before or on its deadline) \nEach job takes exactly 1 unit of time to complete. Your task is to schedule the jobs to maximize total \nprofit, ensuring no two jobs overlap and each job finishes within its deadline. \nInput Format: \n\u2022 \nAn integer n representing the number of j",
-    fmt: "",
-    hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
-    tests: [
-      { in: "4 \nA 2 100 \nB 1 19 \nC 2 27 \nD 1 25", out: "A C \u2192 Total Profit = 127" },
-    ]
-  },
+  
   {
     track: "hackwithinfy", id: "candy-distribution", level: "Hard", title: "Candy Distribution",
     desc: "Candy Distribution \nProblem Statement: \nThere are n children standing in a line, each with a rating value. Each child must receive at least one \ncandy. Additionally, any child with a higher rating than their immediate neighbor must receive more \ncandies than that neighbor. The objective is to distribute candies to minimize the total number given. \n \nInput: \nAn array ratings of length n where ratings[i] represents the rating of the i-th child. \n \nOutput: \nAn integer representing the minimum total",
@@ -492,15 +486,7 @@ export const QUESTIONS: Question[] = [
       { in: "An array ratings of length n where ratings[i] represents the rating of the i-th child.", out: "An integer representing the minimum total number of candies required. \n \nCase#1: \nInput: \n  \nratings = [1, 0, 2] \nOutput: \n \n5" },
     ]
   },
-  {
-    track: "hackwithinfy", id: "rearrange-tasks", level: "Medium", title: "Rearrange Tasks",
-    desc: "Rearrange Tasks to Avoid Consecutive Duplicates \nProblem Statement: \nGiven a string representing a queue of tasks where each character is a lowercase letter denoting a \ntask type, reorder the tasks so that no two identical tasks are scheduled consecutively. If no such \narrangement exists, return an empty string. \n \nInput: \nA string tasks containing lowercase English letters. \n \nOutput: \nA reordered string with no two adjacent characters the same, or an empty string \"\" if rearrangement \nis imposs",
-    fmt: "",
-    hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
-    tests: [
-      { in: "A string tasks containing lowercase English letters.", out: "A reordered string with no two adjacent characters the same, or an empty string \"\" if rearrangement \nis impossible." },
-    ]
-  },
+  
   {
     track: "hackwithinfy", id: "rod-cutting", level: "Medium", title: "Rod Cutting",
     desc: "Rod Cutting Problem Problem Statement: \nGiven a rod of length n and an array of prices where the price at index i represents the selling price of \na rod of length i+1, determine the maximum revenue obtainable by cutting the rod into smaller \npieces and selling them. \nInput Format : \n  \nlength[]: an array representing possible rod lengths [1, 2, ..., n] price[]: an array where price[i] is the \nprice for rod length length[i] n: the total length of the rod to be cut \nOutput: \nThe maximum profit ach",
@@ -555,15 +541,7 @@ export const QUESTIONS: Question[] = [
       { in: "8 \n7 0 \n  \n0 7", out: "6" },
     ]
   },
-  {
-    track: "hackwithinfy", id: "longest-palindrome-by-reordering", level: "Medium", title: "Longest Palindrome by Reordering",
-    desc: "Construct the Longest Palindrome by Reordering or Deleting Characters Problem Statement: \nGiven a string S, construct the longest possible palindromic string that can be made by \nshuffling or deleting any characters from S. \nYou may reorder the characters and delete any number of them. The goal is to build the \nlongest palindrome possible from the given characters. \nIf there are multiple answers with the same length, print any one of them. \nInput Format: \n\u2022 \nA single string S of uppercase Englis",
-    fmt: "",
-    hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
-    tests: [
-      { in: "1", out: "1" },
-    ]
-  },
+  
   {
     track: "hackwithinfy", id: "minimize-guest-unhappiness", level: "Medium", title: "Minimize Guest Unhappiness",
     desc: "Problem: Minimizing Total Guest Unhappiness Problem Statement: \nYou are managing a hotel and need to serve N guests. Each guest has a happiness value C\u1d62, which is \nthe time at which they prefer to be served. \nHowever, you can serve only one guest at a time, and each guest takes exactly one unit of time to be \nserved. The serving times start from x = 1 and increase incrementally (1, 2, 3, ..., N). \n  \nThe unhappiness of serving a guest at time x is defined as: Unhappiness=\u2223Ci\u2212x\u2223 \nYour task is to ",
@@ -592,7 +570,7 @@ export const QUESTIONS: Question[] = [
     ]
   },
   {
-    track: "hackwithinfy", id: "prevent-multiple-subsequences", level: "Hard", title: "Prevent Multiple Subsequences",
+    track: "hackwithinfy", id: "prevent-multiple-subsequences", level: "Complex", title: "Prevent Multiple Subsequences",
     desc: "Prevent Multiple Subsequences Problem Statement: \nAlice has a string S of length N, and Bob gives her another string C of length M. \nBob challenges Alice to modify her string S such that the string C appears at most once as a \nsubsequence in S. \nTo help her do this, Bob gives an array A of size N, where A[i] is the cost to delete the character S[i]. \nAlice wants to achieve the goal with the minimum possible total cost. \n \nFind the minimum total cost to delete characters from S such that C appear",
     fmt: "",
     hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
@@ -629,31 +607,16 @@ export const QUESTIONS: Question[] = [
   },
   {
     track: "hackwithinfy", id: "best-time-to-buy-and-sell", level: "Easy", title: "Best Time to Buy and Sell",
-    desc: "00 \n \n \n \nQ20. \nYou are a data analyst at a startup that helps small business owners flip electronics (buy and resell for \nprofit). A client comes to you with historical price data of a popular smartphone over the past few \ndays. The client wants to buy one unit of the smartphone on one day and sell it on a later day to \nmaximize their profit. \nYou have to write a program that determines the maximum profit that can be earned by making at \nmost one transaction (buy one and sell one product). \nCon",
-    fmt: "",
-    hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
+    desc: "You are a data analyst at a startup that helps small business owners flip electronics (buy and resell for profit). A client comes to you with historical price data of a popular smartphone over the past few days. The client wants to buy one unit of the smartphone on one day and sell it on a later day to maximize their profit.\n\nYou have to write a program that determines the maximum profit that can be earned by making at most one transaction (buy one and sell one product).",
+    fmt: "The first line contains an integer N, the number of days.\nThe second line contains N space-separated integers representing the prices on each day.",
+    hints: ["Analyze the pattern: you need to find the maximum difference where the smaller number comes before the larger number.", "Consider time complexity: keep track of the minimum price seen so far as you iterate through the array.", "If no profit can be made, return 0."],
     tests: [
-      { in: "10 3 3 4 5 Output: 2 Explanation: P = 10 Books available: [3, 4, 5] To reach 10 pages \nwith minimum books: Borrow book with 5 pages (1 time) = 5 pages. Remaining P = 5. Borrow book \nwith 5 pages (2nd time) = 5 pages. Total = 10 pages. Total books borrowed: 2. \nCase#: 2 Input: 15 2 3 4 Output: -1 Explanation: P = 15 Books available: [3, 4] Maximum \npages achievable: Book 1 (3 pages) x 2 = 6 pages Book 2 (4 pages) x 2 = 8 pages Total max pages = 6 + \n8 = 14. Since 14 < 15, it's not possible to reach the target. Return -1. \nCase#: 3 Input: 7 3 1 2 6 Output: 2 Explanation: P = 7 Books available: [1, 2, 6] To reach 7 pages with \nminimum books: Borrow book with 6 pages (1 time) = 6 pages. Remaining P = 1. Borrow book with 1 \npage (1 time) = 1 page. Total = 7 pages. Total books borrowed: 2. \nQuestion 2: Ingredient Shopping \nYou are planning to bake a large cake and need a total of W grams of ingredients. You visit a specialty \nstore that has N different types of ingredients. Each ingredient type Ii has a specific weight in grams. \nYou want to buy the minimum number of ingredient units such that their total weight is at least \nW. The store policy dictates that you can buy at most 2 units of each unique ingredient type, as \nsupplies are limited. \nIf buying all available ingredient units (each twice) does not allow you to reach the target weight, \nreturn -1. \nParameters: W :: INTEGER The first line contains an integer, W, denoting the target total weight in \ngrams. W :: 1 -> 10^5 \n  \nN :: INTEGER The next line contains an integer, N, denoting the number of unique ingredient types. N \n:: 1 -> 10^5 \nI :: INTEGER ARRAY Each line i of the N subsequent lines (where 0 \\le i < N) contains an integer \ndescribing the weight of the i^{th} ingredient type in grams. I[i] :: 1 -> 10^5 \nCase#: 1 Input: 20 3 5 8 12 Output: 2 Explanation: W = 20 Ingredients available: [5, 8, 12] To reach \n20g with minimum units: Buy ingredient with 12g (1 time) = 12g. Remaining W = 8. Buy ingredient \nwith 8g (1 time) = 8g. Total = 20g. Total units bought: 2. \nCase#: 2 Input: 50 2 10 14 Output: -1 Explanation: W = 50 Ingredients available: [10, 14] Maximum \nweight achievable: Ingredient 1 (10g) x 2 = 20g Ingredient 2 (14g) x 2 = 28g Total max weight = 20 + \n28 = 48g. Since 48 < 50, it's not possible to reach the target. Return -1. Case#: 3 Input: 15 4 2 3 4 5", out: "Return True if the two strings are anagrams, otherwise False \n \n \nCase#:1 \nInput silent listen \nOutput True Case#:2 Input triangle integral Output True Case#:3 Input hello bello \n  \nOutput False Case#:4 Input aabbcc abcabc Output True \n \nCase#:5 Input abc \nab \nOutput \nFalse \nQ28. \nYou are working on the backend of a secure messaging application. Each session generates a unique \ntoken that should match the expected reference token. However, due to a known issue in the \nmessage encoding system, tokens sometimes arrive in a rotated format (i.e., characters are shifted in \na circular fashion, but no characters are lost or added). \nYour job is to verify whether the received token is simply a rotation of the original token. If so, it \nshould still be accepted for authentication. \n \n \nParameters: \nT1: STRING \nThe first line of input contains a string, T1, that represents the original token. 1<=len(T1)<=100 \nT2: STRING \nThe second line of input contains a string, T2, that represents the received token. 1<=len(T2)<=100 \n \nOutput: \n  \nReturn True if received token is a rotation of original token, otherwise False. \n \n \nCase#1: \nInput \nauthentication cationauthenti Output \nTrue Case#2: Input waterbottle erbottlewat Output True Case#3: Input rotation tationro \nOutput True Case#4: \nInput secure rescue \nOutput \nFalse \n \n \nCase#:5 Input abcde deabc \n  \nOutput \nTrue \n \n \nCase#:6 Input abc abcd \nOutput \nFalse \nQ29. \nYou are building a validation system for a secure messaging app that uses pattern-based character \nsubstitution encryption. Every character in a plaintext message is consistently replaced with another \ncharacter to create the encrypted version. However, to maintain security, no two characters in the \noriginal message can map to the same character in the encrypted one, and vice versa. \nYour task is to verify whether a received encrypted message is a valid isomorphic transformation of \nthe original message. That means there must exist a one-to-one and consistent mapping between \nthe characters in the original and encrypted messages \n \n \nParameters: \nT1: STRING \nThe first line of input contains a string, T1, that represents the actual message before encryption. \n1<=len(T1)<=100 \n \nT2: STRING \nThe second line of input contains a string, T2, that represents the message after encryption. \n1<=len(T2)<=100 \nOutput: \nReturn True if the two messages are isomorphic, otherwise False. \n \n \nCase#:1 Input paper \ntitle \n  \nOutput \nTrue" },
+      { in: "6\n7 1 5 3 6 4", out: "5", note: "Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5." },
+      { in: "5\n7 6 4 3 1", out: "0", note: "In this case, no transactions are done and the max profit = 0." }
     ]
   },
-  {
-    track: "hackwithinfy", id: "minimum-treasures-for-target", level: "Medium", title: "Minimum Treasures for Target",
-    desc: "Parameters: V :: INTEGER The first line contains an integer, V, denoting the target total treasure \nvalue. V :: 1 -> 10^5 \nN :: INTEGER The next line contains an integer, N, denoting the number of unique treasures. N \n:: 1 -> 10^5 \nT :: INTEGER ARRAY Each line i of the N subsequent lines (where 0 \\le i < N) contains an integer \ndescribing the value of the i^{th} treasure. T[i] :: 1 -> 10^5 \nCase#: 1 Input: 18 3 7 9 10 Output: 2 Explanation: V = 18 Treasures available: [7, 9, 10] To reach 18 \nval",
-    fmt: "",
-    hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
-    tests: [
-      { in: "1", out: "1" },
-    ]
-  },
-  {
-    track: "hackwithinfy", id: "minimum-tasks-for-progress", level: "Medium", title: "Minimum Tasks for Progress",
-    desc: "Collect treasure with 3 value (2nd time) = 3 value. Total = 6 value. Total treasures collected: 2. \nQuestion 4: Project Task Completion \nYou are working on a critical project and need to accumulate a total of P progress points to \n  \ncomplete it. There are N distinct tasks available, and each task Ti provides a certain amount of \nprogress points upon completion. \nYou want to determine the minimum number of tasks you have to complete such that you reach or \nexceed the target progress points P. To",
-    fmt: "",
-    hints: ["Analyze the pattern", "Consider time complexity", "Check constraints"],
-    tests: [
-      { in: "1", out: "1" },
-    ]
-  },
+  
+  
 
   {
     track: "hackwithinfy", id: "tree-beauty-problem", level: "Easy", title: "Tree Beauty Problem",
@@ -1124,4 +1087,100 @@ For Q queries (binary strings), find the sum of minimum costs to MAXIMIZE natura
     tests: [{"in":"2 3 1 * + 9 -","out":"-4"},{"in":"100 200 + 2 / 5 * 7 +","out":"757"},{"in":"10 2 8 * + 3 -","out":"23"}],
     hints: ["Concept: Stack data structure for expression evaluation.", "Algorithm: Iterate through the tokens. If the token is a number, push it onto the stack. If it's an operator, pop the top two numbers, apply the operator (remembering order: `second_popped op first_popped`), and push the result. The final result is the only item left in the stack.", "stack.append(eval(f'{a} {token} {b}'))"],
     nqtTag: "Recently Asked" }
+,
+  {
+    track: "hackwithinfy",
+    id: "remove-duplicate-and-reverse",
+    level: "Easy",
+    title: "Remove Duplicates and Reverse",
+    desc: "Given a string, you need to remove all duplicate characters, keeping only the first occurrence of each character. After removing the duplicates, reverse the resulting string and return it.",
+    fmt: "Input: A single string.\nOutput: The processed string.",
+    tests: [
+      { in: "google", out: "elog" },
+      { in: "infosys", out: "ysofni" },
+      { in: "programming", out: "gnimarp" },
+      { in: "hackwithinfy", out: "yfnihtwcah" }
+    ],
+    hints: [
+      "Use a set or a boolean array to keep track of characters you have already seen.",
+      "Iterate through the string, if a character is not seen, append it to a result string and mark it as seen.",
+      "Finally, reverse the result string."
+    ]
+  },
+  {
+    track: "hackwithinfy",
+    id: "brackets-matching-position",
+    level: "Medium",
+    title: "Brackets Matching Position",
+    desc: "Given a string containing brackets {}, (), []. Check if the brackets are matched and balanced.\nIf all brackets are correctly matched, return 0.\nIf there is a mismatch, return the 1-based index (position) of the first mismatched bracket.",
+    fmt: "Input: A string of brackets.\nOutput: 0 if matched, else the position of the mismatch.",
+    tests: [
+      { in: "{([])}", out: "0" },
+      { in: "{[[]])}", out: "6" },
+      { in: "(()", out: "3" },
+      { in: "([)]", out: "3" }
+    ],
+    hints: [
+      "Use a stack to keep track of opening brackets.",
+      "When encountering a closing bracket, check if it matches the top of the stack. If it doesn't, return the current position (1-based).",
+      "If the string ends and the stack is not empty, the mismatch is at the end."
+    ]
+  },
+  {
+    track: "hackwithinfy",
+    id: "largest-even-number-string",
+    level: "Hard",
+    title: "Largest Even Number from String",
+    desc: "You are given a string containing alphanumeric characters and special symbols. Extract all the unique digits present in the string.\nUsing these unique digits, form the largest possible even number.\nIf it is not possible to form any even number, return -1.",
+    fmt: "Input: A single string.\nOutput: The largest possible even number formed by unique digits, or -1.",
+    tests: [
+      { in: "asdf@75483", out: "87534" },
+      { in: "infytq@13579", out: "-1" },
+      { in: "a1b2c3d4e5", out: "54312" },
+      { in: "hello@6", out: "6" }
+    ],
+    hints: [
+      "Extract all digits from the string and remove duplicates by putting them in a set.",
+      "Find the smallest even digit to place at the units place to maximize the overall number. Sort the remaining digits in descending order.",
+      "If there is no even digit in the set, it's impossible, return -1."
+    ]
+  },
+  {
+    track: "hackwithinfy",
+    id: "pronic-number-substring",
+    level: "Medium",
+    title: "Pronic Number Substrings",
+    desc: "A pronic number is a number which is the product of two consecutive integers, that is, a number of the form n(n + 1).\nGiven a numeric string, extract all unique substrings, convert them to integers, and check if they are pronic numbers.\nReturn a space-separated list of all unique pronic numbers found, sorted in ascending order. If none found, return an empty string.",
+    fmt: "Input: A numeric string.\nOutput: Space-separated sorted pronic numbers.",
+    tests: [
+      { in: "272", out: "2 72 272" },
+      { in: "111", out: "" },
+      { in: "20", out: "0 2 20" },
+      { in: "930", out: "0 30" }
+    ],
+    hints: [
+      "Generate all possible substrings of the numeric string and parse them to integers.",
+      "To check if X is pronic, find if there exists an integer n such that n*(n+1) == X.",
+      "Store valid pronic numbers in a Set to ensure uniqueness, then sort and print."
+    ]
+  },
+  {
+    track: "hackwithinfy",
+    id: "minimum-unique-elements",
+    level: "Hard",
+    title: "Minimum Unique Elements After Deletion",
+    desc: "You are given an array of N integers and an integer X representing the number of deletions you can perform.\nYou must delete exactly X elements from the array such that the number of unique elements remaining in the array is minimized.\nReturn the final minimum number of unique elements.",
+    fmt: "Input: The first line contains N and X. The second line contains N space-separated integers.\nOutput: The minimum number of unique elements.",
+    tests: [
+      { in: "11 4\n1 1 1 2 2 3 3 4 5 6", out: "3" },
+      { in: "7 2\n1 1 2 3 4 4", out: "2" },
+      { in: "5 3\n1 2 3 4 5", out: "2" },
+      { in: "4 1\n1 1 2 2", out: "2" }
+    ],
+    hints: [
+      "Count the frequency of each element using a hash map.",
+      "Sort the frequencies in ascending order. To minimize unique elements, greedily delete elements that have the smallest frequencies first.",
+      "Keep subtracting the frequency from X until X is exhausted, and count how many distinct elements are left."
+    ]
+  }
 ];

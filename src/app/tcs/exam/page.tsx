@@ -27,7 +27,7 @@ const STRUCTURED_DATA = {
   "description": "Simulate the real TCS NQT with an 80-question, 190-minute timed mock exam including coding sections.",
   "provider": {
     "@type": "Organization",
-    "name": "TCS NQT Prep Hub",
+    "name": "PlacementPrepHub",
     "sameAs": "https://tcsnqtprep.vercel.app"
   }
 };

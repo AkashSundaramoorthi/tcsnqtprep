@@ -118,6 +118,56 @@ export default function CodingClient({ questions, track = "tcs" }: Props) {
         }
         localStorage.setItem("migrated_v2", "true");
       }
+
+      // Deduplication Migration (v3)
+      const migratedV3 = localStorage.getItem("migrated_v3_dupes");
+      if (!migratedV3) {
+        const dupesMap: Record<string, string> = {
+          "job-sequencing-with-deadlines": "job-sequencing-with-profits",
+          "rearrange-tasks": "rearrange-characters",
+          "minimum-treasures-for-target": "minimum-coins-for-majority",
+          "minimum-tasks-for-progress": "minimum-coins-for-majority",
+          "longest-palindrome-by-reordering": "longest-palindromic-subsequence"
+        };
+        let changed = false;
+        
+        
+        let parsedProgress: Record<string, string> = {};
+        try { parsedProgress = JSON.parse(localStorage.getItem("tcs-nqt-coding-progress") || "{}"); } catch {}
+        
+        Object.keys(dupesMap).forEach(oldId => {
+          const newId = dupesMap[oldId];
+          if (parsedDone[oldId]) {
+            parsedDone[newId] = true;
+            delete parsedDone[oldId];
+            changed = true;
+          }
+          if (parsedSols[oldId]) {
+            parsedSols[newId] = parsedSols[oldId];
+            delete parsedSols[oldId];
+            changed = true;
+          }
+          if (parsedHints[oldId]) {
+            parsedHints[newId] = Math.max(parsedHints[newId] || 0, parsedHints[oldId]);
+            delete parsedHints[oldId];
+            changed = true;
+          }
+          if (parsedProgress[oldId]) {
+            parsedProgress[newId] = parsedProgress[oldId];
+            delete parsedProgress[oldId];
+            changed = true;
+          }
+        });
+        
+        if (changed) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedDone));
+          localStorage.setItem(SOLUTIONS_KEY, JSON.stringify(parsedSols));
+          localStorage.setItem("tcs-nqt-coding-hints", JSON.stringify(parsedHints));
+          localStorage.setItem("tcs-nqt-coding-progress", JSON.stringify(parsedProgress));
+        }
+localStorage.setItem("migrated_v3_dupes", "true");
+      }
+
       
       setDone(parsedDone);
       setSolutions(parsedSols);
@@ -385,37 +435,69 @@ export default function CodingClient({ questions, track = "tcs" }: Props) {
             </div>
 
             <div className={styles.problemDesc}>
-              <p style={{ whiteSpace: "pre-line" }}>{selected.desc}</p>
+              <p style={{ whiteSpace: "pre-line", lineHeight: "1.6" }}>
+                {selected.desc.replace(/([a-zA-Z,.\s])\n([a-zA-Z])/g, '$1 $2')}
+              </p>
             </div>
 
-            <div className={styles.formatNote}>
-              <span className={styles.formatLabel}>Output format</span>
-              <span>{selected.fmt}</span>
-            </div>
-
-            <div className={styles.examples}>
-              <h3 className={styles.examplesTitle}>Examples</h3>
-              <div className={styles.ioGrid}>
-                <div>
-                  <div className={styles.ioLabel}>Input</div>
-                  <pre className="code-block">{selected.tests[0].in || "(none)"}</pre>
-                </div>
-                <div>
-                  <div className={styles.ioLabel}>Output</div>
-                  <pre className="code-block">{selected.tests[0].out}</pre>
-                </div>
-              </div>
-            </div>
-
-            {selected.note && (
-              <div className={styles.noteBox}>
-                <span className={styles.noteLabel}>Note</span>
-                <p>{selected.note}</p>
+            {selected.fmt && (
+              <div className={styles.formatNote} style={{ marginTop: "20px" }}>
+                <span className={styles.formatLabel}>Format</span>
+                <span style={{ lineHeight: "1.6" }}>{selected.fmt}</span>
               </div>
             )}
 
+            <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "24px" }}>
+              {selected.tests.slice(0, 2).map((test, idx) => {
+                if (test.hidden) return null;
+                
+                let inStr = test.in || "";
+                let outStr = test.out || "";
+                let explanation = "";
+                
+                const splitRegex = /(Sample Output|Sample output|Explanation|Input Format|Constraints|Sample Test Cases|External Document)/i;
+                
+                const inMatch = inStr.match(splitRegex);
+                if (inMatch && inMatch.index !== undefined) {
+                  explanation += inStr.substring(inMatch.index);
+                  inStr = inStr.substring(0, inMatch.index).trim();
+                }
+
+                const outMatch = outStr.match(splitRegex);
+                if (outMatch && outMatch.index !== undefined) {
+                  explanation += (explanation ? "\n" : "") + outStr.substring(outMatch.index);
+                  outStr = outStr.substring(0, outMatch.index).trim();
+                }
+
+                // Strip stray "Output:" strings that leaked into the input
+                inStr = inStr.replace(/\n?\s*Output:\s*.*$/i, '').trim();
+                
+                const finalExplanation = selected.note ? selected.note + (explanation ? "\n" + explanation : "") : explanation;
+                
+                return (
+                  <div key={idx}>
+                    <div style={{ fontWeight: "bold", marginBottom: "12px", fontSize: "1rem" }}>Example {idx + 1}:</div>
+                    <div style={{ 
+                      paddingLeft: "16px", 
+                      borderLeft: "2px solid var(--border)", 
+                      fontSize: "0.95rem", 
+                      color: "var(--text-2)",
+                      lineHeight: "1.6",
+                      whiteSpace: "pre-wrap"
+                    }}>
+                      <div><strong style={{color: "var(--text)", fontFamily: "var(--font-mono)"}}>Input:</strong> <span style={{fontFamily: "var(--font-mono)"}}>{inStr}</span></div>
+                      <div><strong style={{color: "var(--text)", fontFamily: "var(--font-mono)"}}>Output:</strong> <span style={{fontFamily: "var(--font-mono)"}}>{outStr}</span></div>
+                      {finalExplanation && (
+                        <div><strong style={{color: "var(--text)"}}>Explanation:</strong> {finalExplanation.trim()}</div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
             {selected.hints && (
-              <div className={styles.hintsBox} style={{ marginTop: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div className={styles.hintsBox} style={{ marginTop: "32px", display: "flex", flexDirection: "column", gap: "8px" }}>
                 {selected.hints.map((hint, i) => {
                   const isRevealed = (hintsRevealed[selected.id] || 0) > i;
                   const canReveal = (hintsRevealed[selected.id] || 0) === i;

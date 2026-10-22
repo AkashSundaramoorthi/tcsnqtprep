@@ -27,7 +27,7 @@ const STRUCTURED_DATA = {
   "description": "30 method guides for TCS NQT aptitude sections covering Numerical, Verbal, Reasoning, and Advanced sections.",
   "provider": {
     "@type": "Organization",
-    "name": "TCS NQT Prep Hub",
+    "name": "PlacementPrepHub",
     "sameAs": "https://tcsnqtprep.vercel.app"
   }
 };

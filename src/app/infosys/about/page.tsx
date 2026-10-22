@@ -2,14 +2,14 @@ import styles from "./about.module.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About — NQT Prep Hub",
-  description: "Learn about the TCS NQT structure, sections, profile offers, and the platform.",
+  title: "About — PlacementPrepHub",
+  description: "Learn about the Infosys exam structure, sections, profile offers, and the platform.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "About — NQT Prep Hub",
-    description: "Learn about the TCS NQT structure, sections, profile offers, and the platform.",
+    title: "About — PlacementPrepHub",
+    description: "Learn about the Infosys exam structure, sections, profile offers, and the platform.",
     url: "/about",
   },
 };
@@ -18,9 +18,9 @@ export default function AboutPage() {
   return (
     <div className={styles.pageContainer}>
       <header className={styles.header}>
-        <h1 className={styles.title}>About NQT Prep Hub</h1>
+        <h1 className={styles.title}>About PlacementPrepHub</h1>
         <p className={styles.subtitle}>
-          NQT Prep Hub is a free preparation platform designed to help students prepare for the TCS National Qualifier Test through coding practice, aptitude resources, mock tests, previous year questions, interview preparation, and quick revision material.
+          PlacementPrepHub is a free preparation platform designed to help students prepare for various placement exams through coding practice, aptitude resources, mock tests, previous year questions, interview preparation, and quick revision material.
         </p>
       </header>
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
           Infosys HackWithInfy and standard recruitment resources are often scattered across multiple websites, disjointed PDFs, and long videos.
         </p>
         <p className={styles.paragraph}>
-          Students waste valuable time switching between resources and environments. NQT Prep Hub combines everything into one clean, distraction-free platform, significantly reducing friction so you can focus entirely on preparation.
+          Students waste valuable time switching between resources and environments. PlacementPrepHub combines everything into one clean, distraction-free platform, significantly reducing friction so you can focus entirely on preparation.
         </p>
       </section>
 
@@ -76,7 +76,7 @@ export default function AboutPage() {
             <tbody>
               <tr>
                 <td>Advanced Coding</td>
-                <td>3</td>
+                <td>4</td>
                 <td>3 hours</td>
               </tr>
             </tbody>
@@ -95,47 +95,51 @@ export default function AboutPage() {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Offer Category</th>
-                <th>Salary Package</th>
+                <th>Role Designation</th>
+                <th>Base Annual CTC</th>
+                <th>One-Time Joining Bonus</th>
+                <th>Total First-Year Package</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>Specialist Programmer (SP)</strong></td>
-                <td>9.5 LPA</td>
+                <td><strong>Specialist Programmer (L3 Trainee)</strong></td>
+                <td>₹21 Lakhs</td>
+                <td>Performance Variables / RSUs</td>
+                <td>₹21.00 LPA</td>
+              </tr>
+              <tr>
+                <td><strong>Specialist Programmer (L2)</strong></td>
+                <td>₹16 Lakhs</td>
+                <td>Performance Variables / RSUs</td>
+                <td>₹16.00 LPA</td>
+              </tr>
+              <tr>
+                <td><strong>Specialist Programmer (L1)</strong></td>
+                <td>₹10 Lakhs</td>
+                <td>₹1 Lakh</td>
+                <td>₹11.00 LPA</td>
               </tr>
               <tr>
                 <td><strong>Digital Specialist Engineer (DSE)</strong></td>
-                <td>6.25 LPA</td>
+                <td>₹6.25 Lakhs</td>
+                <td>₹75,000</td>
+                <td>₹7.00 LPA</td>
               </tr>
               <tr>
                 <td><strong>Systems Engineer (SE)</strong></td>
-                <td>3.6 LPA</td>
+                <td>₹3.2 – ₹3.8 Lakhs</td>
+                <td>None</td>
+                <td>₹3.20 – ₹3.80 LPA</td>
+              </tr>
+              <tr>
+                <td><strong>Operations Executive (OE)</strong></td>
+                <td>₹2.2 – ₹2.8 Lakhs</td>
+                <td>None</td>
+                <td>₹2.20 – ₹2.80 LPA</td>
               </tr>
             </tbody>
           </table>
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>FAQ</h2>
-        <div className={styles.faqList}>
-          <div className={styles.faqItem}>
-            <h4>Is this affiliated with TCS?</h4>
-            <p>No. This is an independent preparation platform.</p>
-          </div>
-          <div className={styles.faqItem}>
-            <h4>Is the platform free?</h4>
-            <p>Yes.</p>
-          </div>
-          <div className={styles.faqItem}>
-            <h4>Will more questions be added?</h4>
-            <p>Yes. The platform will continue to receive regular updates.</p>
-          </div>
-          <div className={styles.faqItem}>
-            <h4>Is the syllabus updated?</h4>
-            <p>Yes, it follows the latest publicly available TCS NQT pattern.</p>
-          </div>
         </div>
       </section>
 
@@ -143,7 +147,7 @@ export default function AboutPage() {
         <h3 className={styles.creatorName}>Built by Akash Sundaramoorthi</h3>
         <p className={styles.creatorRole}>Full-Stack Developer and Cybersecurity Researcher.</p>
         <p className={styles.creatorBio}>
-          NQT Prep Hub was built to provide students with a clean and centralized platform for TCS NQT preparation.
+          PlacementPrepHub was built to provide students with a clean and centralized platform for placement exam preparation.
         </p>
         <div className={styles.creatorLinks}>
           <a href="https://akash-sundaramoorthi.vercel.app/" target="_blank" rel="noreferrer" className="btn btn-primary">Portfolio</a>
